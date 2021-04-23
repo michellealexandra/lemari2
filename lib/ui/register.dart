@@ -1,12 +1,12 @@
 part of 'pages.dart';
 
-class Login extends StatefulWidget {
-  static const String routeName = "/login";
+class Register extends StatefulWidget {
+  static const String routeName = "/register";
   @override
-  _LoginState createState() => _LoginState();
+  _RegisterState createState() => _RegisterState();
 }
 
-class _LoginState extends State<Login> {
+class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -43,6 +43,7 @@ class _LoginState extends State<Login> {
                     top: size.width * 0.05),
                 child: Column(
                   children: <Widget>[
+                    _textInput(hint: "Name"),
                     _textInput(hint: "Email"),
                     _textInput(hint: "Password"),
                     SizedBox(
@@ -63,7 +64,7 @@ class _LoginState extends State<Login> {
                                 context, Profile.routeName);
                           },
                           child: Text(
-                            "Sign In",
+                            "Sign Up",
                             style: TextStyle(
                                 color: Color(0xff5D4736),
                                 fontFamily: GoogleFonts.openSans().fontFamily,
@@ -82,13 +83,13 @@ class _LoginState extends State<Login> {
               child: RichText(
                   text: TextSpan(children: [
                 TextSpan(
-                    text: "Don't Have an Account?",
+                    text: "Have an account?",
                     style: TextStyle(
                         color: Color(0xff5D4736),
                         fontFamily: GoogleFonts.openSans().fontFamily,
                         fontWeight: FontWeight.w500)),
                 TextSpan(
-                    text: " Sign Up",
+                    text: " Sign In",
                     style: TextStyle(
                         color: Color(0xff5D4736),
                         fontFamily: GoogleFonts.openSans().fontFamily,
