@@ -1,13 +1,21 @@
 part of 'pages.dart';
 
-class Dashboard extends StatelessWidget {
+class Dashboard extends StatefulWidget {
   static const String routeName = "/dashboard";
-  // This widget is the root of your application.
+
+  @override
+  _DashboardState createState() => _DashboardState();
+}
+
+class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     double padding = 25;
     final sidePadding = EdgeInsets.symmetric(horizontal: padding);
+
+    int _selectedItem = 0;
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Dashboard",
@@ -16,15 +24,15 @@ class Dashboard extends StatelessWidget {
                 fontFamily: GoogleFonts.openSans().fontFamily,
                 fontWeight: FontWeight.bold,
                 fontSize: 24)),
-        elevation: 0.0,
         backgroundColor: Color(0xffFFFFFF).withOpacity(0.5),
+        elevation: 0.0,
       ),
       resizeToAvoidBottomInset: false,
-      body: Container(
-        width: size.width,
-        height: size.height,
-        child: ListView(children: [
-          Column(
+      body: SingleChildScrollView(
+        child: Container(
+          width: size.width,
+          height: size.height,
+          child: Column(
             // crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               // addVerticalSpace(padding),
@@ -273,28 +281,101 @@ class Dashboard extends StatelessWidget {
                   ],
                 ),
               ),
-              
+
               Row(
-                children: [SizedBox(
-                width: MediaQuery.of(context).size.width * 0.1,
-              ),
-                  RecentCard()
+                children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.1,
+                  ),
+                  Card(
+                    elevation: 5,
+                    color: Color(0xffEDD3B9),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14)),
+                    margin: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.width * 0.05,
+                      bottom: MediaQuery.of(context).size.width * 0.08,
+                    ),
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.35,
+                          height: MediaQuery.of(context).size.height * 0.25,
+                          decoration: BoxDecoration(
+                              color: Color(0xffA77665),
+                              borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(14.0))),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                  height: MediaQuery.of(context).size.height *
+                                      0.01),
+                              CircleAvatar(
+                                radius: 50,
+                                backgroundImage:
+                                    AssetImage("assets/images/dummy.jpg"),
+                              ),
+                              SizedBox(
+                                  height: MediaQuery.of(context).size.height *
+                                      0.02),
+                              Text(
+                                "Brown Cookies",
+                                style: TextStyle(
+                                    fontSize: 13,
+                                    fontFamily:
+                                        GoogleFonts.openSans().fontFamily,
+                                    fontWeight: FontWeight.w700,
+                                    color: Color(0xffF0E8E1)),
+                                textAlign: TextAlign.center,
+                              )
+                            ],
+                          ),
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.35,
+                          height: MediaQuery.of(context).size.height * 0.06,
+                          decoration: BoxDecoration(
+                              color: Color(0xffF0E8E1),
+                              borderRadius: BorderRadius.vertical(
+                                  bottom: Radius.circular(14.0))),
+                          child: Column(
+                              //logo"nya
+                              ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ],
           ),
-        ]),
-      ),
-      bottomNavigationBar: Container(
-        color: Color(0xffDCB997),
-        height: 70,
-        child: BottomNavigationBar(
-          items: [
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-            BottomNavigationBarItem(icon: Icon(Icons.storage), label: "Lemari"),
-            BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
-          ],
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            // ignore: deprecated_member_use
+            title: Text('Home'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.storage),
+            // ignore: deprecated_member_use
+            title: Text('Lemari'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            // ignore: deprecated_member_use
+            title: Text('Profile'),
+          ),
+        ],
+        currentIndex: _selectedItem,
+        onTap: (index) {
+          setState(() {
+            _selectedItem = index;
+          });
+        },
       ),
     );
   }

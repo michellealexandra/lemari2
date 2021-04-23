@@ -6,3 +6,5 @@ import 'package:lemari2/ui/card/card.dart';
 
 part 'login.dart';
 part 'dashboard.dart';
+part 'lemari.dart';
+part 'profile.dart';

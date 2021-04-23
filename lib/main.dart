@@ -25,6 +25,8 @@ class MyApp extends StatelessWidget {
         //cara panggil modular, shg ga perlu rename satu", jd klo misal keganti routename nya lgs ke ganti
         Login.routeName: (context) => Login(),
         Dashboard.routeName: (context) => Dashboard(),
+        Lemari.routeName: (context) => Lemari(),
+        Profile.routeName: (context) => Profile(),
         // MainMenu.routeName:(context) => MainMenu(),
         // Register.routeName:(context) => Register(),
         // 'menu':(context)=> Menu(),

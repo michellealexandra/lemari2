@@ -56,7 +56,7 @@ class _LoginState extends State<Login> {
                                   BorderRadius.all(Radius.circular(8))),
                           onPressed: () {
                             Navigator.pushReplacementNamed(
-                                context, Dashboard.routeName);
+                                context, Profile.routeName);
                           },
                           child: Text(
                             "Login",
