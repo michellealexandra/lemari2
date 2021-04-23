@@ -10,10 +10,10 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Login'),
-        elevation: 0,
-      ),
+      // appBar: AppBar(
+      //   title: Text('Login'),
+      //   elevation: 0,
+      // ),
       resizeToAvoidBottomInset: false,
       body: Container(
         child: Column(
@@ -50,11 +50,22 @@ class _LoginState extends State<Login> {
                         height: 45,
                         // ignore: deprecated_member_use
                         child: RaisedButton(
+                          color: Color(0xffD6AA8E),
                           shape: RoundedRectangleBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(8))),
-                          onPressed: () {},
-                          child: Text("Login"),
+                          onPressed: () {
+                            Navigator.pushReplacementNamed(
+                                context, Dashboard.routeName);
+                          },
+                          child: Text(
+                            "Login",
+                            style: TextStyle(
+                                color: Color(0xff5D4736),
+                                fontFamily: GoogleFonts.openSans().fontFamily,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18),
+                          ),
                         ),
                       ),
                     )

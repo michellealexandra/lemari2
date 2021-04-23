@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lemari2/ui/dashboard.dart';
 import 'package:lemari2/ui/pages.dart';
 import 'package:lemari2/ui/splash.dart';
 
