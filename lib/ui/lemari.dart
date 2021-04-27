@@ -12,7 +12,6 @@ class _LemariState extends State<Lemari> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
 
-    int _selectedItem = 0;
 
     return Scaffold(
       appBar: AppBar(
@@ -36,31 +35,7 @@ class _LemariState extends State<Lemari> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            // ignore: deprecated_member_use
-            title: Text('Home'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.storage),
-            // ignore: deprecated_member_use
-            title: Text('Lemari'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            // ignore: deprecated_member_use
-            title: Text('Profile'),
-          ),
-        ],
-        currentIndex: _selectedItem,
-        onTap: (index) {
-          setState(() {
-            _selectedItem = 2;
-          });
-        },
-      ),
+      
     );
   }
 }

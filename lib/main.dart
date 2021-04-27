@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lemari2/ui/pages.dart';
 import 'package:lemari2/ui/splash.dart';
+//import manual klo dari folder lain
+import 'package:lemari2/ui/dashboard/dashboard.dart';
 
 void main() {
   runApp(MyApp());
@@ -28,6 +30,8 @@ class MyApp extends StatelessWidget {
         Dashboard.routeName: (context) => Dashboard(),
         Lemari.routeName: (context) => Lemari(),
         Profile.routeName: (context) => Profile(),
+        Dashboard2.routeName: (context) => Dashboard2(),
+        MainMenu.routeName: (context) => MainMenu(),
         // MainMenu.routeName:(context) => MainMenu(),
         // Register.routeName:(context) => Register(),
         // 'menu':(context)=> Menu(),

@@ -12,7 +12,6 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
 
-    int _selectedItem = 0;
 
     return Scaffold(
       appBar: AppBar(
@@ -200,7 +199,7 @@ class _ProfileState extends State<Profile> {
                           context, Profile.routeName);
                     },
                     child: Text(
-                      "Login",
+                      "Sign Out",
                       style: TextStyle(
                           color: Color(0xffFFFFFF),
                           fontFamily: GoogleFonts.openSans().fontFamily,
@@ -213,31 +212,6 @@ class _ProfileState extends State<Profile> {
             ],
           ),
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            // ignore: deprecated_member_use
-            title: Text('Home'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.storage),
-            // ignore: deprecated_member_use
-            title: Text('Lemari'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            // ignore: deprecated_member_use
-            title: Text('Profile'),
-          ),
-        ],
-        currentIndex: _selectedItem,
-        onTap: (index) {
-          setState(() {
-            _selectedItem = 2;
-          });
-        },
       ),
     );
   }

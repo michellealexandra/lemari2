@@ -78,24 +78,39 @@ class _RegisterState extends State<Register> {
                 ),
               ),
             ),
-            Container(
-              margin: EdgeInsets.only(bottom: 12),
-              child: RichText(
-                  text: TextSpan(children: [
-                TextSpan(
-                    text: "Have an account?",
-                    style: TextStyle(
-                        color: Color(0xff5D4736),
-                        fontFamily: GoogleFonts.openSans().fontFamily,
-                        fontWeight: FontWeight.w500)),
-                TextSpan(
-                    text: " Sign In",
-                    style: TextStyle(
-                        color: Color(0xff5D4736),
-                        fontFamily: GoogleFonts.openSans().fontFamily,
-                        fontWeight: FontWeight.bold)),
-              ])),
-            )
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Column(
+                  children: [
+                    Text("Have an Account?",
+                        style: TextStyle(
+                            color: Color(0xff5D4736),
+                            fontFamily: GoogleFonts.openSans().fontFamily,
+                            fontWeight: FontWeight.w500)),
+                  ],
+                ),
+                Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        //tombol back hilang, klo push named ada back button
+                        Navigator.pushReplacementNamed(
+                            context, Login.routeName);
+                      },
+                      child: Text(" Sign In",
+                          style: TextStyle(
+                              color: Color(0xff5D4736),
+                              fontFamily: GoogleFonts.openSans().fontFamily,
+                              fontWeight: FontWeight.bold)),
+                    ),
+                  ],
+                )
+              ],
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.02,
+            ),
           ],
         ),
       ),

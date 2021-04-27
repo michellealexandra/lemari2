@@ -60,7 +60,7 @@ class _LoginState extends State<Login> {
                                   BorderRadius.all(Radius.circular(8))),
                           onPressed: () {
                             Navigator.pushReplacementNamed(
-                                context, Profile.routeName);
+                                context, MainMenu.routeName);
                           },
                           child: Text(
                             "Sign In",
@@ -77,24 +77,39 @@ class _LoginState extends State<Login> {
                 ),
               ),
             ),
-            Container(
-              margin: EdgeInsets.only(bottom: 12),
-              child: RichText(
-                  text: TextSpan(children: [
-                TextSpan(
-                    text: "Don't Have an Account?",
-                    style: TextStyle(
-                        color: Color(0xff5D4736),
-                        fontFamily: GoogleFonts.openSans().fontFamily,
-                        fontWeight: FontWeight.w500)),
-                TextSpan(
-                    text: " Sign Up",
-                    style: TextStyle(
-                        color: Color(0xff5D4736),
-                        fontFamily: GoogleFonts.openSans().fontFamily,
-                        fontWeight: FontWeight.bold)),
-              ])),
-            )
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Column(
+                  children: [
+                    Text("Don't Have an Account?",
+                        style: TextStyle(
+                            color: Color(0xff5D4736),
+                            fontFamily: GoogleFonts.openSans().fontFamily,
+                            fontWeight: FontWeight.w500)),
+                  ],
+                ),
+                Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        //tombol back hilang, klo push named ada back button
+                        Navigator.pushReplacementNamed(
+                            context, Register.routeName);
+                      },
+                      child: Text(" Sign Up",
+                          style: TextStyle(
+                              color: Color(0xff5D4736),
+                              fontFamily: GoogleFonts.openSans().fontFamily,
+                              fontWeight: FontWeight.bold)),
+                    ),
+                  ],
+                )
+              ],
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.02,
+            ),
           ],
         ),
       ),

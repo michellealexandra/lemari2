@@ -14,8 +14,6 @@ class _DashboardState extends State<Dashboard> {
     double padding = 25;
     final sidePadding = EdgeInsets.symmetric(horizontal: padding);
 
-    int _selectedItem = 0;
-
     return Scaffold(
       appBar: AppBar(
         title: Text("Dashboard",
@@ -271,8 +269,8 @@ class _DashboardState extends State<Dashboard> {
                     GestureDetector(
                       onTap: () {
                         //tombol back hilang, klo push named ada back button
-                        // Navigator.pushReplacementNamed(
-                        //     context, Lemari.routeName);
+                        Navigator.pushNamed(
+                            context, Lemari.routeName);
                       },
                       child: Text("See all",
                           style:
@@ -351,31 +349,6 @@ class _DashboardState extends State<Dashboard> {
             ],
           ),
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            // ignore: deprecated_member_use
-            title: Text('Home'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.storage),
-            // ignore: deprecated_member_use
-            title: Text('Lemari'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            // ignore: deprecated_member_use
-            title: Text('Profile'),
-          ),
-        ],
-        currentIndex: _selectedItem,
-        onTap: (index) {
-          setState(() {
-            _selectedItem = index;
-          });
-        },
       ),
     );
   }
