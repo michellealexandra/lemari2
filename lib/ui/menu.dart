@@ -13,7 +13,7 @@ class _MainMenuState extends State<MainMenu> {
 
   static List<Widget> _widgetOptions = <Widget>[
     Dashboard(),
-    Lemari(),
+    IsiLemari(),
     Profile(),
   ];
 
@@ -46,6 +46,9 @@ class _MainMenuState extends State<MainMenu> {
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
         elevation: 0,
+        selectedItemColor: Color(0xff5D4736),
+        unselectedItemColor: Color(0xff756355),
+        backgroundColor: Color(0xffDCB997),
       ),
     );
   }
