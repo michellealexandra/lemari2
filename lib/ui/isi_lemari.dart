@@ -70,6 +70,7 @@ class _IsiLemariState extends State<IsiLemari> {
                 SizedBox(
                   height: size.height * 0.04,
                 ),
+              CardClothes()
               ],
             ),
           ),

@@ -10,3 +10,5 @@ part 'lemari.dart';
 part 'profile.dart';
 part 'menu.dart';
 part 'isi_lemari.dart';
+part 'card_clothes.dart';
+part 'detail_clothes.dart';
