@@ -13,7 +13,7 @@ class _MainMenuState extends State<MainMenu> {
 
   static List<Widget> _widgetOptions = <Widget>[
     Dashboard(),
-    IsiLemari(),
+    Lemari(),
     Profile(),
   ];
 

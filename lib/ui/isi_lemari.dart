@@ -76,7 +76,9 @@ class _IsiLemariState extends State<IsiLemari> {
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed(context, Lemari.routeName);
+          },
           child: const Icon(Icons.add),
           backgroundColor: Color(0xffFFEFDF),
           foregroundColor: Color(0xff5D4736),

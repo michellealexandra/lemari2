@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "116913377015",
+    "project_id": "lemari-3f2eb",
+    "storage_bucket": "lemari-3f2eb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:116913377015:android:cb580fa8e8bf56b0d58df2",
+        "android_client_info": {
+          "package_name": "com.example.lemari2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "116913377015-pk0v3dkuru7p3fmhdo61df9jp212dc47.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABe2DRLmx3zw5_VXi16P6o6dcME6lMEPk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "116913377015-pk0v3dkuru7p3fmhdo61df9jp212dc47.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

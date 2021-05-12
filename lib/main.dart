@@ -34,6 +34,7 @@ class MyApp extends StatelessWidget {
         MainMenu.routeName: (context) => MainMenu(),
         IsiLemari.routeName: (context) => IsiLemari(),
         DetailClothes.routeName: (context) => DetailClothes(),
+        AddCloset.routeName: (context) => AddCloset(),
         // MainMenu.routeName:(context) => MainMenu(),
         // Register.routeName:(context) => Register(),
         // 'menu':(context)=> Menu(),

@@ -12,3 +12,5 @@ part 'menu.dart';
 part 'isi_lemari.dart';
 part 'card_clothes.dart';
 part 'detail_clothes.dart';
+part 'add_closet.dart';
+

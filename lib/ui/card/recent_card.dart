@@ -1,9 +1,15 @@
 part of 'card.dart';
 
-class RecentCard extends StatelessWidget {
+class RecentCard extends StatefulWidget {
 
 
+  @override
+  _RecentCardState createState() => _RecentCardState();
+}
+
+class _RecentCardState extends State<RecentCard> {
   String image, name;
+
   int category;
 
   @override
