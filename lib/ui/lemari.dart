@@ -23,28 +23,15 @@ class _LemariState extends State<Lemari> {
                   fontSize: 24)),
           backgroundColor: Color(0xffFFFFFF).withOpacity(0.5),
           elevation: 0.0,
+          actions: <Widget>[
+            IconButton(
+                onPressed: () {
+                  showSearch(context: context, delegate: DataSearch());
+                },
+                icon: Icon(Icons.search))
+          ],
         ),
         resizeToAvoidBottomInset: false,
-        body: new ListView.builder(
-          itemCount: items.length,
-          itemBuilder: (context, int index) {
-            final item = items[index];
-            return new Dismissible(
-              key: new Key(items[index]),
-              onDismissed: (direction) {
-                items.removeAt(index);
-                // ignore: deprecated_member_use
-                Scaffold.of(context).showSnackBar(new SnackBar(
-                  content: new Text("item dismissed"),
-                ));
-              },
-              background: new Container(color: Colors.red),
-              child: new ListTile(
-                title: new Text("${items[index]}"),
-              ),
-            );
-          },
-        ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             Navigator.pushNamed(context, AddCloset.routeName);
@@ -53,5 +40,93 @@ class _LemariState extends State<Lemari> {
           backgroundColor: Color(0xffFFEFDF),
           foregroundColor: Color(0xff5D4736),
         ));
+  }
+}
+
+class DataSearch extends SearchDelegate<String> {
+  final cities = [
+    "ayam",
+    "ayam2",
+    "bebek",
+    "cacing",
+    "domba",
+    "elang",
+    "faaa",
+    "gajah",
+    "kuda",
+    "jerapah",
+    "macan",
+    "harimau",
+    "lumba",
+    "keledai"
+  ];
+  final recentCities = ["cacing", "domba", "ayam"];
+
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    //actions for app bar
+    return [
+      IconButton(
+          onPressed: () {
+            query = "";
+          },
+          icon: Icon(Icons.clear))
+    ];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    //leading icon on the left of the app bar when search
+    return IconButton(
+      icon: AnimatedIcon(
+          icon: AnimatedIcons.menu_arrow, progress: transitionAnimation),
+      onPressed: () {
+        close(context, null);
+      },
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    //show some result based on the selection
+    return Center(
+      child: Container(
+        height: 100,
+        width: 100,
+        child: Card(
+          color: Colors.redAccent,
+          child: Center(child: Text(query),),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    //show when someone search for somethin
+    final suggestionList = query.isEmpty
+        ? recentCities
+        : cities.where((p) => p.startsWith(query)).toList();
+
+    return ListView.builder(
+      itemBuilder: (context, index) => ListTile(
+        onTap: () {
+          showResults(context);
+        },
+        leading: Icon(Icons.location_city),
+        title: RichText(
+          text: TextSpan(
+              text: suggestionList[index].substring(0, query.length),
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              children: [
+                TextSpan(
+                    text: suggestionList[index].substring(query.length),
+                    style: TextStyle(color: Colors.grey))
+              ]),
+        ),
+      ),
+      itemCount: suggestionList.length,
+    );
   }
 }
