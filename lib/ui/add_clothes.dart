@@ -7,20 +7,72 @@ class AddClothes extends StatefulWidget {
 }
 
 class _AddClothesState extends State<AddClothes> {
+  bool isLoading = false;
+  String _chosenValue;
+  
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
 
-    String _myActivity;
-    String _myActivityResult;
-    final formKey = new GlobalKey<FormState>();
+    // String _myActivity;
+    // String _myActivityResult;
+    // final formKey = new GlobalKey<FormState>();
 
-    @override
-    void initState() {
-      super.initState();
-      _myActivity = '';
-      _myActivityResult = '';
-    }
+    // PickedFile imageFile;
+    // final ImagePicker imagePicker = ImagePicker();
+
+    // Future chooseFile(String type) async {
+    //   ImageSource imgSrc;
+    //   if (type == "camera") {
+    //     imgSrc = ImageSource.camera;
+    //   } else {
+    //     imgSrc = ImageSource.gallery;
+    //   }
+
+    //   final selectedImage = await imagePicker.getImage(
+    //     source: imgSrc,
+    //     imageQuality: 50,
+    //   );
+    //   setState(() {
+    //     imageFile = selectedImage;
+    //   });
+    // }
+
+    // void showFileDialog(BuildContext ctx) {
+    //   showDialog(
+    //       context: ctx,
+    //       builder: (ctx) {
+    //         return AlertDialog(
+    //           title: Text("Confirmation"),
+    //           content: Text("Pick image from:"),
+    //           actions: [
+    //             ElevatedButton.icon(
+    //               onPressed: () {
+    //                 chooseFile("camera");
+    //               },
+    //               icon: Icon(Icons.camera_alt),
+    //               label: Text("Camera"),
+    //               style: ElevatedButton.styleFrom(elevation: 0),
+    //             ),
+    //             ElevatedButton.icon(
+    //               onPressed: () {
+    //                 chooseFile("gallery");
+    //               },
+    //               icon: Icon(Icons.folder),
+    //               label: Text("Gallery"),
+    //               style: ElevatedButton.styleFrom(elevation: 0),
+    //             ),
+    //           ],
+    //         );
+    //       });
+    // }
+
+    // @override
+    // void initState() {
+    //   super.initState();
+    //   _myActivity = '';
+    //   _myActivityResult = '';
+    // }
 
     return Scaffold(
       appBar: AppBar(
@@ -41,11 +93,7 @@ class _AddClothesState extends State<AddClothes> {
           width: size.width,
           height: size.height,
           child: Column(
-            // crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(
-                height: size.height * 0.06,
-              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -75,7 +123,9 @@ class _AddClothesState extends State<AddClothes> {
                     color: Color(0xffD6AA8E),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(6))),
-                    onPressed: () {},
+                    onPressed: () {
+                      // showFileDialog(context);
+                    },
                     child: Text(
                       "Add Photo",
                       style: TextStyle(
@@ -125,44 +175,40 @@ class _AddClothesState extends State<AddClothes> {
               ),
               Container(
                 margin: EdgeInsets.only(top: 18),
-                child: DropDownFormField(
-                  titleText: 'Clothes Type',
-                  hintText: 'Please choose one',
-                  value: _myActivity,
-                  onSaved: (value) {
+                child: DropdownButton<String>(
+                  focusColor: Colors.white,
+                  value: _chosenValue,
+                  //elevation: 5,
+                  style: TextStyle(color: Colors.white),
+                  iconEnabledColor: Colors.black,
+                  items: <String>[
+                    'Top',
+                    'Bottom',
+                    'Dress',
+                    'Outer',
+                    'Accessories'
+                  ].map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(
+                        value,
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    );
+                  }).toList(),
+                  hint: Text(
+                    "Please choose one",
+                    style: TextStyle(
+                        color: Color(0xff5D4736),
+                        fontSize: 14,
+                        fontFamily: GoogleFonts.lato().fontFamily,
+                        fontWeight: FontWeight.w300),
+                  ),
+                  onChanged: (String value) {
                     setState(() {
-                      _myActivity = value;
+                      _chosenValue = value;
                     });
                   },
-                  onChanged: (value) {
-                    setState(() {
-                      _myActivity = value;
-                    });
-                  },
-                  dataSource: [
-                    {
-                      "display": "Top",
-                      "value": "Top",
-                    },
-                    {
-                      "display": "Bottom",
-                      "value": "Bottom",
-                    },
-                    {
-                      "display": "Dress",
-                      "value": "Dress",
-                    },
-                    {
-                      "display": "Outer",
-                      "value": "Outer",
-                    },
-                    {
-                      "display": "Accessories",
-                      "value": "Accessories",
-                    },
-                  ],
-                  textField: 'display',
-                  valueField: 'value',
                 ),
               ),
               SizedBox(
