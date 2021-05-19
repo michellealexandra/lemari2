@@ -34,27 +34,93 @@ class _ProfileState extends State<Profile> {
               // crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
-                  height: size.height * 0.1,
+                  height: size.height * 0.08,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
-                      height: MediaQuery.of(context).size.width * 0.5,
-                      width: MediaQuery.of(context).size.width * 0.5,
-                      padding: EdgeInsets.all(20.0),
-                      child: Text(
-                        "photo",
-                        textAlign: TextAlign.center,
+                    GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                            context: context,
+                            builder: (BuildContext ctx) {
+                              return Container(
+                                width: double.infinity,
+                                height: 72,
+                                // color: Color(0xffFFEFDF),
+                                child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      ElevatedButton(
+                                        child: Text(
+                                          "Edit Photo",
+                                          style: TextStyle(
+                                              color: Color(0xffFFFFFF),
+                                              fontFamily: GoogleFonts.openSans()
+                                                  .fontFamily,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 14),
+                                        ),
+                                        style: ElevatedButton.styleFrom(
+                                            onPrimary: Color(0xff5D4736),
+                                            primary: Color(0xffD5A475),
+                                            elevation: 3,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(8))),
+                                        onPressed: () {},
+                                      ),
+                                      ElevatedButton(
+                                        child: Text(
+                                          "Delete Photo",
+                                          style: TextStyle(
+                                              color: Color(0xffFFFFFF),
+                                              fontFamily: GoogleFonts.openSans()
+                                                  .fontFamily,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 14),
+                                        ),
+                                        style: ElevatedButton.styleFrom(
+                                            onPrimary: Color(0xff5D4736),
+                                            primary: Color(0xffFF5E63),
+                                            elevation: 3,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(8))),
+                                        onPressed: () {},
+                                      )
+                                    ]),
+                              );
+                            });
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Container(
+                          height: size.width * 0.5,
+                          width: size.width * 0.5,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(16.0),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.4),
+                                  spreadRadius: 2,
+                                  blurRadius: 5,
+                                  offset: Offset(0, 1),
+                                ),
+                              ],
+                              image: DecorationImage(
+                                  image: AssetImage(
+                                    "assets/images/dummy.jpg",
+                                  ),
+                                  fit: BoxFit.cover)),
+                        ),
                       ),
-                      decoration: BoxDecoration(
-                          border: Border.all(width: 1, color: Colors.redAccent),
-                          borderRadius: BorderRadius.all(Radius.circular(16))),
                     ),
                   ],
                 ),
                 SizedBox(
-                  height: size.height * 0.04,
+                  height: size.height * 0.02,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

@@ -9,70 +9,12 @@ class AddClothes extends StatefulWidget {
 class _AddClothesState extends State<AddClothes> {
   bool isLoading = false;
   String _chosenValue;
-  
+  String radioButtonItem = 'Closet';
+
+  int id = 1;
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-
-    // String _myActivity;
-    // String _myActivityResult;
-    // final formKey = new GlobalKey<FormState>();
-
-    // PickedFile imageFile;
-    // final ImagePicker imagePicker = ImagePicker();
-
-    // Future chooseFile(String type) async {
-    //   ImageSource imgSrc;
-    //   if (type == "camera") {
-    //     imgSrc = ImageSource.camera;
-    //   } else {
-    //     imgSrc = ImageSource.gallery;
-    //   }
-
-    //   final selectedImage = await imagePicker.getImage(
-    //     source: imgSrc,
-    //     imageQuality: 50,
-    //   );
-    //   setState(() {
-    //     imageFile = selectedImage;
-    //   });
-    // }
-
-    // void showFileDialog(BuildContext ctx) {
-    //   showDialog(
-    //       context: ctx,
-    //       builder: (ctx) {
-    //         return AlertDialog(
-    //           title: Text("Confirmation"),
-    //           content: Text("Pick image from:"),
-    //           actions: [
-    //             ElevatedButton.icon(
-    //               onPressed: () {
-    //                 chooseFile("camera");
-    //               },
-    //               icon: Icon(Icons.camera_alt),
-    //               label: Text("Camera"),
-    //               style: ElevatedButton.styleFrom(elevation: 0),
-    //             ),
-    //             ElevatedButton.icon(
-    //               onPressed: () {
-    //                 chooseFile("gallery");
-    //               },
-    //               icon: Icon(Icons.folder),
-    //               label: Text("Gallery"),
-    //               style: ElevatedButton.styleFrom(elevation: 0),
-    //             ),
-    //           ],
-    //         );
-    //       });
-    // }
-
-    // @override
-    // void initState() {
-    //   super.initState();
-    //   _myActivity = '';
-    //   _myActivityResult = '';
-    // }
 
     return Scaffold(
       appBar: AppBar(
@@ -86,8 +28,8 @@ class _AddClothesState extends State<AddClothes> {
         elevation: 0.0,
       ),
       resizeToAvoidBottomInset: false,
-      body: SingleChildScrollView(
-        child: Container(
+      body: ListView(children: [
+        Container(
           margin: EdgeInsets.only(
               left: size.width * 0.05, right: size.width * 0.05),
           width: size.width,
@@ -98,16 +40,26 @@ class _AddClothesState extends State<AddClothes> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    height: MediaQuery.of(context).size.width * 0.5,
-                    width: MediaQuery.of(context).size.width * 0.5,
-                    padding: EdgeInsets.all(20.0),
-                    child: Text(
-                      "photo",
-                      textAlign: TextAlign.center,
+                    alignment: Alignment.center,
+                    child: Container(
+                      height: size.width * 0.5,
+                      width: size.width * 0.5,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16.0),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.4),
+                              spreadRadius: 2,
+                              blurRadius: 5,
+                              offset: Offset(0, 1),
+                            ),
+                          ],
+                          image: DecorationImage(
+                              image: AssetImage(
+                                "assets/images/dummy.jpg",
+                              ),
+                              fit: BoxFit.cover)),
                     ),
-                    decoration: BoxDecoration(
-                        border: Border.all(width: 1, color: Colors.redAccent),
-                        borderRadius: BorderRadius.all(Radius.circular(16))),
                   ),
                 ],
               ),
@@ -174,7 +126,7 @@ class _AddClothesState extends State<AddClothes> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: 18),
+                margin: EdgeInsets.only(top: 5),
                 child: DropdownButton<String>(
                   focusColor: Colors.white,
                   value: _chosenValue,
@@ -211,6 +163,61 @@ class _AddClothesState extends State<AddClothes> {
                   },
                 ),
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Radio(
+                    value: 1,
+                    groupValue: id,
+                    onChanged: (val) {
+                      setState(() {
+                        radioButtonItem = 'Laundry';
+                        id = 1;
+                      });
+                    },
+                  ),
+                  Text(
+                    'Laundry',
+                    style: new TextStyle(fontSize: 14.0),
+                  ),
+                  SizedBox(
+                    width: size.width * 0.2,
+                  ),
+                  Radio(
+                    value: 2,
+                    groupValue: id,
+                    onChanged: (val) {
+                      setState(() {
+                        radioButtonItem = 'Closet';
+                        id = 2;
+                      });
+                    },
+                  ),
+                  Text(
+                    'Closet',
+                    style: new TextStyle(
+                      fontSize: 14.0,
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 18),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(8)),
+                  border:
+                      Border.all(width: 1.5, color: const Color(0xffDBA878)),
+                ),
+                child: TextFormField(
+                  keyboardType: TextInputType.text,
+                  // controller: controller,
+                  decoration: InputDecoration(
+                    hintText: "Date",
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.all(16),
+                  ),
+                ),
+              ),
               SizedBox(
                 height: size.height * 0.07,
               ),
@@ -241,7 +248,7 @@ class _AddClothesState extends State<AddClothes> {
             ],
           ),
         ),
-      ),
+      ]),
     );
   }
 }

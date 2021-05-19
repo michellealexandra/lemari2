@@ -30,20 +30,24 @@ class _IsiLemariState extends State<IsiLemari> {
               // crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
-                  height: size.height * 0.1,
+                  height: size.height * 0.05,
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text(
-                      "Michelle Alexandra Dinata",
-                      style: TextStyle(
-                          fontSize: 12,
-                          fontFamily: GoogleFonts.lato().fontFamily,
-                          fontWeight: FontWeight.w800,
-                          color: Color(0xff5D4736)),
-                      textAlign: TextAlign.center,
-                    )
+                    Container(
+                      margin: EdgeInsets.only(
+                        left: MediaQuery.of(context).size.width * 0.05,
+                      ),
+                      child: Text(
+                          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontFamily: GoogleFonts.openSans().fontFamily,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xff564B46)),
+                          textAlign: TextAlign.left),
+                    ),
                   ],
                 ),
                 SizedBox(
@@ -70,7 +74,7 @@ class _IsiLemariState extends State<IsiLemari> {
                 SizedBox(
                   height: size.height * 0.04,
                 ),
-              CardClothes()
+                CardClothes()
               ],
             ),
           ),
@@ -109,7 +113,7 @@ class _CategoriesState extends State<Categories> {
     );
   }
 
-Widget buildCategory(int index) {
+  Widget buildCategory(int index) {
     return GestureDetector(
       onTap: () {
         setState(() {
@@ -125,14 +129,18 @@ Widget buildCategory(int index) {
               categories[index],
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: selectedindex == index ? Color(0xff5D4736) : Color(0xffE4E0DC),
+                color: selectedindex == index
+                    ? Color(0xff5D4736)
+                    : Color(0xffE4E0DC),
               ),
             ),
             Container(
               margin: EdgeInsets.only(top: 20 / 4), //top padding 5
               height: 2,
               width: 30,
-              color: selectedindex == index ? Color(0xff5D4736) : Colors.transparent,
+              color: selectedindex == index
+                  ? Color(0xff5D4736)
+                  : Colors.transparent,
             )
           ],
         ),

@@ -42,19 +42,37 @@ class _DashboardState extends State<Dashboard> {
                   //photo
                   Column(
                     children: [
-                      Container(
-                        height: MediaQuery.of(context).size.width * 0.15,
-                        width: MediaQuery.of(context).size.width * 0.15,
-                        margin: EdgeInsets.only(
-                            left: MediaQuery.of(context).size.width * 0.15,
-                            top: 36,
-                            right: MediaQuery.of(context).size.width * 0.05),
-                        padding: EdgeInsets.all(20.0),
-                        child: Text("photo"),
-                        decoration: BoxDecoration(
-                            border:
-                                Border.all(width: 1, color: Colors.redAccent),
-                            borderRadius: BorderRadius.all(Radius.circular(8))),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, Profile.routeName);
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: Container(
+                            height: MediaQuery.of(context).size.width * 0.15,
+                            width: MediaQuery.of(context).size.width * 0.15,
+                            margin: EdgeInsets.only(
+                                left: MediaQuery.of(context).size.width * 0.15,
+                                top: 36,
+                                right:
+                                    MediaQuery.of(context).size.width * 0.05),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8.0),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.4),
+                                    spreadRadius: 2,
+                                    blurRadius: 5,
+                                    offset: Offset(0, 1),
+                                  ),
+                                ],
+                                image: DecorationImage(
+                                    image: AssetImage(
+                                      "assets/images/dummy.jpg",
+                                    ),
+                                    fit: BoxFit.cover)),
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -282,6 +300,10 @@ class _DashboardState extends State<Dashboard> {
                 children: [
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.1,
+                  ),
+                  CardClothes(),
+                  SizedBox(
+                    width: size.width * 0.05,
                   ),
                   CardClothes()
                 ],
