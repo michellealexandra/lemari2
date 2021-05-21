@@ -1,10 +1,23 @@
+import 'dart:io';
+
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:lemari2/ui/pages.dart';
 import 'package:lemari2/ui/splash.dart';
 //import manual klo dari folder lain
 import 'package:lemari2/ui/dashboard/dashboard.dart';
 
-void main() {
+void enablePlatformOverrideForDesktop(){
+  if(!kIsWeb && (Platform.isMacOS || Platform.isAndroid || Platform.isLinux)){
+    debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
+  }
+}
+
+void main() async{
+  enablePlatformOverrideForDesktop();
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -14,7 +27,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: "Lemari",
       theme: ThemeData(
         primaryColor: Color(0xffE3B68D),
         primaryColorLight: Color(0xffD6AA8E),
@@ -26,6 +39,8 @@ class MyApp extends StatelessWidget {
       routes: {
         // '/':(context) => Login(),
         //cara panggil modular, shg ga perlu rename satu", jd klo misal keganti routename nya lgs ke ganti
+        
+        Splash.routeName: (context) => Splash(),
         Login.routeName: (context) => Login(),
         Register.routeName: (context) => Register(),
         Dashboard.routeName: (context) => Dashboard(),

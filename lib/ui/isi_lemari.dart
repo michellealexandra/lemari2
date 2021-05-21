@@ -39,14 +39,30 @@ class _IsiLemariState extends State<IsiLemari> {
                       margin: EdgeInsets.only(
                         left: MediaQuery.of(context).size.width * 0.05,
                       ),
-                      child: Text(
-                          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: GoogleFonts.openSans().fontFamily,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xff564B46)),
-                          textAlign: TextAlign.left),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Text(
+                          //     "Lorem Ipsum is simply dummy text of the printing.",
+                          //     style: TextStyle(
+                          //         fontSize: 14,
+                          //         fontFamily: GoogleFonts.openSans().fontFamily,
+                          //         fontWeight: FontWeight.w500,
+                          //         color: Color(0xff564B46)),
+                          //     textAlign: TextAlign.left),
+                          Text(
+                            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontFamily: GoogleFonts.openSans().fontFamily,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xff564B46)),
+                            textAlign: TextAlign.left,
+                            overflow: TextOverflow.clip,
+                            softWrap: false,
+                          )
+                        ],
+                      ),
                     ),
                   ],
                 ),

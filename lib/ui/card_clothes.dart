@@ -3,6 +3,7 @@ part of 'pages.dart';
 class CardClothes extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: () {
         //tombol back hilang pushReplacementNamed, klo push named ada back button
@@ -53,9 +54,30 @@ class CardClothes extends StatelessWidget {
                   color: Color(0xffF0E8E1),
                   borderRadius:
                       BorderRadius.vertical(bottom: Radius.circular(14.0))),
-              child: Column(
+              child: Row(
                   //logo"nya
-                  ),
+                  children: [
+                    SizedBox(
+                      width: size.width * 0.03,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage("assets/icons/Mesin.png"))),
+                      width: size.width * 0.07,
+                      height: size.height * 0.07,
+                    ),
+                    SizedBox(
+                      width: size.width * 0.02,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage("assets/icons/Dress.png"))),
+                      width: size.width * 0.07,
+                      height: size.height * 0.07,
+                    ),
+                  ]),
             ),
           ],
         ),

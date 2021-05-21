@@ -39,13 +39,19 @@ class _DetailClothesState extends State<DetailClothes> {
                           // mainAxisAlignment: MainAxisAlignment.center,
                           // crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image: AssetImage(
-                                          "assets/icons/Mesin.png"))),
-                              width: size.width * 0.13,
-                              height: size.height * 0.13,
+                            GestureDetector(
+                              onTap: () {
+                                ActivityServices.showToast(
+                                    "Will be done at 24 August 2021");
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image: AssetImage(
+                                            "assets/icons/Mesin.png"))),
+                                width: size.width * 0.13,
+                                height: size.height * 0.13,
+                              ),
                             ),
                             SizedBox(
                               height: size.width * 0.005,
@@ -61,17 +67,23 @@ class _DetailClothesState extends State<DetailClothes> {
                             SizedBox(
                               height: size.width * 0.005,
                             ),
-                            Container(
-                              child: Icon(
-                                Icons.edit,
-                                color: Color(0xff5D4736),
-                                size: size.width * 0.1,
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, AddClothes.routeName);
+                              },
+                              child: Container(
+                                child: Icon(
+                                  Icons.edit,
+                                  color: Color(0xff5D4736),
+                                  size: size.width * 0.1,
+                                ),
+                                decoration: BoxDecoration(
+                                    color: Color(0xffFCD825),
+                                    shape: BoxShape.circle),
+                                width: size.width * 0.13,
+                                height: size.height * 0.13,
                               ),
-                              decoration: BoxDecoration(
-                                  color: Color(0xffFCD825),
-                                  shape: BoxShape.circle),
-                              width: size.width * 0.13,
-                              height: size.height * 0.13,
                             ),
                             SizedBox(
                               height: size.width * 0.005,
@@ -108,10 +120,14 @@ class _DetailClothesState extends State<DetailClothes> {
                               //https://googleflutter.com/flutter-border-around-image/
                               borderRadius: BorderRadius.only(
                                   bottomLeft: Radius.circular(18.0)),
-                              // border: Border.all(
-                              //   color: Colors.brown,
-                              //   width: 10,
-                              // ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.4),
+                                  spreadRadius: 2,
+                                  blurRadius: 5,
+                                  offset: Offset(0, 1),
+                                ),
+                              ],
                             ),
                           ),
                         ],
