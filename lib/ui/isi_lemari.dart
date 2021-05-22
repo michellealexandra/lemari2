@@ -20,10 +20,17 @@ class _IsiLemariState extends State<IsiLemari> {
                   fontSize: 24)),
           backgroundColor: Color(0xffFFFFFF).withOpacity(0.5),
           elevation: 0.0,
+          actions: <Widget>[
+            IconButton(
+                onPressed: () {
+                  showSearch(context: context, delegate: DataDummy());
+                },
+                icon: Icon(Icons.search))
+          ],
         ),
         resizeToAvoidBottomInset: false,
-        body: SingleChildScrollView(
-          child: Container(
+        body: ListView(scrollDirection: Axis.vertical, children: [
+          Container(
             width: size.width,
             height: size.height,
             child: Column(
@@ -42,14 +49,6 @@ class _IsiLemariState extends State<IsiLemari> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // Text(
-                          //     "Lorem Ipsum is simply dummy text of the printing.",
-                          //     style: TextStyle(
-                          //         fontSize: 14,
-                          //         fontFamily: GoogleFonts.openSans().fontFamily,
-                          //         fontWeight: FontWeight.w500,
-                          //         color: Color(0xff564B46)),
-                          //     textAlign: TextAlign.left),
                           Text(
                             "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
                             style: TextStyle(
@@ -69,32 +68,12 @@ class _IsiLemariState extends State<IsiLemari> {
                 SizedBox(
                   height: size.height * 0.01,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      height: MediaQuery.of(context).size.width * 0.1,
-                      width: MediaQuery.of(context).size.width * 0.8,
-                      padding: EdgeInsets.all(20.0),
-                      child: Text(
-                        "Search",
-                        textAlign: TextAlign.center,
-                      ),
-                      decoration: BoxDecoration(
-                          border: Border.all(width: 1, color: Colors.redAccent),
-                          borderRadius: BorderRadius.all(Radius.circular(16))),
-                    ),
-                  ],
-                ),
                 Categories(),
-                SizedBox(
-                  height: size.height * 0.04,
-                ),
-                CardClothes()
+                Expanded(child: GridViewClothes())
               ],
             ),
-          ),
-        ),
+          )
+        ]),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             Navigator.pushNamed(context, AddClothes.routeName);
@@ -137,6 +116,7 @@ class _CategoriesState extends State<Categories> {
         });
       },
       child: Padding(
+        //antar word top bottom etc
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -151,6 +131,7 @@ class _CategoriesState extends State<Categories> {
               ),
             ),
             Container(
+              //antar word dan garis
               margin: EdgeInsets.only(top: 20 / 4), //top padding 5
               height: 2,
               width: 30,
@@ -161,6 +142,96 @@ class _CategoriesState extends State<Categories> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class DataDummy extends SearchDelegate<String> {
+  final cities = [
+    "ayam",
+    "ayam2",
+    "bebek",
+    "cacing",
+    "domba",
+    "elang",
+    "faaa",
+    "gajah",
+    "kuda",
+    "jerapah",
+    "macan",
+    "harimau",
+    "lumba",
+    "keledai"
+  ];
+  final recentCities = ["cacing", "domba", "ayam"];
+
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    //actions for app bar
+    return [
+      IconButton(
+          onPressed: () {
+            query = "";
+          },
+          icon: Icon(Icons.clear))
+    ];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    //leading icon on the left of the app bar when search
+    return IconButton(
+      icon: AnimatedIcon(
+          icon: AnimatedIcons.menu_arrow, progress: transitionAnimation),
+      onPressed: () {
+        close(context, null);
+      },
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    //show some result based on the selection
+    return Center(
+      child: Container(
+        height: 100,
+        width: 100,
+        child: Card(
+          color: Colors.redAccent,
+          child: Center(
+            child: Text(query),
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    //show when someone search for somethin
+    final suggestionList = query.isEmpty
+        ? recentCities
+        : cities.where((p) => p.startsWith(query)).toList();
+
+    return ListView.builder(
+      itemBuilder: (context, index) => ListTile(
+        onTap: () {
+          showResults(context);
+        },
+        leading: Icon(Icons.location_city),
+        title: RichText(
+          text: TextSpan(
+              text: suggestionList[index].substring(0, query.length),
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              children: [
+                TextSpan(
+                    text: suggestionList[index].substring(query.length),
+                    style: TextStyle(color: Colors.grey))
+              ]),
+        ),
+      ),
+      itemCount: suggestionList.length,
     );
   }
 }

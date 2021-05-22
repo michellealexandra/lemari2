@@ -45,4 +45,16 @@ class ClosetsServices {
       return false;
     }
   }
+
+  static Future<bool> deleteClosets(String id) async {
+    bool hsl = true;
+    await Firebase.initializeApp();
+    await productCollection.doc(id).delete().then((value) {
+      hsl = true;
+    }).catchError((onError) {
+      hsl = false;
+    });
+
+    return hsl;
+  }
 }

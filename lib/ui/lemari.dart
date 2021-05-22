@@ -8,40 +8,85 @@ class Lemari extends StatefulWidget {
 }
 
 class _LemariState extends State<Lemari> {
+  CollectionReference closetCollection =
+      FirebaseFirestore.instance.collection("closets");
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     final List<String> items =
         new List<String>.generate(30, (i) => "Items ${i + 1}");
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Lemari",
-              style: TextStyle(
-                  color: Color(0xff564B46),
-                  fontFamily: GoogleFonts.openSans().fontFamily,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24)),
-          backgroundColor: Color(0xffFFFFFF).withOpacity(0.5),
-          elevation: 0.0,
-          actions: <Widget>[
-            IconButton(
-                onPressed: () {
-                  showSearch(context: context, delegate: DataSearch());
-                },
-                icon: Icon(Icons.search))
-          ],
-        ),
-        resizeToAvoidBottomInset: false,
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.pushNamed(context, AddCloset.routeName);
+      appBar: AppBar(
+        title: Text("Lemari",
+            style: TextStyle(
+                color: Color(0xff564B46),
+                fontFamily: GoogleFonts.openSans().fontFamily,
+                fontWeight: FontWeight.bold,
+                fontSize: 24)),
+        backgroundColor: Color(0xffFFFFFF).withOpacity(0.5),
+        elevation: 0.0,
+        actions: <Widget>[
+          IconButton(
+              onPressed: () {
+                showSearch(context: context, delegate: DataSearch());
+              },
+              icon: Icon(Icons.search))
+        ],
+      ),
+      resizeToAvoidBottomInset: false,
+      body: buildBody(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, AddCloset.routeName);
+        },
+        child: const Icon(Icons.add),
+        backgroundColor: Color(0xffFFEFDF),
+        foregroundColor: Color(0xff5D4736),
+      ),
+    );
+  }
+
+Widget buildBody() {
+    return Container(
+        width: double.infinity,
+        height: double.infinity,
+        child: StreamBuilder<QuerySnapshot>(
+            stream: closetCollection.snapshots(),
+            builder:
+                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.hasError) {
+                return Text("Failed to load data!");
+              }
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return ActivityServices.loadings();
+              }
+              return new ListView(
+                children: snapshot.data.docs.map((DocumentSnapshot doc) {
+                  Closets closets;
+                  if (doc.data()['closetAddby'] ==
+                      FirebaseAuth.instance.currentUser.uid) {
+                    closets = new Closets(
+                      doc.data()['closetId'],
+                      doc.data()['closetName'],
+                      doc.data()['closetDesc'],
+                      doc.data()['closetImage'],
+                      doc.data()['closetAddby'],
+                      doc.data()['createdAt'],
+                      doc.data()['updatedAt'],
+                    );
+                  } else {
+                    closets = null;
+                  }
+                  return CardLemari(closets: closets);
+                }).toList(),
+            );
           },
-          child: const Icon(Icons.add),
-          backgroundColor: Color(0xffFFEFDF),
-          foregroundColor: Color(0xff5D4736),
         ));
   }
+
 }
+
+
 
 class DataSearch extends SearchDelegate<String> {
   final cities = [
@@ -95,7 +140,9 @@ class DataSearch extends SearchDelegate<String> {
         width: 100,
         child: Card(
           color: Colors.redAccent,
-          child: Center(child: Text(query),),
+          child: Center(
+            child: Text(query),
+          ),
         ),
       ),
     );

@@ -31,9 +31,9 @@ class _AddClothesState extends State<AddClothes> {
       body: ListView(children: [
         Container(
           margin: EdgeInsets.only(
-              left: size.width * 0.05, right: size.width * 0.05),
-          width: size.width,
-          height: size.height,
+              left: size.width * 0.05, right: size.width * 0.05, bottom: size.width*0.05),
+          // width: size.width,
+          // height: size.height * 1.2,
           child: Column(
             children: [
               Row(

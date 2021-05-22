@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -24,4 +25,7 @@ part 'card_clothes.dart';
 part 'detail_clothes.dart';
 part 'add_closet.dart';
 part 'add_clothes.dart';
+part 'gridview.dart';
+part 'card_clothes_lemari.dart';
+part 'card_lemari.dart';
 

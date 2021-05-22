@@ -26,8 +26,8 @@ class _DashboardState extends State<Dashboard> {
         elevation: 0.0,
       ),
       resizeToAvoidBottomInset: false,
-      body: SingleChildScrollView(
-        child: Container(
+      body: ListView(scrollDirection: Axis.vertical, children: [
+        Container(
           width: size.width,
           height: size.height,
           child: Column(
@@ -296,22 +296,25 @@ class _DashboardState extends State<Dashboard> {
                   ],
                 ),
               ),
-              Row(
-                children: [
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.1,
-                  ),
-                  CardClothes(),
-                  SizedBox(
-                    width: size.width * 0.05,
-                  ),
-                  CardClothes()
-                ],
+              Container(
+                margin: EdgeInsets.only(
+                    left: MediaQuery.of(context).size.width * 0.05,),
+                height: size.height * 0.39,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: <Widget>[
+                    CardClothes(),
+                    CardClothes(),
+                    CardClothes(),
+                    CardClothes(),
+                    CardClothes(),
+                  ],
+                ),
               ),
             ],
           ),
         ),
-      ),
+      ]),
     );
   }
 }

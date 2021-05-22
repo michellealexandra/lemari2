@@ -103,64 +103,54 @@ class _AddClosetState extends State<AddCloset> {
               SizedBox(
                 height: size.height * 0.08,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // Container(
-                  //   height: MediaQuery.of(context).size.width * 0.5,
-                  //   width: MediaQuery.of(context).size.width * 0.5,
-                  //   padding: EdgeInsets.all(20.0),
-                  //   child: Text(
-                  //     "photo",
-                  //     textAlign: TextAlign.center,
-                  //   ),
-                  //   decoration: BoxDecoration(
-                  //       border: Border.all(width: 1, color: Colors.redAccent),
-                  //       borderRadius: BorderRadius.all(Radius.circular(16))),
-                  // ),
-                ],
-              ),
               imageFile == null
-                  ? Row(
+                  ? Column(
                       children: [
+                        Text("File tidak ditemukan."),
+                        SizedBox(
+                          width: 16,
+                        ),
                         ElevatedButton(
                           child: Text("Add Photo"),
                           onPressed: () {
                             // chooseFile();
                             showFileDialog(context);
                           },
-                        ),
-                        SizedBox(
-                          width: 16,
-                        ),
-                        Text("File tidak ditemukan.")
+                        )
                       ],
                     )
-                  : Row(
+                  : Column(
                       children: [
-                        ElevatedButton(
-                          child: Text("Add Photo"),
-                          onPressed: () {
-                            // chooseFile();
-                            showFileDialog(context);
-                          },
-                        ),
-                        SizedBox(
-                          width: 16,
-                        ),
                         Container(
                           child: Semantics(
                             child: Image.file(
                               File(imageFile.path),
+                              fit: BoxFit.cover,
                               height: MediaQuery.of(context).size.width * 0.5,
                               width: MediaQuery.of(context).size.width * 0.5,
                             ),
                           ),
                           decoration: BoxDecoration(
-                              border:
-                                  Border.all(width: 1, color: Colors.redAccent),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(16))),
+                            borderRadius: BorderRadius.circular(16.0),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.4),
+                                spreadRadius: 2,
+                                blurRadius: 5,
+                                offset: Offset(0, 1),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          width: 16,
+                        ),
+                        ElevatedButton(
+                          child: Text("Add Photo"),
+                          onPressed: () {
+                            // chooseFile();
+                            showFileDialog(context);
+                          },
                         ),
                       ],
                     ),
@@ -202,30 +192,6 @@ class _AddClosetState extends State<AddCloset> {
                     SizedBox(
                       height: size.height * 0.07,
                     ),
-                    // Container(
-                    //   child: SizedBox(
-                    //     width: double.infinity,
-                    //     height: size.height * 0.06,
-                    //     // ignore: deprecated_member_use
-                    //     child: RaisedButton(
-                    //       color: Color(0xffD6AA8E),
-                    //       shape: RoundedRectangleBorder(
-                    //           borderRadius: BorderRadius.all(Radius.circular(8))),
-                    //       onPressed: () {
-                    //         Navigator.pushReplacementNamed(context, Lemari.routeName);
-                    //         // Navigator.pushReplacementNamed(context, IsiLemari.routeName);
-                    //       },
-                    //       child: Text(
-                    //         "Add Lemari",
-                    //         style: TextStyle(
-                    //             color: Color(0xff5D4736),
-                    //             fontFamily: GoogleFonts.openSans().fontFamily,
-                    //             fontWeight: FontWeight.bold,
-                    //             fontSize: 18),
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
                     Container(
                       child: ElevatedButton(
                         child: Text(
