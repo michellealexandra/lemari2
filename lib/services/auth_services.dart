@@ -45,7 +45,7 @@ class AuthServices {
     String dateNow = ActivityServices.dateNow();
     String msg = "";
     String uid = "";
-    String token="";
+    String token = "";
 
     UserCredential userCredential =
         await auth.signInWithEmailAndPassword(email: email, password: password);
@@ -81,32 +81,4 @@ class AuthServices {
 
     return true;
   }
-
-  
-  // static Future<String> edit(String name, String email, String password, String pic) async {
-  //   await Firebase.initializeApp();
-  //   String dateNow = ActivityServices.dateNow();
-  //   String msg = "";
-  //   String uid = "";
-  //   String token="";
-
-  //   UserCredential userCredential =
-  //       await auth.signInWithEmailAndPassword(email: email, password: password);
-
-  //   uid = userCredential.user.uid;
-  //   token = await FirebaseMessaging.instance.getToken();
-
-  //   await userCollection.doc(uid).update({
-  //     'isOn': 1,
-  //     'token': token,
-  //     'updatedAt': dateNow,
-  //   }).then((value) {
-  //     msg = "Success";
-  //   }).catchError((onError) {
-  //     msg = onError;
-  //   });
-
-  //   return msg;
-  // }
-
 }

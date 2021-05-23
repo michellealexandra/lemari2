@@ -3,6 +3,9 @@ part of 'pages.dart';
 class Dashboard extends StatefulWidget {
   static const String routeName = "/dashboard";
 
+  // final Users users;
+  // CardLemari({this.users});
+
   @override
   _DashboardState createState() => _DashboardState();
 }
@@ -11,6 +14,7 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    // Users user = widget.users;
     double padding = 25;
     final sidePadding = EdgeInsets.symmetric(horizontal: padding);
 
@@ -96,7 +100,8 @@ class _DashboardState extends State<Dashboard> {
                         height: MediaQuery.of(context).size.height * 0.01,
                       ),
                       Text(
-                        "Michelle Alexandra",
+                        // user.name,
+                        "Michelle",
                         style: TextStyle(
                           fontSize: 18,
                           fontFamily: GoogleFonts.openSans().fontFamily,
@@ -298,7 +303,8 @@ class _DashboardState extends State<Dashboard> {
               ),
               Container(
                 margin: EdgeInsets.only(
-                    left: MediaQuery.of(context).size.width * 0.05,),
+                  left: MediaQuery.of(context).size.width * 0.05,
+                ),
                 height: size.height * 0.39,
                 child: ListView(
                   scrollDirection: Axis.horizontal,

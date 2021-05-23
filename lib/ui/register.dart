@@ -174,16 +174,24 @@ class _RegisterState extends State<Register> {
                               setState(() {
                                 isLoading = true;
                               });
-                              await AuthServices.signIn(
-                                      ctrlEmail.text, ctrlPassword.text)
-                                  .then((value) {
+                              Users users = new Users(
+                                  "",
+                                  ctrlName.text,
+                                  ctrlEmail.text,
+                                  ctrlPassword.text,
+                                  "",
+                                  "",
+                                  "");
+                              // String msg = await AuthServices.signUp(users);
+                              await AuthServices.signUp(users).then((value) {
                                 if (value == "Success") {
                                   setState(() {
                                     isLoading = false;
                                   });
-                                  ActivityServices.showToast("Login success");
+                                  ActivityServices.showToast(
+                                      "Register success");
                                   Navigator.pushReplacementNamed(
-                                      context, MainMenu.routeName);
+                                      context, Login.routeName);
                                 } else {
                                   setState(() {
                                     isLoading = false;

@@ -57,4 +57,17 @@ class ClosetsServices {
 
     return hsl;
   }
+
+// static Future<bool> deleteImages(String id) async {
+//     bool hsl = true;
+//     await Firebase.initializeApp();
+//     await FirebaseStorage.instance.ref(id).delete().then((value) {
+//       hsl = true;
+//     }).catchError((onError) {
+//       hsl = false;
+//     });
+
+//     return hsl;
+//   }
+
 }

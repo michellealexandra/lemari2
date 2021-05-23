@@ -1,7 +1,10 @@
 part of 'pages.dart';
 
 class IsiLemari extends StatefulWidget {
+  final Closets closets;
   static const String routeName = "/isilemari";
+
+  const IsiLemari({Key key, this.closets}) : super(key: key);
   @override
   _IsiLemariState createState() => _IsiLemariState();
 }
@@ -9,10 +12,13 @@ class IsiLemari extends StatefulWidget {
 class _IsiLemariState extends State<IsiLemari> {
   @override
   Widget build(BuildContext context) {
+    Closets closet = widget.closets;
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: AppBar(
-          title: Text("Lemari A",
+          title: Text(
+            "Lemari A",
+              // closet.closetName,
               style: TextStyle(
                   color: Color(0xff564B46),
                   fontFamily: GoogleFonts.openSans().fontFamily,

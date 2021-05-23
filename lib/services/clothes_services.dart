@@ -11,7 +11,7 @@ class ClothesServices {
   static UploadTask uploadTask;
   static String imgUrl;
 
-  static Future<bool> addProduct(Clothes clothes, PickedFile imgFile) async {
+  static Future<bool> addClothes(Clothes clothes, Closets closets, PickedFile imgFile) async {
     await Firebase.initializeApp();
     String dateNow = ActivityServices.dateNow();
     productDocument = await productCollection.add({
@@ -19,7 +19,7 @@ class ClothesServices {
       'clothesName': clothes.clothesName,
       'clothesDesc': clothes.clothesDesc,
       'clothesImage': clothes.clothesImage,
-      'clothesCloset': auth.currentUser.uid,
+      'clothesCloset': closets.closetId,
       'clothesAge': clothes.clothesAge,
       'clothesTag': clothes.clothesTag,
       'clothesStatus': clothes.clothesStatus,
