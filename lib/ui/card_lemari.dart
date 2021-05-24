@@ -17,8 +17,9 @@ class _CardLemariState extends State<CardLemari> {
     } else {
       return GestureDetector(
           onTap: () {
-            //tombol back hilang pushReplacementNamed, klo push named ada back button
-            Navigator.pushNamed(context, IsiLemari.routeName);
+            // Navigator.pushNamed(context, IsiLemari.routeName, arguments: closet);
+            Navigator.pushNamed(context, GridClothes.routeName,
+                arguments: closet);
           },
           child: Card(
             elevation: 5,

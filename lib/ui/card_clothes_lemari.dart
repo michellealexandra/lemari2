@@ -1,86 +1,106 @@
 part of 'pages.dart';
 
-class CardClothesLemari extends StatelessWidget {
+class CardClothesLemari extends StatefulWidget {
+  final Clothes clothes;
+  CardClothesLemari({this.clothes});
+  @override
+  _CardClothesLemariState createState() => _CardClothesLemariState();
+}
+
+class _CardClothesLemariState extends State<CardClothesLemari> {
   @override
   Widget build(BuildContext context) {
+    Clothes baju = widget.clothes;
     final Size size = MediaQuery.of(context).size;
-    return GestureDetector(
-      onTap: () {
-        //tombol back hilang pushReplacementNamed, klo push named ada back button
-        Navigator.pushNamed(context, DetailClothes.routeName);
-      },
-      child: Card(
-        elevation: 5,
-        color: Color(0xffEDD3B9),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-        margin: EdgeInsets.only(
-          bottom: MediaQuery.of(context).size.width * 0.1,
-        ),
-        child: Column(
-          children: <Widget>[
-            Container(
-              width: MediaQuery.of(context).size.width * 0.42,
-              height: MediaQuery.of(context).size.height * 0.28,
-              decoration: BoxDecoration(
-                  color: Color(0xffA77665),
-                  borderRadius:
-                      BorderRadius.vertical(top: Radius.circular(14.0))),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-                  CircleAvatar(
-                    radius: 65,
-                    backgroundImage: AssetImage("assets/images/dummy.jpg"),
+    if (baju == null) {
+      return Container();
+    } else {
+      return Padding(
+          padding:
+              EdgeInsets.only(top: 5.0, bottom: 5.0, left: 5.0, right: 5.0),
+          child: InkWell(
+              onTap: () {
+                // Navigator.pushNamed(context, DetailClothes.routeName);
+                Navigator.pushNamed(context, DetailClothes.routeName,
+                    arguments: baju);
+              },
+              child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(14.0),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.grey.withOpacity(0.2),
+                          spreadRadius: 3.0,
+                          blurRadius: 5.0)
+                    ],
+                    color: Color(0xffA77665),
                   ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                  Text(
-                    "Brown Cookies",
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontFamily: GoogleFonts.openSans().fontFamily,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xffF0E8E1)),
-                    textAlign: TextAlign.center,
-                  )
-                ],
-              ),
-            ),
-            Container(
-              width: MediaQuery.of(context).size.width * 0.42,
-              height: MediaQuery.of(context).size.height * 0.06,
-              decoration: BoxDecoration(
-                  color: Color(0xffF0E8E1),
-                  borderRadius:
-                      BorderRadius.vertical(bottom: Radius.circular(14.0))),
-              child: Row(
-                  //logo"nya
-                  children: [
-                    SizedBox(
-                      width: size.width * 0.03,
+                  child: Column(children: [
+                    Padding(
+                      padding: EdgeInsets.only(top: size.height * 0.04),
+                      // child: Row(
+                      //     mainAxisAlignment: MainAxisAlignment.end,
+                      //     children: [
+                      //       isFavorite
+                      //           ? Icon(Icons.favorite, color: Color(0xFFEF7532))
+                      //           : Icon(Icons.favorite_border,
+                      //               color: Color(0xFFEF7532))
+                      //     ]),
+                    ),
+                    Hero(
+                      tag: 'assets/images/dummy.jpg',
+                      child: CircleAvatar(
+                        radius: 55,
+                        backgroundImage: AssetImage("assets/images/dummy.jpg"),
+                      ),
+                    ),
+                    SizedBox(height: 7.0),
+                    Text(
+                      baju.clothesName,
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontFamily: GoogleFonts.openSans().fontFamily,
+                          fontWeight: FontWeight.w700,
+                          color: Color(0xffF0E8E1)),
+                      textAlign: TextAlign.center,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 8),
+                      child:
+                          Container(color: Color(0xFFEBEBEB), height: 2.9657),
                     ),
                     Container(
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage("assets/icons/Mesin.png"))),
-                      width: size.width * 0.08,
-                      height: size.height * 0.08,
-                    ),
-                    SizedBox(
-                      width: size.width * 0.02,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage("assets/icons/Dress.png"))),
-                      width: size.width * 0.08,
-                      height: size.height * 0.08,
-                    ),
-                  ]),
-            ),
-          ],
-        ),
-      ),
-    );
+                      color: Color(0xffF0E8E1),
+                      child: Row(
+                          //logo"nya
+                          children: [
+                            SizedBox(
+                              width: size.width * 0.03,
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.vertical(
+                                      bottom: Radius.circular(14.0)),
+                                  image: DecorationImage(
+                                      image: AssetImage(
+                                          "assets/icons/Mesin.png"))),
+                              width: size.width * 0.07,
+                              height: size.height * 0.07,
+                            ),
+                            SizedBox(
+                              width: size.width * 0.02,
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: AssetImage(
+                                          "assets/icons/Dress.png"))),
+                              width: size.width * 0.07,
+                              height: size.height * 0.07,
+                            ),
+                          ]),
+                    )
+                  ]))));
+    }
   }
 }

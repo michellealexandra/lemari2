@@ -28,4 +28,6 @@ part 'add_clothes.dart';
 part 'gridview.dart';
 part 'card_clothes_lemari.dart';
 part 'card_lemari.dart';
+part 'grid_clothes.dart';
+
 

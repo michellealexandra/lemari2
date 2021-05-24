@@ -52,6 +52,7 @@ class MyApp extends StatelessWidget {
         DetailClothes.routeName: (context) => DetailClothes(),
         AddCloset.routeName: (context) => AddCloset(),
         AddClothes.routeName: (context) => AddClothes(),
+        GridClothes.routeName: (context) => GridClothes(),
         // 'menu':(context)=> Menu(),
       },
     );
