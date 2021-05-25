@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:async';
 import 'dart:math';
@@ -15,6 +16,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:lemari2/models/models.dart';
 import 'package:lemari2/services/services.dart';
 import 'package:logger/logger.dart';
+import 'package:http/http.dart' as http;
 
 part 'login.dart';
 part 'register.dart';
@@ -31,5 +33,6 @@ part 'card_clothes_lemari.dart';
 part 'card_lemari.dart';
 part 'grid_clothes.dart';
 part 'edit_profile.dart';
+part 'weather.dart';
 
 

@@ -1,10 +1,52 @@
 part of 'pages.dart';
 
+Future<WeatherInfo> fetchWeather() async {
+  final city = "Surabaya";
+  final apiKey = "caab7dc58efbe04cd08befb62e3662d9";
+  final requestUrl =
+      "http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}";
+
+  final response = await http.get(Uri.parse(requestUrl));
+
+  if (response.statusCode == 200) {
+    return WeatherInfo.fromJson(jsonDecode(response.body));
+  } else {
+    throw Exception("Error Loading Request URL info");
+  }
+}
+
+class WeatherInfo {
+  final String location;
+  final double temp;
+  final double tempMin;
+  final double tempMax;
+  final String weather;
+  final int humidity;
+  final double windSpeed;
+
+  WeatherInfo(
+      {@required this.location,
+      @required this.temp,
+      @required this.tempMin,
+      @required this.tempMax,
+      @required this.weather,
+      @required this.humidity,
+      @required this.windSpeed});
+
+  factory WeatherInfo.fromJson(Map<String, dynamic> json) {
+    return WeatherInfo(
+        location: json['name'],
+        temp: json['main']['temp'],
+        tempMin: json['main']['temp_min'],
+        tempMax: json['main']['temp_max'],
+        weather: json['weather'][0]['description'],
+        humidity: json['main']['humidity'],
+        windSpeed: json['wind']['speed']);
+  }
+}
+
 class Dashboard extends StatefulWidget {
   static const String routeName = "/dashboard";
-
-  final Users users;
-  Dashboard({this.users});
 
   @override
   _DashboardState createState() => _DashboardState();
@@ -12,12 +54,18 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   String namaUser;
+
+  Future<WeatherInfo> futureWeather;
+
+  @override
+  void initState() {
+    super.initState();
+    futureWeather = fetchWeather();
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    Users user = widget.users;
-    double padding = 25;
-    final sidePadding = EdgeInsets.symmetric(horizontal: padding);
     // if (user == null) {
     //   return Container();
     // } else {
@@ -40,13 +88,8 @@ class _DashboardState extends State<Dashboard> {
           child: Column(
             // crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // addVerticalSpace(padding),
               Row(
                 children: [
-                  // SizedBox(
-                  //   width: MediaQuery.of(context).size.height * 0.12,
-                  // ),
-                  //photo
                   Column(
                     children: [
                       GestureDetector(
@@ -108,8 +151,6 @@ class _DashboardState extends State<Dashboard> {
                             (BuildContext context, AsyncSnapshot snapshot) {
                           return Text(
                             "$namaUser",
-                            // user.name,
-                            // "Michelle",
                             style: TextStyle(
                               fontSize: 18,
                               fontFamily: GoogleFonts.openSans().fontFamily,
@@ -126,160 +167,191 @@ class _DashboardState extends State<Dashboard> {
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.04,
               ),
-              Row(
-                children: [
-                  Expanded(
-                    child: Card(
-                      margin: EdgeInsets.only(
-                          left: MediaQuery.of(context).size.width * 0.1,
-                          right: MediaQuery.of(context).size.width * 0.1),
-                      elevation: 3,
-                      color: Color(0xffEDD3B9),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16)),
-                      child: Container(
-                        padding: EdgeInsets.only(
-                            top: MediaQuery.of(context).size.height * 0.038,
-                            bottom: MediaQuery.of(context).size.height * 0.038),
-                        child: Row(
-                          // mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            SizedBox(
-                              width: MediaQuery.of(context).size.height * 0.05,
-                            ),
-                            //suhu/degree
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "33°",
-                                  style: TextStyle(
-                                      fontSize: 45,
-                                      fontFamily:
-                                          GoogleFonts.openSans().fontFamily,
-                                      fontWeight: FontWeight.bold,
-                                      color: Color(0xff5D4736)),
-                                  textAlign: TextAlign.left,
-                                )
-                              ],
-                            ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.height * 0.05,
-                            ),
-                            //location and status
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    FaIcon(
-                                      FontAwesomeIcons.sun,
-                                      color: Color(0xff5D4736),
-                                      size: 20,
-                                    ),
-                                    SizedBox(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.02,
-                                    ),
-                                    Text(
-                                      "Sunny day",
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontFamily:
-                                              GoogleFonts.openSans().fontFamily,
-                                          fontWeight: FontWeight.w900,
-                                          color: Color(0xff5D4736)),
-                                      textAlign: TextAlign.left,
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.01,
-                                ),
-                                Text(
-                                  "Lidah Kulon, Surabaya",
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontFamily:
-                                        GoogleFonts.openSans().fontFamily,
-                                    fontWeight: FontWeight.w400,
-                                    color: Color(0xff5D4736),
-                                  ),
-                                )
-                              ],
-                            ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.05,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+              FutureBuilder<WeatherInfo>(
+                future: futureWeather,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return WeatherWidget(
+                        location: snapshot.data.location,
+                        temp: snapshot.data.temp,
+                        tempMin: snapshot.data.tempMin,
+                        tempMax: snapshot.data.tempMax,
+                        weather: snapshot.data.weather,
+                        humidity: snapshot.data.humidity,
+                        windSpeed: snapshot.data.windSpeed);
+                  } else if (snapshot.hasError) {
+                    return Center(
+                      child: Text("${snapshot.error}"),
+                    );
+                  }
+                  return CircularProgressIndicator();
+                },
               ),
-              Row(
-                children: [
-                  Expanded(
-                    child: Card(
-                      margin: EdgeInsets.only(
-                          top: MediaQuery.of(context).size.width * 0.03,
-                          left: MediaQuery.of(context).size.width * 0.1,
-                          right: MediaQuery.of(context).size.width * 0.1),
-                      elevation: 3,
-                      color: Color(0xffD6AA8E),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8)),
-                      child: Container(
-                        padding: EdgeInsets.only(
-                            top: MediaQuery.of(context).size.height * 0.01,
-                            bottom: MediaQuery.of(context).size.height * 0.01),
-                        child: Row(
-                          children: <Widget>[
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.055,
-                            ),
-                            FaIcon(
-                              FontAwesomeIcons.cloud,
-                              color: Color(0xff5D4736),
-                              size: 20,
-                            ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.height * 0.02,
-                            ),
-                            Text(
-                              "15:00",
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontFamily: GoogleFonts.openSans().fontFamily,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xff5D4736)),
-                              textAlign: TextAlign.left,
-                            ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.3,
-                            ),
-                            Text(
-                              "Saturday ",
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontFamily: GoogleFonts.openSans().fontFamily,
-                                  fontWeight: FontWeight.w900,
-                                  color: Color(0xff5D4736)),
-                              textAlign: TextAlign.right,
-                            ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.height * 0.02,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              // Row(
+              //   children: [
+              //     Expanded(
+              //       child: Card(
+              //         margin: EdgeInsets.only(
+              //             left: MediaQuery.of(context).size.width * 0.1,
+              //             right: MediaQuery.of(context).size.width * 0.1),
+              //         elevation: 3,
+              //         color: Color(0xffEDD3B9),
+              //         shape: RoundedRectangleBorder(
+              //             borderRadius: BorderRadius.circular(16)),
+              //         child: Container(
+              //           padding: EdgeInsets.only(
+              //               top: MediaQuery.of(context).size.height * 0.038,
+              //               bottom: MediaQuery.of(context).size.height * 0.038),
+              //           child: Row(
+              //             // mainAxisSize: MainAxisSize.min,
+              //             crossAxisAlignment: CrossAxisAlignment.center,
+              //             children: <Widget>[
+              //               SizedBox(
+              //                 width: MediaQuery.of(context).size.height * 0.05,
+              //               ),
+              //               //suhu/degree
+              //               Column(
+              //                 crossAxisAlignment: CrossAxisAlignment.center,
+              //                 children: [
+              //                   FutureBuilder<WeatherInfo>(
+              //                     future: futureWeather,
+              //                     builder: (context, snapshot) {
+              //                       if (snapshot.hasData) {
+              //                       } else if (snapshot.hasError) {
+              //                         return Center(
+              //                           child: Text("${snapshot.error}"),
+              //                         );
+              //                       }
+              //                     },
+              //                   ),
+              //                   Text(
+              //                     "32\u0080",
+              //                     style: TextStyle(
+              //                         fontSize: 45,
+              //                         fontFamily:
+              //                             GoogleFonts.openSans().fontFamily,
+              //                         fontWeight: FontWeight.bold,
+              //                         color: Color(0xff5D4736)),
+              //                     textAlign: TextAlign.left,
+              //                   )
+              //                 ],
+              //               ),
+              //               SizedBox(
+              //                 width: MediaQuery.of(context).size.height * 0.05,
+              //               ),
+              //               //location and status
+              //               Column(
+              //                 crossAxisAlignment: CrossAxisAlignment.start,
+              //                 children: [
+              //                   Row(
+              //                     children: [
+              //                       FaIcon(
+              //                         FontAwesomeIcons.sun,
+              //                         color: Color(0xff5D4736),
+              //                         size: 20,
+              //                       ),
+              //                       SizedBox(
+              //                         width: MediaQuery.of(context).size.width *
+              //                             0.02,
+              //                       ),
+              //                       Text(
+              //                         "Sunny",
+              //                         style: TextStyle(
+              //                             fontSize: 18,
+              //                             fontFamily:
+              //                                 GoogleFonts.openSans().fontFamily,
+              //                             fontWeight: FontWeight.w900,
+              //                             color: Color(0xff5D4736)),
+              //                         textAlign: TextAlign.left,
+              //                       ),
+              //                     ],
+              //                   ),
+              //                   SizedBox(
+              //                     height:
+              //                         MediaQuery.of(context).size.height * 0.01,
+              //                   ),
+              //                   Text(
+              //                     "${location.toString()}",
+              //                     style: TextStyle(
+              //                       fontSize: 14,
+              //                       fontFamily:
+              //                           GoogleFonts.openSans().fontFamily,
+              //                       fontWeight: FontWeight.w400,
+              //                       color: Color(0xff5D4736),
+              //                     ),
+              //                   )
+              //                 ],
+              //               ),
+              //               SizedBox(
+              //                 width: MediaQuery.of(context).size.width * 0.05,
+              //               ),
+              //             ],
+              //           ),
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              // ),
+              // Row(
+              //   children: [
+              //     Expanded(
+              //       child: Card(
+              //         margin: EdgeInsets.only(
+              //             top: MediaQuery.of(context).size.width * 0.03,
+              //             left: MediaQuery.of(context).size.width * 0.1,
+              //             right: MediaQuery.of(context).size.width * 0.1),
+              //         elevation: 3,
+              //         color: Color(0xffD6AA8E),
+              //         shape: RoundedRectangleBorder(
+              //             borderRadius: BorderRadius.circular(8)),
+              //         child: Container(
+              //           padding: EdgeInsets.only(
+              //               top: MediaQuery.of(context).size.height * 0.01,
+              //               bottom: MediaQuery.of(context).size.height * 0.01),
+              //           child: Row(
+              //             children: <Widget>[
+              //               SizedBox(
+              //                 width: MediaQuery.of(context).size.width * 0.055,
+              //               ),
+              //               FaIcon(
+              //                 FontAwesomeIcons.cloud,
+              //                 color: Color(0xff5D4736),
+              //                 size: 20,
+              //               ),
+              //               SizedBox(
+              //                 width: MediaQuery.of(context).size.height * 0.02,
+              //               ),
+              //               Text(
+              //                 "15:00",
+              //                 style: TextStyle(
+              //                     fontSize: 18,
+              //                     fontFamily: GoogleFonts.openSans().fontFamily,
+              //                     fontWeight: FontWeight.bold,
+              //                     color: Color(0xff5D4736)),
+              //                 textAlign: TextAlign.left,
+              //               ),
+              //               SizedBox(
+              //                 width: MediaQuery.of(context).size.width * 0.3,
+              //               ),
+              //               Text(
+              //                 "Saturday ",
+              //                 style: TextStyle(
+              //                     fontSize: 18,
+              //                     fontFamily: GoogleFonts.openSans().fontFamily,
+              //                     fontWeight: FontWeight.w900,
+              //                     color: Color(0xff5D4736)),
+              //                 textAlign: TextAlign.right,
+              //               ),
+              //               SizedBox(
+              //                 width: MediaQuery.of(context).size.height * 0.02,
+              //               ),
+              //             ],
+              //           ),
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              // ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.05,
               ),
@@ -332,7 +404,6 @@ class _DashboardState extends State<Dashboard> {
         ),
       ]),
     );
-    // }
   }
 
   _userName() async {
