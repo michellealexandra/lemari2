@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:async';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
@@ -13,6 +14,7 @@ import 'package:dropdown_formfield/dropdown_formfield.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lemari2/models/models.dart';
 import 'package:lemari2/services/services.dart';
+import 'package:logger/logger.dart';
 
 part 'login.dart';
 part 'register.dart';
@@ -25,9 +27,9 @@ part 'card_clothes.dart';
 part 'detail_clothes.dart';
 part 'add_closet.dart';
 part 'add_clothes.dart';
-part 'gridview.dart';
 part 'card_clothes_lemari.dart';
 part 'card_lemari.dart';
 part 'grid_clothes.dart';
+part 'edit_profile.dart';
 
 

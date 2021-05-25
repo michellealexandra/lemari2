@@ -3,21 +3,24 @@ part of 'pages.dart';
 class Dashboard extends StatefulWidget {
   static const String routeName = "/dashboard";
 
-  // final Users users;
-  // CardLemari({this.users});
+  final Users users;
+  Dashboard({this.users});
 
   @override
   _DashboardState createState() => _DashboardState();
 }
 
 class _DashboardState extends State<Dashboard> {
+  String namaUser;
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    // Users user = widget.users;
+    Users user = widget.users;
     double padding = 25;
     final sidePadding = EdgeInsets.symmetric(horizontal: padding);
-
+    // if (user == null) {
+    //   return Container();
+    // } else {
     return Scaffold(
       appBar: AppBar(
         title: Text("Dashboard",
@@ -99,15 +102,22 @@ class _DashboardState extends State<Dashboard> {
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.01,
                       ),
-                      Text(
-                        // user.name,
-                        "Michelle",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontFamily: GoogleFonts.openSans().fontFamily,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xff5D4736),
-                        ),
+                      FutureBuilder(
+                        future: _userName(),
+                        builder:
+                            (BuildContext context, AsyncSnapshot snapshot) {
+                          return Text(
+                            "$namaUser",
+                            // user.name,
+                            // "Michelle",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontFamily: GoogleFonts.openSans().fontFamily,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xff5D4736),
+                            ),
+                          );
+                        },
                       )
                     ],
                   )
@@ -322,6 +332,21 @@ class _DashboardState extends State<Dashboard> {
         ),
       ]),
     );
+    // }
+  }
+
+  _userName() async {
+    final userku = await FirebaseAuth.instance.currentUser.uid;
+    if (userku != null) {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userku)
+          .get()
+          .then((ds) {
+        namaUser = ds.data()['name'];
+        print(namaUser);
+      });
+    }
   }
 }
 

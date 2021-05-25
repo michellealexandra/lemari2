@@ -28,12 +28,6 @@ class _CardLemariState extends State<CardLemari> {
             margin: EdgeInsets.all(8),
             color: Color(0xffDBA878),
             child: ListTile(
-              // leading: Container(
-              //   width: size.width * 0.02,
-              //   decoration: BoxDecoration(
-              //       color: Color(0xffFFFFFF),
-              //       borderRadius: BorderRadius.all(Radius.circular(8))),
-              // ),
               title: Text(
                 closet.closetName,
                 style: TextStyle(

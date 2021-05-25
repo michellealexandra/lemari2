@@ -7,6 +7,51 @@ class DetailClothes extends StatefulWidget {
 }
 
 class _DetailClothesState extends State<DetailClothes> {
+  void showDeleteDialog(BuildContext ctx) {
+    showDialog(
+        context: ctx,
+        builder: (ctx) {
+          return AlertDialog(
+            title: Text("Confirmation"),
+            content: Text("Are you sure you want to delete this clothes?"),
+            actions: [
+              ElevatedButton(
+                  onPressed: () {},
+                  child: Text(
+                    "Cancel",
+                    style: TextStyle(
+                        color: Color(0xffFFFFFF),
+                        fontFamily: GoogleFonts.openSans().fontFamily,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                      onPrimary: Color(0xff5D4736),
+                      primary: Color(0xffbbbbbb),
+                      elevation: 3,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4)))),
+              ElevatedButton(
+                  onPressed: () {},
+                  child: Text(
+                    "Delete",
+                    style: TextStyle(
+                        color: Color(0xffFFFFFF),
+                        fontFamily: GoogleFonts.openSans().fontFamily,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                      onPrimary: Color(0xff5D4736),
+                      primary: Color(0xffFF5E63),
+                      elevation: 3,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4)))),
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;

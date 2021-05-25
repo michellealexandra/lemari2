@@ -8,6 +8,52 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  String namaUser, emailUser;
+  void showConfirmationDialog(BuildContext ctx) {
+    showDialog(
+        context: ctx,
+        builder: (ctx) {
+          return AlertDialog(
+            title: Text("Confirmation"),
+            content: Text("Are you sure you want to delete this picture?"),
+            actions: [
+              ElevatedButton(
+                  onPressed: () {},
+                  child: Text(
+                    "Cancel",
+                    style: TextStyle(
+                        color: Color(0xffFFFFFF),
+                        fontFamily: GoogleFonts.openSans().fontFamily,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                      onPrimary: Color(0xff5D4736),
+                      primary: Color(0xffbbbbbb),
+                      elevation: 3,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4)))),
+              ElevatedButton(
+                  onPressed: () {},
+                  child: Text(
+                    "Delete",
+                    style: TextStyle(
+                        color: Color(0xffFFFFFF),
+                        fontFamily: GoogleFonts.openSans().fontFamily,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                      onPrimary: Color(0xff5D4736),
+                      primary: Color(0xffFF5E63),
+                      elevation: 3,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4)))),
+            ],
+          );
+        });
+  }
+
   bool isLoading = false;
   @override
   Widget build(BuildContext context) {
@@ -69,7 +115,10 @@ class _ProfileState extends State<Profile> {
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(8))),
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          Navigator.pushNamed(
+                                              context, EditProfile.routeName);
+                                        },
                                       ),
                                       ElevatedButton(
                                         child: Text(
@@ -88,7 +137,9 @@ class _ProfileState extends State<Profile> {
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(8))),
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          showConfirmationDialog(context);
+                                        },
                                       )
                                     ]),
                               );
@@ -125,15 +176,29 @@ class _ProfileState extends State<Profile> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      "Michelle Alexandra Dinata",
-                      style: TextStyle(
-                          fontSize: 21,
-                          fontFamily: GoogleFonts.lato().fontFamily,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xff5D4736)),
-                      textAlign: TextAlign.center,
-                    )
+                    FutureBuilder(
+                      future: _userName(),
+                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        return Text(
+                          "$namaUser",
+                          style: TextStyle(
+                              fontSize: 21,
+                              fontFamily: GoogleFonts.lato().fontFamily,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xff5D4736)),
+                          textAlign: TextAlign.center,
+                        );
+                      },
+                    ),
+                    // Text(
+                    //   "Michelle Alexandra Dinata",
+                    //   style: TextStyle(
+                    //       fontSize: 21,
+                    //       fontFamily: GoogleFonts.lato().fontFamily,
+                    //       fontWeight: FontWeight.bold,
+                    //       color: Color(0xff5D4736)),
+                    //   textAlign: TextAlign.center,
+                    // )
                   ],
                 ),
                 SizedBox(
@@ -142,15 +207,29 @@ class _ProfileState extends State<Profile> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      "malexandra@student.ciputra.ac.id",
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: GoogleFonts.lato().fontFamily,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xff81624B)),
-                      textAlign: TextAlign.center,
-                    )
+                    FutureBuilder(
+                      future: _userEmail(),
+                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        return Text(
+                          "$emailUser",
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontFamily: GoogleFonts.lato().fontFamily,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xff81624B)),
+                          textAlign: TextAlign.center,
+                        );
+                      },
+                    ),
+                    // Text(
+                    //   "malexandra@student.ciputra.ac.id",
+                    //   style: TextStyle(
+                    //       fontSize: 14,
+                    //       fontFamily: GoogleFonts.lato().fontFamily,
+                    //       fontWeight: FontWeight.w500,
+                    //       color: Color(0xff81624B)),
+                    //   textAlign: TextAlign.center,
+                    // )
                   ],
                 ),
                 SizedBox(
@@ -301,5 +380,33 @@ class _ProfileState extends State<Profile> {
         ),
       ]),
     );
+  }
+
+  _userName() async {
+    final userku = await FirebaseAuth.instance.currentUser.uid;
+    if (userku != null) {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userku)
+          .get()
+          .then((ds) {
+        namaUser = ds.data()['name'];
+        print(namaUser);
+      });
+    }
+  }
+
+  _userEmail() async {
+    final userku = await FirebaseAuth.instance.currentUser.uid;
+    if (userku != null) {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userku)
+          .get()
+          .then((ds) {
+        emailUser = ds.data()['email'];
+        print(emailUser);
+      });
+    }
   }
 }

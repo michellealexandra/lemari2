@@ -8,13 +8,13 @@ import 'package:lemari2/ui/splash.dart';
 //import manual klo dari folder lain
 import 'package:lemari2/ui/dashboard/dashboard.dart';
 
-void enablePlatformOverrideForDesktop(){
-  if(!kIsWeb && (Platform.isMacOS || Platform.isAndroid || Platform.isLinux)){
+void enablePlatformOverrideForDesktop() {
+  if (!kIsWeb && (Platform.isMacOS || Platform.isAndroid || Platform.isLinux)) {
     debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
   }
 }
 
-void main() async{
+void main() async {
   enablePlatformOverrideForDesktop();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
       routes: {
         // '/':(context) => Login(),
         //cara panggil modular, shg ga perlu rename satu", jd klo misal keganti routename nya lgs ke ganti
-        
+
         Splash.routeName: (context) => Splash(),
         Login.routeName: (context) => Login(),
         Register.routeName: (context) => Register(),
@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
         AddCloset.routeName: (context) => AddCloset(),
         AddClothes.routeName: (context) => AddClothes(),
         GridClothes.routeName: (context) => GridClothes(),
-        // 'menu':(context)=> Menu(),
+        EditProfile.routeName: (context) => EditProfile(),
       },
     );
   }
