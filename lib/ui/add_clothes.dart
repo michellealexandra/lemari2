@@ -380,7 +380,7 @@ class _AddClothesState extends State<AddClothes> {
                                         setState(() {
                                           isLoading = false;
                                           Navigator.pushReplacementNamed(
-                                              context, IsiLemari.routeName);
+                                              context, GridClothes.routeName);
                                         });
                                       } else {
                                         ActivityServices.showToast("FAILED");

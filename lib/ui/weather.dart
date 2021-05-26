@@ -48,7 +48,7 @@ class WeatherWidget extends StatelessWidget {
                     Text(
                       "${temp.toString()}",
                       style: TextStyle(
-                          fontSize: 32,
+                          fontSize: 30,
                           fontFamily: GoogleFonts.openSans().fontFamily,
                           fontWeight: FontWeight.bold,
                           color: Color(0xff5D4736)),
@@ -57,7 +57,7 @@ class WeatherWidget extends StatelessWidget {
                   ],
                 ),
                 SizedBox(
-                  width: MediaQuery.of(context).size.height * 0.05,
+                  width: MediaQuery.of(context).size.height * 0.02,
                 ),
                 //location and status
                 Column(
@@ -68,7 +68,7 @@ class WeatherWidget extends StatelessWidget {
                         FaIcon(
                           FontAwesomeIcons.cloud,
                           color: Color(0xff5D4736),
-                          size: 20,
+                          size: 14,
                         ),
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.02,
@@ -81,6 +81,7 @@ class WeatherWidget extends StatelessWidget {
                               fontWeight: FontWeight.w900,
                               color: Color(0xff5D4736)),
                           textAlign: TextAlign.left,
+                          maxLines: 1,
                         ),
                       ],
                     ),
