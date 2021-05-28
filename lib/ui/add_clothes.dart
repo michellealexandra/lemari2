@@ -364,6 +364,7 @@ class _AddClothesState extends State<AddClothes> {
                                         ctrlName.text,
                                         ctrlDesc.text,
                                         closet.closetId,
+                                        FirebaseAuth.instance.currentUser.uid,
                                         "",
                                         ctrlAge.text,
                                         _chosenValue,

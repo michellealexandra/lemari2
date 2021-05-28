@@ -2,6 +2,8 @@ part of 'pages.dart';
 
 class DetailClothes extends StatefulWidget {
   static const String routeName = "/detailclothes";
+  final Clothes clothes;
+  DetailClothes({this.clothes});
   @override
   _DetailClothesState createState() => _DetailClothesState();
 }
@@ -10,6 +12,7 @@ class _DetailClothesState extends State<DetailClothes> {
   CollectionReference clothesCollection =
       FirebaseFirestore.instance.collection("clothes");
   void showDeleteDialog(BuildContext ctx) {
+    Clothes clothes = widget.clothes;
     showDialog(
         context: ctx,
         builder: (ctx) {
@@ -34,7 +37,21 @@ class _DetailClothesState extends State<DetailClothes> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(4)))),
               ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    bool result =
+                        await ClothesServices.deleteClothes(clothes.clothesId);
+                    if (result) {
+                      ActivityServices.showToast(
+                        "Delete Data Success",
+                      );
+                      Navigator.pushReplacementNamed(
+                          ctx, GridClothes.routeName);
+                    } else {
+                      ActivityServices.showToast(
+                        "Delete Data Success",
+                      );
+                    }
+                  },
                   child: Text(
                     "Delete",
                     style: TextStyle(

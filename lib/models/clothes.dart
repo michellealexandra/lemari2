@@ -6,6 +6,7 @@ class Clothes extends Equatable {
   final String clothesDesc;
   final String clothesImage;
   final String clothesCloset;
+  final String clothesAddBy;
   final String clothesAge;
   final String clothesTag;
   final String clothesStatus;
@@ -19,6 +20,7 @@ class Clothes extends Equatable {
     this.clothesDesc,
     this.clothesImage,
     this.clothesCloset,
+    this.clothesAddBy,
     this.clothesAge,
     this.clothesTag,
     this.clothesStatus,
@@ -35,6 +37,7 @@ class Clothes extends Equatable {
     clothesDesc,
     clothesImage,
     clothesCloset,
+    clothesAddBy,
     clothesAge,
     clothesTag,
     clothesStatus,

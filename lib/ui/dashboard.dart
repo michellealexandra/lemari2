@@ -238,19 +238,25 @@ class _DashboardState extends State<Dashboard> {
                             children:
                                 snapshot.data.docs.map((DocumentSnapshot doc) {
                               Clothes clothes;
-                              clothes = new Clothes(
-                                doc.data()['clothesId'],
-                                doc.data()['clothesName'],
-                                doc.data()['clothesDesc'],
-                                doc.data()['clothesImage'],
-                                doc.data()['clothesCloset'],
-                                doc.data()['clothesAge'],
-                                doc.data()['clothesTag'],
-                                doc.data()['clothesStatus'],
-                                doc.data()['clothesLaundry'],
-                                doc.data()['createdAt'],
-                                doc.data()['updatedAt'],
-                              );
+                              if (doc.data()['clothesAddBy'] ==
+                                  FirebaseAuth.instance.currentUser.uid) {
+                                clothes = new Clothes(
+                                  doc.data()['clothesId'],
+                                  doc.data()['clothesName'],
+                                  doc.data()['clothesDesc'],
+                                  doc.data()['clothesImage'],
+                                  doc.data()['clothesCloset'],
+                                  doc.data()['clothesAddBy'],
+                                  doc.data()['clothesAge'],
+                                  doc.data()['clothesTag'],
+                                  doc.data()['clothesStatus'],
+                                  doc.data()['clothesLaundry'],
+                                  doc.data()['createdAt'],
+                                  doc.data()['updatedAt'],
+                                );
+                              } else {
+                                clothes = null;
+                              }
                               return CardClothes(clothes: clothes);
                             }).toList(),
                           );

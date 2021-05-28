@@ -20,6 +20,7 @@ class ClothesServices {
       'clothesDesc': clothes.clothesDesc,
       'clothesImage': clothes.clothesImage,
       'clothesCloset': closets.closetId,
+      'clothesAddBy': auth.currentUser.uid,
       'clothesAge': clothes.clothesAge,
       'clothesTag': clothes.clothesTag,
       'clothesStatus': clothes.clothesStatus,
