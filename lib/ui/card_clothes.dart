@@ -1,20 +1,30 @@
 part of 'pages.dart';
 
-class CardClothes extends StatelessWidget {
+class CardClothes extends StatefulWidget {
+  final Clothes clothes;
+
+  CardClothes({this.clothes});
+  @override
+  _CardClothesState createState() => _CardClothesState();
+}
+
+class _CardClothesState extends State<CardClothes> {
   @override
   Widget build(BuildContext context) {
+    Clothes baju = widget.clothes;
     final Size size = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: () {
         //tombol back hilang pushReplacementNamed, klo push named ada back button
-        Navigator.pushNamed(context, DetailClothes.routeName);
+        Navigator.pushNamed(context, DetailClothes.routeName, arguments: baju);
       },
       child: Container(
         margin: EdgeInsets.only(right: size.width * 0.05),
         child: Card(
           elevation: 5,
           color: Color(0xffEDD3B9),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
           margin: EdgeInsets.only(
             top: MediaQuery.of(context).size.width * 0.05,
             bottom: MediaQuery.of(context).size.width * 0.08,
@@ -38,7 +48,7 @@ class CardClothes extends StatelessWidget {
                     ),
                     SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                     Text(
-                      "Brown Cookies",
+                      baju.clothesName,
                       style: TextStyle(
                           fontSize: 13,
                           fontFamily: GoogleFonts.openSans().fontFamily,

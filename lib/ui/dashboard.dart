@@ -53,6 +53,8 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  CollectionReference clothesCollection =
+      FirebaseFirestore.instance.collection("clothes");
   String namaUser;
 
   Future<WeatherInfo> futureWeather;
@@ -66,9 +68,6 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    // if (user == null) {
-    //   return Container();
-    // } else {
     return Scaffold(
       appBar: AppBar(
         title: Text("Dashboard",
@@ -187,171 +186,6 @@ class _DashboardState extends State<Dashboard> {
                   return CircularProgressIndicator();
                 },
               ),
-              // Row(
-              //   children: [
-              //     Expanded(
-              //       child: Card(
-              //         margin: EdgeInsets.only(
-              //             left: MediaQuery.of(context).size.width * 0.1,
-              //             right: MediaQuery.of(context).size.width * 0.1),
-              //         elevation: 3,
-              //         color: Color(0xffEDD3B9),
-              //         shape: RoundedRectangleBorder(
-              //             borderRadius: BorderRadius.circular(16)),
-              //         child: Container(
-              //           padding: EdgeInsets.only(
-              //               top: MediaQuery.of(context).size.height * 0.038,
-              //               bottom: MediaQuery.of(context).size.height * 0.038),
-              //           child: Row(
-              //             // mainAxisSize: MainAxisSize.min,
-              //             crossAxisAlignment: CrossAxisAlignment.center,
-              //             children: <Widget>[
-              //               SizedBox(
-              //                 width: MediaQuery.of(context).size.height * 0.05,
-              //               ),
-              //               //suhu/degree
-              //               Column(
-              //                 crossAxisAlignment: CrossAxisAlignment.center,
-              //                 children: [
-              //                   FutureBuilder<WeatherInfo>(
-              //                     future: futureWeather,
-              //                     builder: (context, snapshot) {
-              //                       if (snapshot.hasData) {
-              //                       } else if (snapshot.hasError) {
-              //                         return Center(
-              //                           child: Text("${snapshot.error}"),
-              //                         );
-              //                       }
-              //                     },
-              //                   ),
-              //                   Text(
-              //                     "32\u0080",
-              //                     style: TextStyle(
-              //                         fontSize: 45,
-              //                         fontFamily:
-              //                             GoogleFonts.openSans().fontFamily,
-              //                         fontWeight: FontWeight.bold,
-              //                         color: Color(0xff5D4736)),
-              //                     textAlign: TextAlign.left,
-              //                   )
-              //                 ],
-              //               ),
-              //               SizedBox(
-              //                 width: MediaQuery.of(context).size.height * 0.05,
-              //               ),
-              //               //location and status
-              //               Column(
-              //                 crossAxisAlignment: CrossAxisAlignment.start,
-              //                 children: [
-              //                   Row(
-              //                     children: [
-              //                       FaIcon(
-              //                         FontAwesomeIcons.sun,
-              //                         color: Color(0xff5D4736),
-              //                         size: 20,
-              //                       ),
-              //                       SizedBox(
-              //                         width: MediaQuery.of(context).size.width *
-              //                             0.02,
-              //                       ),
-              //                       Text(
-              //                         "Sunny",
-              //                         style: TextStyle(
-              //                             fontSize: 18,
-              //                             fontFamily:
-              //                                 GoogleFonts.openSans().fontFamily,
-              //                             fontWeight: FontWeight.w900,
-              //                             color: Color(0xff5D4736)),
-              //                         textAlign: TextAlign.left,
-              //                       ),
-              //                     ],
-              //                   ),
-              //                   SizedBox(
-              //                     height:
-              //                         MediaQuery.of(context).size.height * 0.01,
-              //                   ),
-              //                   Text(
-              //                     "${location.toString()}",
-              //                     style: TextStyle(
-              //                       fontSize: 14,
-              //                       fontFamily:
-              //                           GoogleFonts.openSans().fontFamily,
-              //                       fontWeight: FontWeight.w400,
-              //                       color: Color(0xff5D4736),
-              //                     ),
-              //                   )
-              //                 ],
-              //               ),
-              //               SizedBox(
-              //                 width: MediaQuery.of(context).size.width * 0.05,
-              //               ),
-              //             ],
-              //           ),
-              //         ),
-              //       ),
-              //     ),
-              //   ],
-              // ),
-              // Row(
-              //   children: [
-              //     Expanded(
-              //       child: Card(
-              //         margin: EdgeInsets.only(
-              //             top: MediaQuery.of(context).size.width * 0.03,
-              //             left: MediaQuery.of(context).size.width * 0.1,
-              //             right: MediaQuery.of(context).size.width * 0.1),
-              //         elevation: 3,
-              //         color: Color(0xffD6AA8E),
-              //         shape: RoundedRectangleBorder(
-              //             borderRadius: BorderRadius.circular(8)),
-              //         child: Container(
-              //           padding: EdgeInsets.only(
-              //               top: MediaQuery.of(context).size.height * 0.01,
-              //               bottom: MediaQuery.of(context).size.height * 0.01),
-              //           child: Row(
-              //             children: <Widget>[
-              //               SizedBox(
-              //                 width: MediaQuery.of(context).size.width * 0.055,
-              //               ),
-              //               FaIcon(
-              //                 FontAwesomeIcons.cloud,
-              //                 color: Color(0xff5D4736),
-              //                 size: 20,
-              //               ),
-              //               SizedBox(
-              //                 width: MediaQuery.of(context).size.height * 0.02,
-              //               ),
-              //               Text(
-              //                 "15:00",
-              //                 style: TextStyle(
-              //                     fontSize: 18,
-              //                     fontFamily: GoogleFonts.openSans().fontFamily,
-              //                     fontWeight: FontWeight.bold,
-              //                     color: Color(0xff5D4736)),
-              //                 textAlign: TextAlign.left,
-              //               ),
-              //               SizedBox(
-              //                 width: MediaQuery.of(context).size.width * 0.3,
-              //               ),
-              //               Text(
-              //                 "Saturday ",
-              //                 style: TextStyle(
-              //                     fontSize: 18,
-              //                     fontFamily: GoogleFonts.openSans().fontFamily,
-              //                     fontWeight: FontWeight.w900,
-              //                     color: Color(0xff5D4736)),
-              //                 textAlign: TextAlign.right,
-              //               ),
-              //               SizedBox(
-              //                 width: MediaQuery.of(context).size.height * 0.02,
-              //               ),
-              //             ],
-              //           ),
-              //         ),
-              //       ),
-              //     ),
-              //   ],
-              // ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.05,
               ),
@@ -384,21 +218,56 @@ class _DashboardState extends State<Dashboard> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(
-                  left: MediaQuery.of(context).size.width * 0.05,
-                ),
-                height: size.height * 0.39,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: <Widget>[
-                    CardClothes(),
-                    CardClothes(),
-                    CardClothes(),
-                    CardClothes(),
-                    CardClothes(),
-                  ],
-                ),
-              ),
+                  margin: EdgeInsets.only(
+                    left: MediaQuery.of(context).size.width * 0.05,
+                  ),
+                  height: size.height * 0.39,
+                  child: StreamBuilder<QuerySnapshot>(
+                    stream: clothesCollection.snapshots(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                      if (snapshot.hasError) {
+                        return Text("Failed to load data!");
+                      }
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.waiting:
+                          return ActivityServices.loadings();
+                        default:
+                          return new ListView(
+                            scrollDirection: Axis.horizontal,
+                            children:
+                                snapshot.data.docs.map((DocumentSnapshot doc) {
+                              Clothes clothes;
+                              clothes = new Clothes(
+                                doc.data()['clothesId'],
+                                doc.data()['clothesName'],
+                                doc.data()['clothesDesc'],
+                                doc.data()['clothesImage'],
+                                doc.data()['clothesCloset'],
+                                doc.data()['clothesAge'],
+                                doc.data()['clothesTag'],
+                                doc.data()['clothesStatus'],
+                                doc.data()['clothesLaundry'],
+                                doc.data()['createdAt'],
+                                doc.data()['updatedAt'],
+                              );
+                              return CardClothes(clothes: clothes);
+                            }).toList(),
+                          );
+                      }
+                    },
+                  )
+                  // ListView(
+                  //   scrollDirection: Axis.horizontal,
+                  //   children: <Widget>[
+                  //     CardClothes(),
+                  //     CardClothes(),
+                  //     CardClothes(),
+                  //     CardClothes(),
+                  //     CardClothes(),
+                  //   ],
+                  // ),
+                  ),
             ],
           ),
         ),
