@@ -18,9 +18,7 @@ class _ProfileState extends State<Profile> {
             content: Text("Are you sure you want to delete this picture?"),
             actions: [
               ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(ctx).pop();
-                  },
+                  onPressed: () {Navigator.of(ctx).pop();},
                   child: Text(
                     "Cancel",
                     style: TextStyle(
