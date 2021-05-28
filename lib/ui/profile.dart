@@ -190,15 +190,6 @@ class _ProfileState extends State<Profile> {
                         );
                       },
                     ),
-                    // Text(
-                    //   "Michelle Alexandra Dinata",
-                    //   style: TextStyle(
-                    //       fontSize: 21,
-                    //       fontFamily: GoogleFonts.lato().fontFamily,
-                    //       fontWeight: FontWeight.bold,
-                    //       color: Color(0xff5D4736)),
-                    //   textAlign: TextAlign.center,
-                    // )
                   ],
                 ),
                 SizedBox(
@@ -221,15 +212,6 @@ class _ProfileState extends State<Profile> {
                         );
                       },
                     ),
-                    // Text(
-                    //   "malexandra@student.ciputra.ac.id",
-                    //   style: TextStyle(
-                    //       fontSize: 14,
-                    //       fontFamily: GoogleFonts.lato().fontFamily,
-                    //       fontWeight: FontWeight.w500,
-                    //       color: Color(0xff81624B)),
-                    //   textAlign: TextAlign.center,
-                    // )
                   ],
                 ),
                 SizedBox(

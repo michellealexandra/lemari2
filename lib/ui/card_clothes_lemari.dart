@@ -2,7 +2,9 @@ part of 'pages.dart';
 
 class CardClothesLemari extends StatefulWidget {
   final Clothes clothes;
-  CardClothesLemari({this.clothes});
+  DocumentSnapshot doc;
+
+  CardClothesLemari({this.clothes, this.doc});
   @override
   _CardClothesLemariState createState() => _CardClothesLemariState();
 }
@@ -10,17 +12,19 @@ class CardClothesLemari extends StatefulWidget {
 class _CardClothesLemariState extends State<CardClothesLemari> {
   @override
   Widget build(BuildContext context) {
+    DocumentSnapshot doc;
     Clothes baju = widget.clothes;
     final Size size = MediaQuery.of(context).size;
     if (baju == null) {
-      return Container();
+      return Container(
+          // child: Text("Null"),
+          );
     } else {
       return Padding(
           padding:
               EdgeInsets.only(top: 5.0, bottom: 5.0, left: 5.0, right: 5.0),
           child: InkWell(
               onTap: () {
-                // Navigator.pushNamed(context, DetailClothes.routeName);
                 Navigator.pushNamed(context, DetailClothes.routeName,
                     arguments: baju);
               },
@@ -48,7 +52,7 @@ class _CardClothesLemariState extends State<CardClothesLemari> {
                       //     ]),
                     ),
                     Hero(
-                      tag: 'assets/images/dummy.jpg',
+                      tag: baju.clothesId,
                       child: CircleAvatar(
                         radius: 55,
                         backgroundImage: AssetImage("assets/images/dummy.jpg"),
@@ -57,6 +61,7 @@ class _CardClothesLemariState extends State<CardClothesLemari> {
                     SizedBox(height: 7.0),
                     Text(
                       baju.clothesName,
+                      // doc.data()['clothesName'],
                       style: TextStyle(
                           fontSize: 14,
                           fontFamily: GoogleFonts.openSans().fontFamily,

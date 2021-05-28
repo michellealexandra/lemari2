@@ -4,7 +4,7 @@ class ClothesServices {
   static FirebaseAuth auth = FirebaseAuth.instance;
 
   static CollectionReference productCollection =
-      FirebaseFirestore.instance.collection("closets");
+      FirebaseFirestore.instance.collection("clothes");
   static DocumentReference productDocument;
 
   static Reference ref;
@@ -14,7 +14,7 @@ class ClothesServices {
   static Future<bool> addClothes(Clothes clothes, Closets closets, PickedFile imgFile) async {
     await Firebase.initializeApp();
     String dateNow = ActivityServices.dateNow();
-    productDocument = await productCollection.doc(closets.closetId).collection("clothes").add({
+    productDocument = await productCollection.add({
       'clothesId': clothes.clothesId,
       'clothesName': clothes.clothesName,
       'clothesDesc': clothes.clothesDesc,
@@ -39,7 +39,7 @@ class ClothesServices {
             (value) => imgUrl = value,
           ));
 
-      productCollection.doc(closets.closetId).collection("clothes").doc(productDocument.id).update({
+      productCollection.doc(productDocument.id).update({
         'clothesId': productDocument.id,
         'clothesImage': imgUrl,
       });

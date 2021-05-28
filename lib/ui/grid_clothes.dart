@@ -2,9 +2,18 @@ part of 'pages.dart';
 
 class GridClothes extends StatefulWidget {
   static const String routeName = "/GridClothes";
+  final log = Logger(
+      printer: PrettyPrinter(
+          methodCount: 0,
+          errorMethodCount: 3,
+          lineLength: 50,
+          colors: true,
+          printEmojis: true,
+          printTime: false));
 
   final Clothes clothes;
-  GridClothes({this.clothes});
+  final Closets closets;
+  GridClothes({this.clothes, this.closets});
   @override
   _GridClothesState createState() => _GridClothesState();
 }
@@ -12,19 +21,57 @@ class GridClothes extends StatefulWidget {
 class _GridClothesState extends State<GridClothes> {
   CollectionReference clothesCollection =
       FirebaseFirestore.instance.collection("clothes");
+  CollectionReference closetsCollection =
+      FirebaseFirestore.instance.collection("closets");
+  TextEditingController _searchController = TextEditingController();
+  String clothesName;
+  bool searchState = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController.addListener(_onSearchChanged);
+  }
+
+  @override
+  void dispose() {
+    _searchController.removeListener(_onSearchChanged);
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  _onSearchChanged() {
+    print(_searchController.text);
+  }
+
   @override
   Widget build(BuildContext context) {
     Closets closet = ModalRoute.of(context).settings.arguments;
-    Clothes baju = widget.clothes;
+
     return Scaffold(
         appBar: AppBar(
-          title: Text("Lemari A",
-              // closet.closetName,
-              style: TextStyle(
-                  color: Color(0xff564B46),
-                  fontFamily: GoogleFonts.openSans().fontFamily,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24)),
+          title: StreamBuilder<QuerySnapshot>(
+            stream: closetsCollection.snapshots(),
+            builder:
+                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.hasError) {
+                return Text("Failed to load data!");
+              }
+              switch (snapshot.connectionState) {
+                case ConnectionState.waiting:
+                  return ActivityServices.loadings();
+                default:
+                  return new Text(
+                    closet.closetName,
+                    style: TextStyle(
+                        color: Color(0xff564B46),
+                        fontFamily: GoogleFonts.openSans().fontFamily,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24),
+                  );
+              }
+            },
+          ),
           backgroundColor: Color(0xffFFFFFF).withOpacity(0.5),
           elevation: 0.0,
           actions: <Widget>[
@@ -46,17 +93,31 @@ class _GridClothesState extends State<GridClothes> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontFamily: GoogleFonts.openSans().fontFamily,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xff564B46)),
-                    textAlign: TextAlign.left,
-                    overflow: TextOverflow.clip,
-                    softWrap: false,
-                  )
+                  StreamBuilder<QuerySnapshot>(
+                    stream: closetsCollection.snapshots(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                      if (snapshot.hasError) {
+                        return Text("Failed to load data!");
+                      }
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.waiting:
+                          return ActivityServices.loadings();
+                        default:
+                          return new Text(
+                            closet.closetDesc,
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontFamily: GoogleFonts.openSans().fontFamily,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xff564B46)),
+                            textAlign: TextAlign.left,
+                            overflow: TextOverflow.clip,
+                            softWrap: false,
+                          );
+                      }
+                    },
+                  ),
                 ],
               ),
             ),
@@ -65,31 +126,32 @@ class _GridClothesState extends State<GridClothes> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                    // padding: EdgeInsets.only(right: 15.0),
                     width: MediaQuery.of(context).size.width - 30.0,
                     height: MediaQuery.of(context).size.height - 50.0,
-                    child: GridView.count(
-                      crossAxisCount: 2,
-                      primary: false,
-                      crossAxisSpacing: 10.0,
-                      mainAxisSpacing: 15.0,
-                      childAspectRatio: 0.8,
-                      children: <Widget>[
-                        Container(
-                            width: double.infinity,
-                            height: double.infinity,
-                            child: StreamBuilder<QuerySnapshot>(
-                              stream: clothesCollection.snapshots(),
-                              builder: (BuildContext context,
-                                  AsyncSnapshot<QuerySnapshot> snapshot) {
-                                if (snapshot.hasError) {
-                                  return Text("Failed to load data!");
-                                }
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return ActivityServices.loadings();
-                                }
-                                return new ListView(
+                    child: Container(
+                        width: double.infinity,
+                        height: double.infinity,
+                        child: StreamBuilder<QuerySnapshot>(
+                          stream: clothesCollection.snapshots(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<QuerySnapshot> snapshot) {
+                            if (snapshot.hasError) {
+                              return Text("Failed to load data!");
+                            }
+                            // if (snapshot.connectionState == ConnectionState.waiting) {
+                            //   return ActivityServices.loadings();
+                            // }
+                            switch (snapshot.connectionState) {
+                              case ConnectionState.waiting:
+                                return ActivityServices.loadings();
+                              default:
+                                return new GridView(
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2, //two columns
+                                    mainAxisSpacing: 0.1, //space the card
+                                    childAspectRatio: 0.800,
+                                  ),
                                   children: snapshot.data.docs
                                       .map((DocumentSnapshot doc) {
                                     Clothes clothes;
@@ -114,10 +176,9 @@ class _GridClothesState extends State<GridClothes> {
                                     return CardClothesLemari(clothes: clothes);
                                   }).toList(),
                                 );
-                              },
-                            ))
-                      ],
-                    )),
+                            }
+                          },
+                        ))),
               ],
             ),
             SizedBox(height: 15.0)
@@ -127,100 +188,13 @@ class _GridClothesState extends State<GridClothes> {
           onPressed: () {
             Navigator.pushNamed(context, AddClothes.routeName,
                 arguments: closet);
+            print(closet);
           },
           child: const Icon(Icons.add),
           backgroundColor: Color(0xffFFEFDF),
           foregroundColor: Color(0xff5D4736),
         ));
   }
-
-  // Widget _buildCard(String name) {
-  //   Clothes baju = widget.clothes;
-  //   final Size size = MediaQuery.of(context).size;
-  //   return Padding(
-  //       padding: EdgeInsets.only(top: 5.0, bottom: 5.0, left: 5.0, right: 5.0),
-  //       child: InkWell(
-  //           onTap: () {
-  //             // Navigator.pushNamed(context, DetailClothes.routeName);
-  //             Navigator.pushNamed(context, DetailClothes.routeName, arguments: baju);
-  //           },
-  //           child: Container(
-  //               decoration: BoxDecoration(
-  //                 borderRadius: BorderRadius.circular(14.0),
-  //                 boxShadow: [
-  //                   BoxShadow(
-  //                       color: Colors.grey.withOpacity(0.2),
-  //                       spreadRadius: 3.0,
-  //                       blurRadius: 5.0)
-  //                 ],
-  //                 color: Color(0xffA77665),
-  //               ),
-  //               child: Column(children: [
-  //                 Padding(
-  //                   padding: EdgeInsets.only(top: size.height * 0.04),
-  //                   // child: Row(
-  //                   //     mainAxisAlignment: MainAxisAlignment.end,
-  //                   //     children: [
-  //                   //       isFavorite
-  //                   //           ? Icon(Icons.favorite, color: Color(0xFFEF7532))
-  //                   //           : Icon(Icons.favorite_border,
-  //                   //               color: Color(0xFFEF7532))
-  //                   //     ]),
-  //                 ),
-  //                 Hero(
-  //                   tag: 'assets/images/dummy.jpg',
-  //                   child: CircleAvatar(
-  //                     radius: 55,
-  //                     backgroundImage: AssetImage("assets/images/dummy.jpg"),
-  //                   ),
-  //                 ),
-  //                 SizedBox(height: 7.0),
-  //                 Text(
-  //                   name,
-  //                   style: TextStyle(
-  //                       fontSize: 14,
-  //                       fontFamily: GoogleFonts.openSans().fontFamily,
-  //                       fontWeight: FontWeight.w700,
-  //                       color: Color(0xffF0E8E1)),
-  //                   textAlign: TextAlign.center,
-  //                 ),
-  //                 Padding(
-  //                   padding: EdgeInsets.only(top: 8),
-  //                   child: Container(color: Color(0xFFEBEBEB), height: 2.9657),
-  //                 ),
-  //                 Container(
-  //                   color: Color(0xffF0E8E1),
-  //                   child: Row(
-  //                       //logo"nya
-  //                       children: [
-  //                         SizedBox(
-  //                           width: size.width * 0.03,
-  //                         ),
-  //                         Container(
-  //                           decoration: BoxDecoration(
-  //                               borderRadius: BorderRadius.vertical(
-  //                                   bottom: Radius.circular(14.0)),
-  //                               image: DecorationImage(
-  //                                   image:
-  //                                       AssetImage("assets/icons/Mesin.png"))),
-  //                           width: size.width * 0.07,
-  //                           height: size.height * 0.07,
-  //                         ),
-  //                         SizedBox(
-  //                           width: size.width * 0.02,
-  //                         ),
-  //                         Container(
-  //                           decoration: BoxDecoration(
-  //                               image: DecorationImage(
-  //                                   image:
-  //                                       AssetImage("assets/icons/Dress.png"))),
-  //                           width: size.width * 0.07,
-  //                           height: size.height * 0.07,
-  //                         ),
-  //                       ]),
-  //                 )
-  //               ]))));
-  // }
 }
 
 class Categories extends StatefulWidget {
@@ -282,96 +256,6 @@ class _CategoriesState extends State<Categories> {
           ],
         ),
       ),
-    );
-  }
-}
-
-class DataDummy extends SearchDelegate<String> {
-  final cities = [
-    "ayam",
-    "ayam2",
-    "bebek",
-    "cacing",
-    "domba",
-    "elang",
-    "faaa",
-    "gajah",
-    "kuda",
-    "jerapah",
-    "macan",
-    "harimau",
-    "lumba",
-    "keledai"
-  ];
-  final recentCities = ["cacing", "domba", "ayam"];
-
-  @override
-  List<Widget> buildActions(BuildContext context) {
-    //actions for app bar
-    return [
-      IconButton(
-          onPressed: () {
-            query = "";
-          },
-          icon: Icon(Icons.clear))
-    ];
-  }
-
-  @override
-  Widget buildLeading(BuildContext context) {
-    //leading icon on the left of the app bar when search
-    return IconButton(
-      icon: AnimatedIcon(
-          icon: AnimatedIcons.menu_arrow, progress: transitionAnimation),
-      onPressed: () {
-        close(context, null);
-      },
-    );
-  }
-
-  @override
-  Widget buildResults(BuildContext context) {
-    //show some result based on the selection
-    return Center(
-      child: Container(
-        height: 100,
-        width: 100,
-        child: Card(
-          color: Colors.redAccent,
-          child: Center(
-            child: Text(query),
-          ),
-        ),
-      ),
-    );
-  }
-
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    //show when someone search for somethin
-    final suggestionList = query.isEmpty
-        ? recentCities
-        : cities.where((p) => p.startsWith(query)).toList();
-
-    return ListView.builder(
-      itemBuilder: (context, index) => ListTile(
-        onTap: () {
-          showResults(context);
-        },
-        leading: Icon(Icons.location_city),
-        title: RichText(
-          text: TextSpan(
-              text: suggestionList[index].substring(0, query.length),
-              style:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-              children: [
-                TextSpan(
-                    text: suggestionList[index].substring(query.length),
-                    style: TextStyle(color: Colors.grey))
-              ]),
-        ),
-      ),
-      itemCount: suggestionList.length,
     );
   }
 }

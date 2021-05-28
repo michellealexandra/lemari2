@@ -7,6 +7,8 @@ class DetailClothes extends StatefulWidget {
 }
 
 class _DetailClothesState extends State<DetailClothes> {
+  CollectionReference clothesCollection =
+      FirebaseFirestore.instance.collection("clothes");
   void showDeleteDialog(BuildContext ctx) {
     showDialog(
         context: ctx,
@@ -54,10 +56,11 @@ class _DetailClothesState extends State<DetailClothes> {
 
   @override
   Widget build(BuildContext context) {
+    Clothes baju = ModalRoute.of(context).settings.arguments;
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: AppBar(
-          title: Text("Clothes A",
+          title: Text("Clothes Detail",
               style: TextStyle(
                   color: Color(0xff564B46),
                   fontFamily: GoogleFonts.openSans().fontFamily,
@@ -69,153 +72,207 @@ class _DetailClothesState extends State<DetailClothes> {
         resizeToAvoidBottomInset: false,
         body: SingleChildScrollView(
           child: Container(
-              width: size.width,
-              height: size.height,
               child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  Container(
+                    margin: EdgeInsets.only(
+                      left: MediaQuery.of(context).size.width * 0.07,
+                    ),
+                    child: Column(
+                      // mainAxisAlignment: MainAxisAlignment.center,
+                      // crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            ActivityServices.showToast(
+                                "Will be done at 24 August 2021");
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image:
+                                        AssetImage("assets/icons/Mesin.png"))),
+                            width: size.width * 0.13,
+                            height: size.height * 0.13,
+                          ),
+                        ),
+                        SizedBox(
+                          height: size.width * 0.005,
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage("assets/icons/Dress.png"))),
+                          width: size.width * 0.13,
+                          height: size.height * 0.13,
+                        ),
+                        SizedBox(
+                          height: size.width * 0.005,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(context, AddClothes.routeName);
+                          },
+                          child: Container(
+                            child: Icon(
+                              Icons.edit,
+                              color: Color(0xff5D4736),
+                              size: size.width * 0.1,
+                            ),
+                            decoration: BoxDecoration(
+                                color: Color(0xffFCD825),
+                                shape: BoxShape.circle),
+                            width: size.width * 0.13,
+                            height: size.height * 0.13,
+                          ),
+                        ),
+                        SizedBox(
+                          height: size.width * 0.005,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            showDeleteDialog(context);
+                          },
+                          child: Container(
+                            child: Icon(
+                              Icons.delete,
+                              color: Color(0xff5D4736),
+                              size: size.width * 0.1,
+                            ),
+                            decoration: BoxDecoration(
+                                color: Color(0xffFF5E63),
+                                shape: BoxShape.circle),
+                            width: size.width * 0.13,
+                            height: size.height * 0.13,
+                          ),
+                        ),
+                        SizedBox(
+                          height: size.width * 0.005,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Container(
-                        margin: EdgeInsets.only(
-                          left: MediaQuery.of(context).size.width * 0.07,
-                        ),
-                        child: Column(
-                          // mainAxisAlignment: MainAxisAlignment.center,
-                          // crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                ActivityServices.showToast(
-                                    "Will be done at 24 August 2021");
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        image: AssetImage(
-                                            "assets/icons/Mesin.png"))),
-                                width: size.width * 0.13,
-                                height: size.height * 0.13,
-                              ),
-                            ),
-                            SizedBox(
-                              height: size.width * 0.005,
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image: AssetImage(
-                                          "assets/icons/Dress.png"))),
-                              width: size.width * 0.13,
-                              height: size.height * 0.13,
-                            ),
-                            SizedBox(
-                              height: size.width * 0.005,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.pushNamed(
-                                    context, AddClothes.routeName);
-                              },
-                              child: Container(
-                                child: Icon(
-                                  Icons.edit,
-                                  color: Color(0xff5D4736),
-                                  size: size.width * 0.1,
-                                ),
-                                decoration: BoxDecoration(
-                                    color: Color(0xffFCD825),
-                                    shape: BoxShape.circle),
-                                width: size.width * 0.13,
-                                height: size.height * 0.13,
-                              ),
-                            ),
-                            SizedBox(
-                              height: size.width * 0.005,
-                            ),
-                            Container(
-                              child: Icon(
-                                Icons.delete,
-                                color: Color(0xff5D4736),
-                                size: size.width * 0.1,
-                              ),
-                              decoration: BoxDecoration(
-                                  color: Color(0xffFF5E63),
-                                  shape: BoxShape.circle),
-                              width: size.width * 0.13,
-                              height: size.height * 0.13,
-                            ),
-                            SizedBox(
-                              height: size.width * 0.005,
+                        width: size.width * 0.7,
+                        height: size.height * 0.6,
+                        decoration: BoxDecoration(
+                          //https://www.codegrepper.com/code-examples/dart/flutter+fill+an+image+in+a+container
+                          image: DecorationImage(
+                              fit: BoxFit.fill,
+                              image: AssetImage("assets/images/dummy.jpg")),
+                          //https://googleflutter.com/flutter-border-around-image/
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(18.0)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.4),
+                              spreadRadius: 2,
+                              blurRadius: 5,
+                              offset: Offset(0, 1),
                             ),
                           ],
                         ),
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Container(
-                            width: size.width * 0.7,
-                            height: size.height * 0.6,
-                            decoration: BoxDecoration(
-                              //https://www.codegrepper.com/code-examples/dart/flutter+fill+an+image+in+a+container
-                              image: DecorationImage(
-                                  fit: BoxFit.fill,
-                                  image: AssetImage("assets/images/dummy.jpg")),
-                              //https://googleflutter.com/flutter-border-around-image/
-                              borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(18.0)),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.4),
-                                  spreadRadius: 2,
-                                  blurRadius: 5,
-                                  offset: Offset(0, 1),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
                     ],
                   ),
-                  SizedBox(
-                    height: size.width * 0.08,
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(
-                      left: MediaQuery.of(context).size.width * 0.05,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("20 August 2021",
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: GoogleFonts.openSans().fontFamily,
-                                fontWeight: FontWeight.w500,
-                                color: Color(0xff564B46)),
-                            textAlign: TextAlign.left),
-                        Text("Black Dress",
-                            style: TextStyle(
-                                fontSize: 24,
-                                fontFamily: GoogleFonts.openSans().fontFamily,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xff564B46)),
-                            textAlign: TextAlign.left),
-                        Text(
-                            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: GoogleFonts.openSans().fontFamily,
-                                fontWeight: FontWeight.w500,
-                                color: Color(0xff564B46)),
-                            textAlign: TextAlign.left)
-                      ],
-                    ),
-                  ),
                 ],
-              )),
+              ),
+              SizedBox(
+                height: size.width * 0.08,
+              ),
+              Container(
+                margin: EdgeInsets.only(
+                  left: MediaQuery.of(context).size.width * 0.05,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    StreamBuilder<QuerySnapshot>(
+                      stream: clothesCollection.snapshots(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (snapshot.hasError) {
+                          return Text("Failed to load data!");
+                        }
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.waiting:
+                            return ActivityServices.loadings();
+                          default:
+                            return new Text(baju.clothesAge,
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontFamily:
+                                        GoogleFonts.openSans().fontFamily,
+                                    fontWeight: FontWeight.w500,
+                                    fontStyle: FontStyle.italic,
+                                    color: Color(0xff564B46)),
+                                textAlign: TextAlign.left);
+                        }
+                      },
+                    ),
+                    StreamBuilder<QuerySnapshot>(
+                      stream: clothesCollection.snapshots(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (snapshot.hasError) {
+                          return Text("Failed to load data!");
+                        }
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.waiting:
+                            return ActivityServices.loadings();
+                          default:
+                            return new Text(baju.clothesName,
+                                style: TextStyle(
+                                    fontSize: 24,
+                                    fontFamily:
+                                        GoogleFonts.openSans().fontFamily,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xff564B46)),
+                                textAlign: TextAlign.left);
+                        }
+                      },
+                    ),
+                    StreamBuilder<QuerySnapshot>(
+                      stream: clothesCollection.snapshots(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (snapshot.hasError) {
+                          return Text("Failed to load data!");
+                        }
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.waiting:
+                            return ActivityServices.loadings();
+                          default:
+                            return new Text(baju.clothesDesc,
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily:
+                                        GoogleFonts.openSans().fontFamily,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color(0xff564B46)),
+                                textAlign: TextAlign.left);
+                        }
+                      },
+                    ),
+                    Text(
+                        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s ",
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: GoogleFonts.openSans().fontFamily,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xff564B46)),
+                        textAlign: TextAlign.left)
+                  ],
+                ),
+              ),
+            ],
+          )),
         ));
   }
 }
