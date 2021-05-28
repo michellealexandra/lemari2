@@ -133,10 +133,15 @@ class _GridClothesState extends State<GridClothes> {
                         width: double.infinity,
                         height: double.infinity,
                         child: StreamBuilder<QuerySnapshot>(
-                          stream: clothesCollection.orderBy('createdAt', descending: true).snapshots(),
+                          // stream: clothesCollection.orderBy('createdAt', descending: true).snapshots(),
+                          stream: clothesCollection
+                              .where('clothesCloset',
+                                  isEqualTo: closet.closetId)
+                              .snapshots(),
                           builder: (BuildContext context,
                               AsyncSnapshot<QuerySnapshot> snapshot) {
                             if (snapshot.hasError) {
+                              print(snapshot.error);
                               return Text("Failed to load data!");
                             }
                             // if (snapshot.connectionState == ConnectionState.waiting) {
@@ -156,25 +161,25 @@ class _GridClothesState extends State<GridClothes> {
                                   children: snapshot.data.docs
                                       .map((DocumentSnapshot doc) {
                                     Clothes clothes;
-                                    if (doc.data()['clothesCloset'] ==
-                                        closet.closetId) {
-                                      clothes = new Clothes(
-                                        doc.data()['clothesId'],
-                                        doc.data()['clothesName'],
-                                        doc.data()['clothesDesc'],
-                                        doc.data()['clothesImage'],
-                                        doc.data()['clothesCloset'],
-                                        doc.data()['clothesAddBy'],
-                                        doc.data()['clothesAge'],
-                                        doc.data()['clothesTag'],
-                                        doc.data()['clothesStatus'],
-                                        doc.data()['clothesLaundry'],
-                                        doc.data()['createdAt'],
-                                        doc.data()['updatedAt'],
-                                      );
-                                    } else {
-                                      clothes = null;
-                                    }
+                                    // if (doc.data()['clothesCloset'] ==
+                                    //     closet.closetId) {
+                                    clothes = new Clothes(
+                                      doc.data()['clothesId'],
+                                      doc.data()['clothesName'],
+                                      doc.data()['clothesDesc'],
+                                      doc.data()['clothesImage'],
+                                      doc.data()['clothesCloset'],
+                                      doc.data()['clothesAddBy'],
+                                      doc.data()['clothesAge'],
+                                      doc.data()['clothesTag'],
+                                      doc.data()['clothesStatus'],
+                                      doc.data()['clothesLaundry'],
+                                      doc.data()['createdAt'],
+                                      doc.data()['updatedAt'],
+                                    );
+                                    // } else {
+                                    //   clothes = null;
+                                    // }
                                     return CardClothesLemari(clothes: clothes);
                                   }).toList(),
                                 );
