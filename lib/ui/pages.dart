@@ -33,5 +33,7 @@ part 'card_lemari.dart';
 part 'grid_clothes.dart';
 part 'edit_profile.dart';
 part 'weather.dart';
+part 'edit_clothes.dart';
+part 'edit_closet.dart';
 
 

@@ -71,6 +71,16 @@ class _CardLemariState extends State<CardLemari> {
                       }
                     },
                   ),
+                  IconButton(
+                    icon: Icon(
+                      CupertinoIcons.pencil,
+                      color: Color(0xff5D4736),
+                    ),
+                    onPressed: () async {
+                      Navigator.pushNamed(context, EditCloset.routeName,
+                          arguments: closet);
+                    },
+                  ),
                 ],
               ),
             ),

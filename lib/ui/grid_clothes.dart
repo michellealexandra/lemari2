@@ -121,18 +121,19 @@ class _GridClothesState extends State<GridClothes> {
                 ],
               ),
             ),
-            Categories(),
+            // Categories(),
             Column(
+              mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
                     width: MediaQuery.of(context).size.width - 30.0,
-                    height: MediaQuery.of(context).size.height - 50.0,
+                    height: MediaQuery.of(context).size.height - 100.0,
                     child: Container(
                         width: double.infinity,
                         height: double.infinity,
                         child: StreamBuilder<QuerySnapshot>(
-                          stream: clothesCollection.snapshots(),
+                          stream: clothesCollection.orderBy('createdAt', descending: true).snapshots(),
                           builder: (BuildContext context,
                               AsyncSnapshot<QuerySnapshot> snapshot) {
                             if (snapshot.hasError) {
@@ -163,6 +164,7 @@ class _GridClothesState extends State<GridClothes> {
                                         doc.data()['clothesDesc'],
                                         doc.data()['clothesImage'],
                                         doc.data()['clothesCloset'],
+                                        doc.data()['clothesAddBy'],
                                         doc.data()['clothesAge'],
                                         doc.data()['clothesTag'],
                                         doc.data()['clothesStatus'],
@@ -203,7 +205,14 @@ class Categories extends StatefulWidget {
 }
 
 class _CategoriesState extends State<Categories> {
-  List<String> categories = ["Top", "Bottom", "Dress", "Outer", "Accessories"];
+  List<String> categories = [
+    "All",
+    "Top",
+    "Bottom",
+    "Dress",
+    "Outer",
+    "Accessories"
+  ];
   int selectedindex = 0;
   @override
   Widget build(BuildContext context) {

@@ -21,7 +21,7 @@ class _DetailClothesState extends State<DetailClothes> {
             content: Text("Are you sure you want to delete this clothes?"),
             actions: [
               ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {Navigator.of(context).pop();},
                   child: Text(
                     "Cancel",
                     style: TextStyle(
@@ -131,7 +131,7 @@ class _DetailClothesState extends State<DetailClothes> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            Navigator.pushNamed(context, AddClothes.routeName);
+                            Navigator.pushNamed(context, EditClothes.routeName);
                           },
                           child: Container(
                             child: Icon(

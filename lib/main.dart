@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:lemari2/ui/pages.dart';
 import 'package:lemari2/ui/splash.dart';
 //import manual klo dari folder lain
-import 'package:lemari2/ui/dashboard/dashboard.dart';
+// import 'package:lemari2/ui/dashboard/dashboard.dart';
 
 void enablePlatformOverrideForDesktop() {
   if (!kIsWeb && (Platform.isMacOS || Platform.isAndroid || Platform.isLinux)) {
@@ -46,13 +46,14 @@ class MyApp extends StatelessWidget {
         Dashboard.routeName: (context) => Dashboard(),
         Lemari.routeName: (context) => Lemari(),
         Profile.routeName: (context) => Profile(),
-        Dashboard2.routeName: (context) => Dashboard2(),
         MainMenu.routeName: (context) => MainMenu(),
         DetailClothes.routeName: (context) => DetailClothes(),
         AddCloset.routeName: (context) => AddCloset(),
         AddClothes.routeName: (context) => AddClothes(),
         GridClothes.routeName: (context) => GridClothes(),
         EditProfile.routeName: (context) => EditProfile(),
+        EditCloset.routeName: (context) => EditCloset(),
+        EditClothes.routeName: (context) => EditClothes(),
       },
     );
   }

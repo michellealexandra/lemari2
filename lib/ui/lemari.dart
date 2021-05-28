@@ -110,7 +110,7 @@ class _LemariState extends State<Lemari> {
               //         .where("closetName", arrayContains: closetName)
               //         .snapshots(),
 
-              closetCollection.snapshots(),
+              closetCollection.orderBy('createdAt', descending: true).snapshots(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasError) {
