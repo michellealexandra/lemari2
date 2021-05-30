@@ -2,6 +2,9 @@ part of 'pages.dart';
 
 class EditProfile extends StatefulWidget {
   static const String routeName = "/editprofile";
+  final Users users;
+
+  EditProfile({this.users});
   @override
   _EditProfileState createState() => _EditProfileState();
 }
@@ -76,6 +79,7 @@ class _EditProfileState extends State<EditProfile> {
 
   @override
   Widget build(BuildContext context) {
+    Users user = widget.users;
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(

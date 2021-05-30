@@ -107,7 +107,7 @@ class _LoginState extends State<Login> {
                     children: [
                       Container(
                         margin: EdgeInsets.only(
-                            top: size.width * 0.06,
+                            top: size.width * 0.02,
                             left: size.width * 0.08,
                             right: size.width * 0.08),
                         decoration: BoxDecoration(

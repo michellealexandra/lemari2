@@ -49,7 +49,7 @@ class _CardClothesState extends State<CardClothes> {
                           height: MediaQuery.of(context).size.height * 0.01),
                       CircleAvatar(
                         radius: 50,
-                        backgroundImage: AssetImage("assets/images/dummy.jpg"),
+                        backgroundImage: NetworkImage(baju.clothesImage),
                       ),
                       SizedBox(
                           height: MediaQuery.of(context).size.height * 0.02),

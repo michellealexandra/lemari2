@@ -93,7 +93,7 @@ class _EditClothesState extends State<EditClothes> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add Clothes",
+        title: Text("Edit Clothes",
             style: TextStyle(
                 color: Color(0xff564B46),
                 fontFamily: GoogleFonts.openSans().fontFamily,

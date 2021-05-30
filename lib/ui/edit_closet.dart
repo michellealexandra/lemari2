@@ -82,7 +82,7 @@ class _EditClosetState extends State<EditCloset> {
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add Lemari",
+        title: Text("Edit Lemari",
             style: TextStyle(
                 color: Color(0xff564B46),
                 fontFamily: GoogleFonts.openSans().fontFamily,
@@ -204,7 +204,7 @@ class _EditClosetState extends State<EditCloset> {
                             margin: EdgeInsets.only(bottom: size.height * 0.05),
                             child: ElevatedButton(
                               child: Text(
-                                "Add Lemari",
+                                "Edit Lemari",
                                 style: TextStyle(
                                     color: Color(0xff5D4736),
                                     fontFamily:

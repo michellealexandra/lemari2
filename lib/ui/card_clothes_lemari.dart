@@ -55,7 +55,7 @@ class _CardClothesLemariState extends State<CardClothesLemari> {
                       tag: baju.clothesId,
                       child: CircleAvatar(
                         radius: 55,
-                        backgroundImage: AssetImage("assets/images/dummy.jpg"),
+                        backgroundImage: NetworkImage(baju.clothesImage),
                       ),
                     ),
                     SizedBox(height: 7.0),

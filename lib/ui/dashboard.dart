@@ -117,7 +117,7 @@ class _DashboardState extends State<Dashboard> {
                                 ],
                                 image: DecorationImage(
                                     image: AssetImage(
-                                      "assets/images/dummy.jpg",
+                                      "assets/images/nopic.png",
                                     ),
                                     fit: BoxFit.cover)),
                           ),
@@ -223,7 +223,9 @@ class _DashboardState extends State<Dashboard> {
                   ),
                   height: size.height * 0.39,
                   child: StreamBuilder<QuerySnapshot>(
-                    stream: clothesCollection.orderBy('createdAt', descending: true).snapshots(),
+                    stream: clothesCollection
+                        .orderBy('createdAt', descending: true)
+                        .snapshots(),
                     builder: (BuildContext context,
                         AsyncSnapshot<QuerySnapshot> snapshot) {
                       if (snapshot.hasError) {
