@@ -21,7 +21,9 @@ class _DetailClothesState extends State<DetailClothes> {
             content: Text("Are you sure you want to delete this clothes?"),
             actions: [
               ElevatedButton(
-                  onPressed: () {Navigator.of(context).pop();},
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
                   child: Text(
                     "Cancel",
                     style: TextStyle(
@@ -38,19 +40,20 @@ class _DetailClothesState extends State<DetailClothes> {
                           borderRadius: BorderRadius.circular(4)))),
               ElevatedButton(
                   onPressed: () async {
-                    bool result =
-                        await ClothesServices.deleteClothes(clothes.clothesId);
-                    if (result) {
-                      ActivityServices.showToast(
-                        "Delete Data Success",
-                      );
-                      Navigator.pushReplacementNamed(
-                          ctx, GridClothes.routeName);
-                    } else {
-                      ActivityServices.showToast(
-                        "Delete Data Success",
-                      );
-                    }
+                    Navigator.pushReplacementNamed(context, Lemari.routeName);
+                    // bool result =
+                    //     await ClothesServices.deleteClothes(clothes.clothesId);
+                    // if (result) {
+                    //   ActivityServices.showToast(
+                    //     "Delete Data Success",
+                    //   );
+                    //   Navigator.pushReplacementNamed(
+                    //       ctx, GridClothes.routeName);
+                    // } else {
+                    //   ActivityServices.showToast(
+                    //     "Delete Data Success",
+                    //   );
+                    // }
                   },
                   child: Text(
                     "Delete",
@@ -69,6 +72,92 @@ class _DetailClothesState extends State<DetailClothes> {
             ],
           );
         });
+  }
+
+  Widget checkStatus() {
+    Clothes baju = ModalRoute.of(context).settings.arguments;
+    final Size size = MediaQuery.of(context).size;
+    if (baju.clothesStatus == "Closet") {
+      return GestureDetector(
+        onTap: () {
+          ActivityServices.showToast(baju.clothesCloset);
+        },
+        child: Container(
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage("assets/icons/Lemari.png"))),
+          width: size.width * 0.13,
+          height: size.height * 0.13,
+        ),
+      );
+    } else {
+      return GestureDetector(
+        onTap: () {
+          ActivityServices.showToast("Will be done at " + baju.clothesLaundry);
+        },
+        child: Container(
+          decoration: BoxDecoration(
+              image:
+                  DecorationImage(image: AssetImage("assets/icons/Mesin.png"))),
+          width: size.width * 0.13,
+          height: size.height * 0.13,
+        ),
+      );
+    }
+  }
+
+  Widget clothesTag() {
+    Clothes baju = ModalRoute.of(context).settings.arguments;
+    final Size size = MediaQuery.of(context).size;
+    if (baju.clothesTag == "Top") {
+      return Container(
+        decoration: BoxDecoration(
+            image:
+                DecorationImage(image: AssetImage("assets/icons/Shirt.png"))),
+        width: size.width * 0.13,
+        height: size.height * 0.13,
+      );
+    } else if (baju.clothesTag == "Bottom") {
+      return Container(
+        decoration: BoxDecoration(
+            image:
+                DecorationImage(image: AssetImage("assets/icons/Pants.png"))),
+        width: size.width * 0.13,
+        height: size.height * 0.13,
+      );
+    } else if (baju.clothesTag == "Dress") {
+      return Container(
+        decoration: BoxDecoration(
+            image:
+                DecorationImage(image: AssetImage("assets/icons/Dress.png"))),
+        width: size.width * 0.13,
+        height: size.height * 0.13,
+      );
+    } else if (baju.clothesTag == "Outer") {
+      return Container(
+        decoration: BoxDecoration(
+            image:
+                DecorationImage(image: AssetImage("assets/icons/Jacket.png"))),
+        width: size.width * 0.13,
+        height: size.height * 0.13,
+      );
+    } else if (baju.clothesTag == "Accessories") {
+      return Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("assets/icons/Accessories.png"))),
+        width: size.width * 0.13,
+        height: size.height * 0.13,
+      );
+    } else {
+      return Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("assets/icons/Top.png"))),
+        width: size.width * 0.13,
+        height: size.height * 0.13,
+      );
+    }
   }
 
   @override
@@ -102,30 +191,11 @@ class _DetailClothesState extends State<DetailClothes> {
                       // mainAxisAlignment: MainAxisAlignment.center,
                       // crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        GestureDetector(
-                          onTap: () {
-                            ActivityServices.showToast(
-                                "Will be done at 24 August 2021");
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image:
-                                        AssetImage("assets/icons/Mesin.png"))),
-                            width: size.width * 0.13,
-                            height: size.height * 0.13,
-                          ),
-                        ),
+                        checkStatus(),
                         SizedBox(
                           height: size.width * 0.005,
                         ),
-                        Container(
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage("assets/icons/Dress.png"))),
-                          width: size.width * 0.13,
-                          height: size.height * 0.13,
-                        ),
+                        clothesTag(),
                         SizedBox(
                           height: size.width * 0.005,
                         ),
@@ -182,7 +252,7 @@ class _DetailClothesState extends State<DetailClothes> {
                           //https://www.codegrepper.com/code-examples/dart/flutter+fill+an+image+in+a+container
                           image: DecorationImage(
                               fit: BoxFit.fill,
-                              image: AssetImage("assets/images/dummy.jpg")),
+                              image: NetworkImage(baju.clothesImage)),
                           //https://googleflutter.com/flutter-border-around-image/
                           borderRadius: BorderRadius.only(
                               bottomLeft: Radius.circular(18.0)),

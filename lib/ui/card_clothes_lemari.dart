@@ -10,15 +10,150 @@ class CardClothesLemari extends StatefulWidget {
 }
 
 class _CardClothesLemariState extends State<CardClothesLemari> {
+  void showDeleteDialog(BuildContext ctx) {
+    Clothes clothes = widget.clothes;
+    showDialog(
+        context: ctx,
+        builder: (ctx) {
+          return AlertDialog(
+            title: Text("Confirmation"),
+            content: Text("Are you sure you want to delete this clothes?"),
+            actions: [
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    "Cancel",
+                    style: TextStyle(
+                        color: Color(0xffFFFFFF),
+                        fontFamily: GoogleFonts.openSans().fontFamily,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                      onPrimary: Color(0xff5D4736),
+                      primary: Color(0xffbbbbbb),
+                      elevation: 3,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4)))),
+              ElevatedButton(
+                  onPressed: () async {
+                    bool result =
+                        await ClothesServices.deleteClothes(clothes.clothesId);
+                    if (result) {
+                      ActivityServices.showToast(
+                        "Delete Data Success",
+                      );
+                      //   Navigator.pushReplacementNamed(
+                      //       ctx, GridClothes.routeName);
+                    } else {
+                      ActivityServices.showToast(
+                        "Delete Data Success",
+                      );
+                    }
+                  },
+                  child: Text(
+                    "Delete",
+                    style: TextStyle(
+                        color: Color(0xffFFFFFF),
+                        fontFamily: GoogleFonts.openSans().fontFamily,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                      onPrimary: Color(0xff5D4736),
+                      primary: Color(0xffFF5E63),
+                      elevation: 3,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4)))),
+            ],
+          );
+        });
+  }
+
+  Widget checkStatus() {
+    Clothes baju = widget.clothes;
+    final Size size = MediaQuery.of(context).size;
+    if (baju.clothesStatus == "Closet") {
+      return Container(
+        decoration: BoxDecoration(
+            image:
+                DecorationImage(image: AssetImage("assets/icons/Lemari.png"))),
+        width: size.width * 0.07,
+        height: size.height * 0.07,
+      );
+    } else {
+      return Container(
+        decoration: BoxDecoration(
+            image:
+                DecorationImage(image: AssetImage("assets/icons/Mesin.png"))),
+        width: size.width * 0.07,
+        height: size.height * 0.07,
+      );
+    }
+  }
+
+  Widget clothesTag() {
+    Clothes baju = widget.clothes;
+    final Size size = MediaQuery.of(context).size;
+    if (baju.clothesTag == "Top") {
+      return Container(
+        decoration: BoxDecoration(
+            image:
+                DecorationImage(image: AssetImage("assets/icons/Shirt.png"))),
+        width: size.width * 0.07,
+        height: size.height * 0.07,
+      );
+    } else if (baju.clothesTag == "Bottom") {
+      return Container(
+        decoration: BoxDecoration(
+            image:
+                DecorationImage(image: AssetImage("assets/icons/Pants.png"))),
+        width: size.width * 0.07,
+        height: size.height * 0.07,
+      );
+    } else if (baju.clothesTag == "Dress") {
+      return Container(
+        decoration: BoxDecoration(
+            image:
+                DecorationImage(image: AssetImage("assets/icons/Dress.png"))),
+        width: size.width * 0.07,
+        height: size.height * 0.07,
+      );
+    } else if (baju.clothesTag == "Outer") {
+      return Container(
+        decoration: BoxDecoration(
+            image:
+                DecorationImage(image: AssetImage("assets/icons/Jacket.png"))),
+        width: size.width * 0.07,
+        height: size.height * 0.07,
+      );
+    } else if (baju.clothesTag == "Accessories") {
+      return Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("assets/icons/Accessories.png"))),
+        width: size.width * 0.07,
+        height: size.height * 0.07,
+      );
+    } else {
+      return Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(image: AssetImage("assets/icons/Top.png"))),
+        width: size.width * 0.07,
+        height: size.height * 0.07,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     DocumentSnapshot doc;
     Clothes baju = widget.clothes;
     final Size size = MediaQuery.of(context).size;
     if (baju == null) {
-      return Container(
-          // child: Text("Null"),
-          );
+      return Container();
     } else {
       return Padding(
           padding:
@@ -41,15 +176,18 @@ class _CardClothesLemariState extends State<CardClothesLemari> {
                   ),
                   child: Column(children: [
                     Padding(
-                      padding: EdgeInsets.only(top: size.height * 0.04),
-                      // child: Row(
-                      //     mainAxisAlignment: MainAxisAlignment.end,
-                      //     children: [
-                      //       isFavorite
-                      //           ? Icon(Icons.favorite, color: Color(0xFFEF7532))
-                      //           : Icon(Icons.favorite_border,
-                      //               color: Color(0xFFEF7532))
-                      //     ]),
+                      padding: EdgeInsets.only(
+                          top: size.height * 0.015, right: size.height * 0.015),
+                      child: GestureDetector(
+                        onTap: () {
+                          showDeleteDialog(context);
+                        },
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Icon(Icons.cancel, color: Color(0xffF0E8E1))
+                            ]),
+                      ),
                     ),
                     Hero(
                       tag: baju.clothesId,
@@ -58,10 +196,9 @@ class _CardClothesLemariState extends State<CardClothesLemari> {
                         backgroundImage: NetworkImage(baju.clothesImage),
                       ),
                     ),
-                    SizedBox(height: 7.0),
+                    SizedBox(height: .0),
                     Text(
                       baju.clothesName,
-                      // doc.data()['clothesName'],
                       style: TextStyle(
                           fontSize: 14,
                           fontFamily: GoogleFonts.openSans().fontFamily,
@@ -82,27 +219,11 @@ class _CardClothesLemariState extends State<CardClothesLemari> {
                             SizedBox(
                               width: size.width * 0.03,
                             ),
-                            Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.vertical(
-                                      bottom: Radius.circular(14.0)),
-                                  image: DecorationImage(
-                                      image: AssetImage(
-                                          "assets/icons/Mesin.png"))),
-                              width: size.width * 0.07,
-                              height: size.height * 0.07,
-                            ),
+                            checkStatus(),
                             SizedBox(
                               width: size.width * 0.02,
                             ),
-                            Container(
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image: AssetImage(
-                                          "assets/icons/Dress.png"))),
-                              width: size.width * 0.07,
-                              height: size.height * 0.07,
-                            ),
+                            clothesTag(),
                           ]),
                     )
                   ]))));

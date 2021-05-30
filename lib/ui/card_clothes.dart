@@ -9,6 +9,81 @@ class CardClothes extends StatefulWidget {
 }
 
 class _CardClothesState extends State<CardClothes> {
+  Widget checkStatus() {
+    Clothes baju = widget.clothes;
+    final Size size = MediaQuery.of(context).size;
+    if (baju.clothesStatus == "Closet") {
+      return Container(
+        decoration: BoxDecoration(
+            image:
+                DecorationImage(image: AssetImage("assets/icons/Lemari.png"))),
+        width: size.width * 0.07,
+        height: size.height * 0.07,
+      );
+    } else {
+      return Container(
+        decoration: BoxDecoration(
+            image:
+                DecorationImage(image: AssetImage("assets/icons/Mesin.png"))),
+        width: size.width * 0.07,
+        height: size.height * 0.07,
+      );
+    }
+  }
+
+  Widget clothesTag() {
+    Clothes baju = widget.clothes;
+    final Size size = MediaQuery.of(context).size;
+    if (baju.clothesTag == "Top") {
+      return Container(
+        decoration: BoxDecoration(
+            image:
+                DecorationImage(image: AssetImage("assets/icons/Shirt.png"))),
+        width: size.width * 0.07,
+        height: size.height * 0.07,
+      );
+    } else if (baju.clothesTag == "Bottom") {
+      return Container(
+        decoration: BoxDecoration(
+            image:
+                DecorationImage(image: AssetImage("assets/icons/Pants.png"))),
+        width: size.width * 0.07,
+        height: size.height * 0.07,
+      );
+    } else if (baju.clothesTag == "Dress") {
+      return Container(
+        decoration: BoxDecoration(
+            image:
+                DecorationImage(image: AssetImage("assets/icons/Dress.png"))),
+        width: size.width * 0.07,
+        height: size.height * 0.07,
+      );
+    } else if (baju.clothesTag == "Outer") {
+      return Container(
+        decoration: BoxDecoration(
+            image:
+                DecorationImage(image: AssetImage("assets/icons/Jacket.png"))),
+        width: size.width * 0.07,
+        height: size.height * 0.07,
+      );
+    } else if (baju.clothesTag == "Accessories") {
+      return Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("assets/icons/Accessories.png"))),
+        width: size.width * 0.07,
+        height: size.height * 0.07,
+      );
+    } else {
+      return Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(image: AssetImage("assets/icons/Top.png"))),
+        width: size.width * 0.07,
+        height: size.height * 0.07,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Clothes baju = widget.clothes;
@@ -79,23 +154,11 @@ class _CardClothesState extends State<CardClothes> {
                         SizedBox(
                           width: size.width * 0.03,
                         ),
-                        Container(
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage("assets/icons/Mesin.png"))),
-                          width: size.width * 0.07,
-                          height: size.height * 0.07,
-                        ),
+                        checkStatus(),
                         SizedBox(
                           width: size.width * 0.02,
                         ),
-                        Container(
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage("assets/icons/Dress.png"))),
-                          width: size.width * 0.07,
-                          height: size.height * 0.07,
-                        ),
+                        clothesTag(),
                       ]),
                 ),
               ],
