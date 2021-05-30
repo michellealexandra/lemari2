@@ -13,6 +13,7 @@ class _DetailClothesState extends State<DetailClothes> {
       FirebaseFirestore.instance.collection("clothes");
   void showDeleteDialog(BuildContext ctx) {
     Clothes clothes = widget.clothes;
+    Closets closet = ModalRoute.of(context).settings.arguments;
     showDialog(
         context: ctx,
         builder: (ctx) {
@@ -48,7 +49,7 @@ class _DetailClothesState extends State<DetailClothes> {
                     //     "Delete Data Success",
                     //   );
                     //   Navigator.pushReplacementNamed(
-                    //       ctx, GridClothes.routeName);
+                    //       ctx, GridClothes.routeName, arguments: closet);
                     // } else {
                     //   ActivityServices.showToast(
                     //     "Delete Data Success",

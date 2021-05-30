@@ -381,7 +381,7 @@ class _AddClothesState extends State<AddClothes> {
                                         setState(() {
                                           isLoading = false;
                                           Navigator.pushReplacementNamed(
-                                              context, GridClothes.routeName);
+                                              context, GridClothes.routeName, arguments: closet);
                                         });
                                       } else {
                                         ActivityServices.showToast("FAILED");

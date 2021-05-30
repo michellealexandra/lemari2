@@ -116,9 +116,6 @@ class _LemariState extends State<Lemari> {
             if (snapshot.hasError) {
               return Text("Failed to load data!");
             }
-            // if (snapshot.connectionState == ConnectionState.waiting) {
-            //   return ActivityServices.loadings();
-            // }
             switch (snapshot.connectionState) {
               case ConnectionState.waiting:
                 return ActivityServices.loadings();
