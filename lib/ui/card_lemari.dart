@@ -10,7 +10,6 @@ class CardLemari extends StatefulWidget {
 class _CardLemariState extends State<CardLemari> {
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
     Closets closet = widget.closets;
     if (closet == null) {
       return Container();

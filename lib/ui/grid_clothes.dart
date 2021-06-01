@@ -47,6 +47,7 @@ class _GridClothesState extends State<GridClothes> {
   @override
   Widget build(BuildContext context) {
     Closets closet = ModalRoute.of(context).settings.arguments;
+    final Size size = MediaQuery.of(context).size;
 
     return Scaffold(
         appBar: AppBar(
@@ -84,118 +85,117 @@ class _GridClothesState extends State<GridClothes> {
         ),
         resizeToAvoidBottomInset: false,
         backgroundColor: Color(0xFFFCFAF8),
-        body: ListView(
-          children: <Widget>[
-            Container(
-              margin: EdgeInsets.only(
-                left: MediaQuery.of(context).size.width * 0.05,
-                right: MediaQuery.of(context).size.width * 0.05,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  StreamBuilder<QuerySnapshot>(
-                    stream: closetsCollection.snapshots(),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<QuerySnapshot> snapshot) {
-                      if (snapshot.hasError) {
-                        return Text("Failed to load data!");
-                      }
-                      switch (snapshot.connectionState) {
-                        case ConnectionState.waiting:
-                          return ActivityServices.loadings();
-                        default:
-                          return new Text(
-                            closet.closetDesc,
-                            style: TextStyle(
-                                height: 1.5,
-                                fontSize: 14,
-                                fontFamily: GoogleFonts.openSans().fontFamily,
-                                fontWeight: FontWeight.w500,
-                                color: Color(0xff564B46)),
-                            textAlign: TextAlign.left,
-                            overflow: TextOverflow.clip,
-                            softWrap: false,
-                          );
-                      }
-                    },
-                  ),
-                ],
-              ),
-            ),
-            Categories(),
-            Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                    width: MediaQuery.of(context).size.width - 30.0,
-                    height: MediaQuery.of(context).size.height - 100.0,
-                    child: Container(
-                        width: double.infinity,
-                        height: double.infinity,
-                        child: StreamBuilder<QuerySnapshot>(
-                          // stream: clothesCollection.orderBy('createdAt', descending: true).snapshots(),
-                          stream: clothesCollection
-                              .where('clothesCloset',
-                                  isEqualTo: closet.closetId)
-                              .snapshots(),
-                          builder: (BuildContext context,
-                              AsyncSnapshot<QuerySnapshot> snapshot) {
-                            if (snapshot.hasError) {
-                              print(snapshot.error);
-                              return Text("Failed to load data!");
-                            }
-                            // if (snapshot.connectionState == ConnectionState.waiting) {
-                            //   return ActivityServices.loadings();
-                            // }
-                            switch (snapshot.connectionState) {
-                              case ConnectionState.waiting:
-                                return ActivityServices.loadings();
-                              default:
-                                return Container(
-                                  margin: EdgeInsets.only(bottom:100),
-                                  child: new GridView(
-                                    gridDelegate:
-                                        SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2, //two columns
-                                      mainAxisSpacing: 0.1, //space the card
-                                      childAspectRatio: 0.800,
+        body: ListView(children: [
+          Column(
+            children: [
+              Container(
+                width: double.infinity,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    StreamBuilder<QuerySnapshot>(
+                      stream: closetsCollection.snapshots(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (snapshot.hasError) {
+                          return Text("Failed to load data!");
+                        }
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.waiting:
+                            return ActivityServices.loadings();
+                          default:
+                            return Container(
+                              margin: EdgeInsets.only(
+                                left: MediaQuery.of(context).size.width * 0.05,
+                                right: MediaQuery.of(context).size.width * 0.05,
+                              ),
+                              child: new Text(
+                                closet.closetDesc,
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily:
+                                        GoogleFonts.openSans().fontFamily,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color(0xff564B46)),
+                              ),
+                            );
+                        }
+                      },
+                    ),
+                    Categories(),
+                    Center(
+                      child: Container(
+                          width: MediaQuery.of(context).size.width - 30.0,
+                          height: MediaQuery.of(context).size.height - 100.0,
+                          child: Container(
+                              // width: double.infinity,
+                              // height: double.infinity,
+                              child: StreamBuilder<QuerySnapshot>(
+                            // stream: clothesCollection.orderBy('createdAt', descending: true).snapshots(),
+                            stream: clothesCollection
+                                .where('clothesCloset',
+                                    isEqualTo: closet.closetId)
+                                .snapshots(),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<QuerySnapshot> snapshot) {
+                              if (snapshot.hasError) {
+                                print(snapshot.error);
+                                return Text("Failed to load data!");
+                              }
+                              // if (snapshot.connectionState == ConnectionState.waiting) {
+                              //   return ActivityServices.loadings();
+                              // }
+                              switch (snapshot.connectionState) {
+                                case ConnectionState.waiting:
+                                  return ActivityServices.loadings();
+                                default:
+                                  return Container(
+                                    padding: EdgeInsets.only(
+                                        bottom: size.height * 0.05),
+                                    child: new GridView(
+                                      gridDelegate:
+                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 2, //two columns
+                                        mainAxisSpacing: 0.1, //space the card
+                                        childAspectRatio: 0.800,
+                                      ),
+                                      children: snapshot.data.docs
+                                          .map((DocumentSnapshot doc) {
+                                        Clothes clothes;
+                                        // if (doc.data()['clothesCloset'] ==
+                                        //     closet.closetId) {
+                                        clothes = new Clothes(
+                                          doc.data()['clothesId'],
+                                          doc.data()['clothesName'],
+                                          doc.data()['clothesDesc'],
+                                          doc.data()['clothesImage'],
+                                          doc.data()['clothesCloset'],
+                                          doc.data()['clothesAddBy'],
+                                          doc.data()['clothesAge'],
+                                          doc.data()['clothesTag'],
+                                          doc.data()['clothesStatus'],
+                                          doc.data()['clothesLaundry'],
+                                          doc.data()['createdAt'],
+                                          doc.data()['updatedAt'],
+                                        );
+                                        // } else {
+                                        //   clothes = null;
+                                        // }
+                                        return CardClothesLemari(
+                                            clothes: clothes);
+                                      }).toList(),
                                     ),
-                                    children: snapshot.data.docs
-                                        .map((DocumentSnapshot doc) {
-                                      Clothes clothes;
-                                      // if (doc.data()['clothesCloset'] ==
-                                      //     closet.closetId) {
-                                      clothes = new Clothes(
-                                        doc.data()['clothesId'],
-                                        doc.data()['clothesName'],
-                                        doc.data()['clothesDesc'],
-                                        doc.data()['clothesImage'],
-                                        doc.data()['clothesCloset'],
-                                        doc.data()['clothesAddBy'],
-                                        doc.data()['clothesAge'],
-                                        doc.data()['clothesTag'],
-                                        doc.data()['clothesStatus'],
-                                        doc.data()['clothesLaundry'],
-                                        doc.data()['createdAt'],
-                                        doc.data()['updatedAt'],
-                                      );
-                                      // } else {
-                                      //   clothes = null;
-                                      // }
-                                      return CardClothesLemari(clothes: clothes);
-                                    }).toList(),
-                                  ),
-                                );
-                            }
-                          },
-                        ))),
-              ],
-            ),
-            SizedBox(height: 15.0)
-          ],
-        ),
+                                  );
+                              }
+                            },
+                          ))),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ]),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             Navigator.pushNamed(context, AddClothes.routeName,
