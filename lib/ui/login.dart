@@ -61,46 +61,6 @@ class _LoginState extends State<Login> {
                   ),
                 ),
               ),
-              // Container(
-              //   height: MediaQuery.of(context).size.height * 0.4,
-              //   decoration: BoxDecoration(
-              //       color: Color(0xffFFEFDF),
-              //       borderRadius: BorderRadius.only(
-              //           bottomLeft: Radius.circular(32),
-              //           bottomRight: Radius.circular(32)),
-              //       boxShadow: [
-              //         BoxShadow(
-              //           color: Colors.grey.withOpacity(0.4),
-              //           spreadRadius: 2,
-              //           blurRadius: 5,
-              //           offset: Offset(0, 1),
-              //         ),
-              //       ]),
-              //   child: Padding(
-              //     padding: const EdgeInsets.all(32.0),
-              //     child: Column(
-              //       crossAxisAlignment: CrossAxisAlignment.start,
-              //       children: [
-              //         Text(
-              //           "Welcome Back,",
-              //           style: TextStyle(
-              //               fontSize: 24,
-              //               fontFamily: GoogleFonts.openSans().fontFamily,
-              //               fontWeight: FontWeight.bold,
-              //               color: Color(0XFF5D4736)),
-              //         ),
-              //         Text(
-              //           "Sign in to continue",
-              //           style: TextStyle(
-              //               fontSize: 14,
-              //               fontFamily: GoogleFonts.openSans().fontFamily,
-              //               fontWeight: FontWeight.w700,
-              //               color: Color(0XFF5D4736)),
-              //         )
-              //       ],
-              //     ),
-              //   ),
-              // ),
               Form(
                   key: _formKey,
                   child: Column(

@@ -1,11 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:lemari2/models/models.dart';
 import 'package:lemari2/services/services.dart';
 import 'dart:async';
 import 'package:lemari2/ui/pages.dart';
 
 class Splash extends StatefulWidget {
   static const String routeName = "/splash";
+  final Users users;
+
+  Splash({this.users});
   @override
   _SplashState createState() => _SplashState();
 }
@@ -22,9 +26,10 @@ class _SplashState extends State<Splash> {
   }
 
   void checkAuth() async {
+    Users user = widget.users;
     FirebaseAuth auth = FirebaseAuth.instance;
     if (auth.currentUser != null) {
-      Navigator.pushReplacementNamed(context, MainMenu.routeName);
+      Navigator.pushReplacementNamed(context, MainMenu.routeName, arguments: user);
       ActivityServices.showToast(
           "Welcome back " + auth.currentUser.email);
     } else {

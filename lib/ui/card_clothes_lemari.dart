@@ -149,7 +149,6 @@ class _CardClothesLemariState extends State<CardClothesLemari> {
 
   @override
   Widget build(BuildContext context) {
-    DocumentSnapshot doc;
     Clothes baju = widget.clothes;
     final Size size = MediaQuery.of(context).size;
     if (baju == null) {

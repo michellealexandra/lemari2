@@ -12,8 +12,6 @@ class _DetailClothesState extends State<DetailClothes> {
   CollectionReference clothesCollection =
       FirebaseFirestore.instance.collection("clothes");
   void showDeleteDialog(BuildContext ctx) {
-    Clothes clothes = widget.clothes;
-    Closets closet = ModalRoute.of(context).settings.arguments;
     showDialog(
         context: ctx,
         builder: (ctx) {
@@ -153,8 +151,7 @@ class _DetailClothesState extends State<DetailClothes> {
     } else {
       return Container(
         decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage("assets/icons/Top.png"))),
+            image: DecorationImage(image: AssetImage("assets/icons/Top.png"))),
         width: size.width * 0.13,
         height: size.height * 0.13,
       );
@@ -177,108 +174,99 @@ class _DetailClothesState extends State<DetailClothes> {
           elevation: 0.0,
         ),
         resizeToAvoidBottomInset: false,
-        body: SingleChildScrollView(
-          child: Container(
-              child: Column(
+        body: ListView(scrollDirection: Axis.vertical, children: [
+          Column(
             children: [
-              Row(
+              Container(
+                  child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    margin: EdgeInsets.only(
-                      left: MediaQuery.of(context).size.width * 0.07,
-                    ),
-                    child: Column(
-                      // mainAxisAlignment: MainAxisAlignment.center,
-                      // crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        checkStatus(),
-                        SizedBox(
-                          height: size.width * 0.005,
-                        ),
-                        clothesTag(),
-                        SizedBox(
-                          height: size.width * 0.005,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(context, EditClothes.routeName);
-                          },
-                          child: Container(
-                            child: Icon(
-                              Icons.edit,
-                              color: Color(0xff5D4736),
-                              size: size.width * 0.1,
-                            ),
-                            decoration: BoxDecoration(
-                                color: Color(0xffFCD825),
-                                shape: BoxShape.circle),
-                            width: size.width * 0.13,
-                            height: size.height * 0.13,
+                      margin: EdgeInsets.only(left: size.width * 0.05),
+                      child: Column(
+                        children: [
+                          checkStatus(),
+                          SizedBox(
+                            height: size.width * 0.005,
                           ),
-                        ),
-                        SizedBox(
-                          height: size.width * 0.005,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            showDeleteDialog(context);
-                          },
-                          child: Container(
-                            child: Icon(
-                              Icons.delete,
-                              color: Color(0xff5D4736),
-                              size: size.width * 0.1,
-                            ),
-                            decoration: BoxDecoration(
-                                color: Color(0xffFF5E63),
-                                shape: BoxShape.circle),
-                            width: size.width * 0.13,
-                            height: size.height * 0.13,
+                          clothesTag(),
+                          SizedBox(
+                            height: size.width * 0.005,
                           ),
-                        ),
-                        SizedBox(
-                          height: size.width * 0.005,
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, EditClothes.routeName);
+                            },
+                            child: Container(
+                              child: Icon(
+                                Icons.edit,
+                                color: Color(0xff5D4736),
+                                size: size.width * 0.1,
+                              ),
+                              decoration: BoxDecoration(
+                                  color: Color(0xffFCD825),
+                                  shape: BoxShape.circle),
+                              width: size.width * 0.13,
+                              height: size.height * 0.13,
+                            ),
+                          ),
+                          SizedBox(
+                            height: size.width * 0.005,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              showDeleteDialog(context);
+                            },
+                            child: Container(
+                              child: Icon(
+                                Icons.delete,
+                                color: Color(0xff5D4736),
+                                size: size.width * 0.1,
+                              ),
+                              decoration: BoxDecoration(
+                                  color: Color(0xffFF5E63),
+                                  shape: BoxShape.circle),
+                              width: size.width * 0.13,
+                              height: size.height * 0.13,
+                            ),
+                          ),
+                        ],
+                      )),
+                  Container(
+                    width: size.width * 0.7,
+                    height: size.height * 0.6,
+                    decoration: BoxDecoration(
+                      //https://www.codegrepper.com/code-examples/dart/flutter+fill+an+image+in+a+container
+                      image: DecorationImage(
+                          fit: BoxFit.fill,
+                          image: NetworkImage(baju.clothesImage)),
+                      //https://googleflutter.com/flutter-border-around-image/
+                      borderRadius:
+                          BorderRadius.only(bottomLeft: Radius.circular(18.0)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.4),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: Offset(0, 1),
                         ),
                       ],
                     ),
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Container(
-                        width: size.width * 0.7,
-                        height: size.height * 0.6,
-                        decoration: BoxDecoration(
-                          //https://www.codegrepper.com/code-examples/dart/flutter+fill+an+image+in+a+container
-                          image: DecorationImage(
-                              fit: BoxFit.fill,
-                              image: NetworkImage(baju.clothesImage)),
-                          //https://googleflutter.com/flutter-border-around-image/
-                          borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(18.0)),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.4),
-                              spreadRadius: 2,
-                              blurRadius: 5,
-                              offset: Offset(0, 1),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
                 ],
-              ),
+              )),
               SizedBox(
                 height: size.width * 0.08,
               ),
               Container(
+                width: double.infinity,
                 margin: EdgeInsets.only(
-                  left: MediaQuery.of(context).size.width * 0.05,
-                ),
+                    left: size.width * 0.05,
+                    right: size.width * 0.05,
+                    bottom: size.height * 0.04),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     StreamBuilder<QuerySnapshot>(
@@ -294,7 +282,7 @@ class _DetailClothesState extends State<DetailClothes> {
                           default:
                             return new Text(baju.clothesAge,
                                 style: TextStyle(
-                                    fontSize: 16,
+                                    fontSize: 14,
                                     fontFamily:
                                         GoogleFonts.openSans().fontFamily,
                                     fontWeight: FontWeight.w500,
@@ -326,6 +314,9 @@ class _DetailClothesState extends State<DetailClothes> {
                         }
                       },
                     ),
+                    SizedBox(
+                      height: size.width * 0.02,
+                    ),
                     StreamBuilder<QuerySnapshot>(
                       stream: clothesCollection.snapshots(),
                       builder: (BuildContext context,
@@ -337,30 +328,22 @@ class _DetailClothesState extends State<DetailClothes> {
                           case ConnectionState.waiting:
                             return ActivityServices.loadings();
                           default:
-                            return new Text(baju.clothesDesc,
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    fontFamily:
-                                        GoogleFonts.openSans().fontFamily,
-                                    fontWeight: FontWeight.w500,
-                                    color: Color(0xff564B46)),
-                                textAlign: TextAlign.left);
+                            return new Text(
+                              baju.clothesDesc,
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontFamily: GoogleFonts.openSans().fontFamily,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xff564B46)),
+                            );
                         }
                       },
                     ),
-                    Text(
-                        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s ",
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontFamily: GoogleFonts.openSans().fontFamily,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xff564B46)),
-                        textAlign: TextAlign.left)
                   ],
                 ),
               ),
             ],
-          )),
-        ));
+          ),
+        ]));
   }
 }

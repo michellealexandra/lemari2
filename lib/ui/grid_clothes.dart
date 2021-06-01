@@ -89,6 +89,7 @@ class _GridClothesState extends State<GridClothes> {
             Container(
               margin: EdgeInsets.only(
                 left: MediaQuery.of(context).size.width * 0.05,
+                right: MediaQuery.of(context).size.width * 0.05,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -107,6 +108,7 @@ class _GridClothesState extends State<GridClothes> {
                           return new Text(
                             closet.closetDesc,
                             style: TextStyle(
+                                height: 1.5,
                                 fontSize: 14,
                                 fontFamily: GoogleFonts.openSans().fontFamily,
                                 fontWeight: FontWeight.w500,
@@ -121,7 +123,7 @@ class _GridClothesState extends State<GridClothes> {
                 ],
               ),
             ),
-            // Categories(),
+            Categories(),
             Column(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -151,37 +153,40 @@ class _GridClothesState extends State<GridClothes> {
                               case ConnectionState.waiting:
                                 return ActivityServices.loadings();
                               default:
-                                return new GridView(
-                                  gridDelegate:
-                                      SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2, //two columns
-                                    mainAxisSpacing: 0.1, //space the card
-                                    childAspectRatio: 0.800,
+                                return Container(
+                                  margin: EdgeInsets.only(bottom:100),
+                                  child: new GridView(
+                                    gridDelegate:
+                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2, //two columns
+                                      mainAxisSpacing: 0.1, //space the card
+                                      childAspectRatio: 0.800,
+                                    ),
+                                    children: snapshot.data.docs
+                                        .map((DocumentSnapshot doc) {
+                                      Clothes clothes;
+                                      // if (doc.data()['clothesCloset'] ==
+                                      //     closet.closetId) {
+                                      clothes = new Clothes(
+                                        doc.data()['clothesId'],
+                                        doc.data()['clothesName'],
+                                        doc.data()['clothesDesc'],
+                                        doc.data()['clothesImage'],
+                                        doc.data()['clothesCloset'],
+                                        doc.data()['clothesAddBy'],
+                                        doc.data()['clothesAge'],
+                                        doc.data()['clothesTag'],
+                                        doc.data()['clothesStatus'],
+                                        doc.data()['clothesLaundry'],
+                                        doc.data()['createdAt'],
+                                        doc.data()['updatedAt'],
+                                      );
+                                      // } else {
+                                      //   clothes = null;
+                                      // }
+                                      return CardClothesLemari(clothes: clothes);
+                                    }).toList(),
                                   ),
-                                  children: snapshot.data.docs
-                                      .map((DocumentSnapshot doc) {
-                                    Clothes clothes;
-                                    // if (doc.data()['clothesCloset'] ==
-                                    //     closet.closetId) {
-                                    clothes = new Clothes(
-                                      doc.data()['clothesId'],
-                                      doc.data()['clothesName'],
-                                      doc.data()['clothesDesc'],
-                                      doc.data()['clothesImage'],
-                                      doc.data()['clothesCloset'],
-                                      doc.data()['clothesAddBy'],
-                                      doc.data()['clothesAge'],
-                                      doc.data()['clothesTag'],
-                                      doc.data()['clothesStatus'],
-                                      doc.data()['clothesLaundry'],
-                                      doc.data()['createdAt'],
-                                      doc.data()['updatedAt'],
-                                    );
-                                    // } else {
-                                    //   clothes = null;
-                                    // }
-                                    return CardClothesLemari(clothes: clothes);
-                                  }).toList(),
                                 );
                             }
                           },

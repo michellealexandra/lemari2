@@ -47,6 +47,9 @@ class WeatherInfo {
 
 class Dashboard extends StatefulWidget {
   static const String routeName = "/dashboard";
+  final Users users;
+
+  Dashboard({this.users});
 
   @override
   _DashboardState createState() => _DashboardState();
@@ -59,6 +62,72 @@ class _DashboardState extends State<Dashboard> {
 
   Future<WeatherInfo> futureWeather;
 
+  Widget profilePic() {
+    Users user = ModalRoute.of(context).settings.arguments;
+    if (user.pic != "") {
+      GestureDetector(
+        onTap: () {
+          Navigator.pushNamed(context, Profile.routeName);
+        },
+        child: Container(
+          alignment: Alignment.center,
+          child: Container(
+            height: MediaQuery.of(context).size.width * 0.15,
+            width: MediaQuery.of(context).size.width * 0.15,
+            margin: EdgeInsets.only(
+                left: MediaQuery.of(context).size.width * 0.15,
+                top: 36,
+                right: MediaQuery.of(context).size.width * 0.05),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.4),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: Offset(0, 1),
+                  ),
+                ],
+                image: DecorationImage(
+                    image: NetworkImage(user.pic), fit: BoxFit.cover)),
+          ),
+        ),
+      );
+    } else {
+      return GestureDetector(
+        onTap: () {
+          Navigator.pushNamed(context, Profile.routeName);
+        },
+        child: Container(
+          alignment: Alignment.center,
+          child: Container(
+            height: MediaQuery.of(context).size.width * 0.15,
+            width: MediaQuery.of(context).size.width * 0.15,
+            margin: EdgeInsets.only(
+                left: MediaQuery.of(context).size.width * 0.15,
+                top: 36,
+                right: MediaQuery.of(context).size.width * 0.05),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.4),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: Offset(0, 1),
+                  ),
+                ],
+                image: DecorationImage(
+                    image: AssetImage(
+                      "assets/images/nopic.png",
+                    ),
+                    fit: BoxFit.cover)),
+          ),
+        ),
+      );
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -68,6 +137,7 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    Users user = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
         title: Text("Dashboard",
@@ -89,41 +159,37 @@ class _DashboardState extends State<Dashboard> {
             children: [
               Row(
                 children: [
-                  Column(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, Profile.routeName);
-                        },
-                        child: Container(
-                          alignment: Alignment.center,
-                          child: Container(
-                            height: MediaQuery.of(context).size.width * 0.15,
-                            width: MediaQuery.of(context).size.width * 0.15,
-                            margin: EdgeInsets.only(
-                                left: MediaQuery.of(context).size.width * 0.15,
-                                top: 36,
-                                right:
-                                    MediaQuery.of(context).size.width * 0.05),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8.0),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.4),
-                                    spreadRadius: 2,
-                                    blurRadius: 5,
-                                    offset: Offset(0, 1),
-                                  ),
-                                ],
-                                image: DecorationImage(
-                                    image: AssetImage(
-                                      "assets/images/nopic.png",
-                                    ),
-                                    fit: BoxFit.cover)),
-                          ),
-                        ),
+                  // profilePic(),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, Profile.routeName);
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: Container(
+                        height: MediaQuery.of(context).size.width * 0.15,
+                        width: MediaQuery.of(context).size.width * 0.15,
+                        margin: EdgeInsets.only(
+                            left: MediaQuery.of(context).size.width * 0.15,
+                            top: 36,
+                            right: MediaQuery.of(context).size.width * 0.05),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8.0),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.4),
+                                spreadRadius: 2,
+                                blurRadius: 5,
+                                offset: Offset(0, 1),
+                              ),
+                            ],
+                            image: DecorationImage(
+                                image: AssetImage(
+                                  "assets/images/nopic.png",
+                                ),
+                                fit: BoxFit.cover)),
                       ),
-                    ],
+                    ),
                   ),
                   //text welcome dan name
                   Column(
