@@ -10,10 +10,11 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
+  String namaUser;
   bool isLoading = false;
 
   final _formKey = GlobalKey<FormState>();
-  final ctrlName = TextEditingController();
+  TextEditingController ctrlName;
 
   PickedFile imageFile;
   final ImagePicker imagePicker = ImagePicker();
@@ -34,19 +35,6 @@ class _EditProfileState extends State<EditProfile> {
       imageFile = selectedImage;
     });
   }
-
-  void dispose() {
-    ctrlName.dispose();
-    super.dispose();
-  }
-
-  void clearForm() {
-    ctrlName.clear();
-    setState(() {
-      imageFile = null;
-    });
-  }
-
 
   void showFileDialog(BuildContext ctx) {
     showDialog(
@@ -79,7 +67,11 @@ class _EditProfileState extends State<EditProfile> {
 
   @override
   Widget build(BuildContext context) {
-    Users user = widget.users;
+    // Users users = ModalRoute.of(context).settings.arguments;
+    // final ctrlName = TextEditingController(text: users.name);
+    // final ctrlName = TextEditingController();
+    final ctrlName = new TextEditingController(text: namaUser);
+
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
@@ -219,7 +211,9 @@ class _EditProfileState extends State<EditProfile> {
                                       double.infinity, size.height * 0.065),
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(8))),
-                              onPressed: () async {},
+                              onPressed: () async {
+                                ActivityServices.showToast("Cie ga bisa edit");
+                              },
                             ),
                           ),
                         ],
@@ -234,5 +228,19 @@ class _EditProfileState extends State<EditProfile> {
         ),
       ),
     );
+  }
+
+  _userName() async {
+    final userku = await FirebaseAuth.instance.currentUser.uid;
+    if (userku != null) {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userku)
+          .get()
+          .then((ds) {
+        namaUser = ds.data()['name'];
+        // print(namaUser);
+      });
+    }
   }
 }

@@ -10,8 +10,8 @@ class _EditClosetState extends State<EditCloset> {
   bool isLoading = false;
 
   final _formKey = GlobalKey<FormState>();
-  final ctrlName = TextEditingController();
-  final ctrlDesc = TextEditingController();
+  TextEditingController ctrlName;
+  TextEditingController ctrlDesc;
 
   PickedFile imageFile;
   final ImagePicker imagePicker = ImagePicker();
@@ -30,20 +30,6 @@ class _EditClosetState extends State<EditCloset> {
     );
     setState(() {
       imageFile = selectedImage;
-    });
-  }
-
-  void dispose() {
-    ctrlName.dispose();
-    ctrlDesc.dispose();
-    super.dispose();
-  }
-
-  void clearForm() {
-    ctrlName.clear();
-    ctrlDesc.clear();
-    setState(() {
-      imageFile = null;
     });
   }
 
@@ -79,6 +65,8 @@ class _EditClosetState extends State<EditCloset> {
   @override
   Widget build(BuildContext context) {
     Closets closet = ModalRoute.of(context).settings.arguments;
+    final ctrlName = new TextEditingController(text: closet.closetName);
+    final ctrlDesc = new TextEditingController(text: closet.closetDesc);
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
@@ -110,12 +98,35 @@ class _EditClosetState extends State<EditCloset> {
                     imageFile == null
                         ? Column(
                             children: [
-                              Text("File tidak ditemukan."),
+                              // Text("File tidak ditemukan."),
+                              Container(
+                                alignment: Alignment.center,
+                                child: Container(
+                                  height:
+                                      MediaQuery.of(context).size.width * 0.5,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.5,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.4),
+                                          spreadRadius: 2,
+                                          blurRadius: 5,
+                                          offset: Offset(0, 1),
+                                        ),
+                                      ],
+                                      image: DecorationImage(
+                                          image:
+                                              NetworkImage(closet.closetImage),
+                                          fit: BoxFit.cover)),
+                                ),
+                              ),
                               SizedBox(
                                 width: 16,
                               ),
                               ElevatedButton(
-                                child: Text("Add Photo"),
+                                child: Text("Edit Photo"),
                                 onPressed: () {
                                   // chooseFile();
                                   showFileDialog(context);
@@ -152,7 +163,7 @@ class _EditClosetState extends State<EditCloset> {
                                 width: 16,
                               ),
                               ElevatedButton(
-                                child: Text("Add Photo"),
+                                child: Text("Edit Photo"),
                                 onPressed: () {
                                   // chooseFile();
                                   showFileDialog(context);
@@ -221,38 +232,7 @@ class _EditClosetState extends State<EditCloset> {
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(8))),
                               onPressed: () async {
-                                if (_formKey.currentState.validate() &&
-                                    imageFile != null) {
-                                  setState(() {
-                                    isLoading = true;
-                                  });
-                                  Closets closets = Closets(
-                                      "",
-                                      ctrlName.text,
-                                      ctrlDesc.text,
-                                      "",
-                                      FirebaseAuth.instance.currentUser.uid,
-                                      "",
-                                      "");
-                                  await ClosetsServices.addClosets(
-                                          closets, imageFile)
-                                      .then((value) {
-                                    if (value == true) {
-                                      ActivityServices.showToast("SUCCESS");
-                                      clearForm();
-                                      setState(() {
-                                        isLoading = false;
-                                        Navigator.pushReplacementNamed(
-                                            context, Lemari.routeName);
-                                      });
-                                    } else {
-                                      ActivityServices.showToast("FAILED");
-                                    }
-                                  });
-                                } else {
-                                  ActivityServices.showToast(
-                                      "Please check form fields!");
-                                }
+                                ActivityServices.showToast("Cie ga bisa edit");
                               },
                             ),
                           ),
@@ -269,33 +249,4 @@ class _EditClosetState extends State<EditCloset> {
       ),
     );
   }
-}
-
-Widget _textEdit({controller, hint}) {
-  return Container(
-    margin: EdgeInsets.only(top: 24),
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.all(Radius.circular(8)),
-      border: Border.all(width: 1.5, color: const Color(0xffDBA878)),
-    ),
-    child: TextFormField(
-      keyboardType: TextInputType.text,
-      controller: controller,
-      maxLength: 12,
-      maxLines: 1,
-      decoration: InputDecoration(
-        hintText: hint,
-        border: InputBorder.none,
-        contentPadding: EdgeInsets.all(16),
-      ),
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      validator: (value) {
-        if (value.isEmpty) {
-          return "Please fill in the field!";
-        } else {
-          return null;
-        }
-      },
-    ),
-  );
 }

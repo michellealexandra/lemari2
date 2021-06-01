@@ -44,6 +44,287 @@ class _GridClothesState extends State<GridClothes> {
     print(_searchController.text);
   }
 
+  Widget filterClothes() {
+    int selectedindex;
+    final Size size = MediaQuery.of(context).size;
+    Closets closet = ModalRoute.of(context).settings.arguments;
+    if (selectedindex == 1) {
+      return StreamBuilder<QuerySnapshot>(
+        stream:
+            clothesCollection.where('clothesTag', isEqualTo: 'Top').snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) {
+            print(snapshot.error);
+            return Text("Failed to load data!");
+          }
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return ActivityServices.loadings();
+            default:
+              return Container(
+                padding: EdgeInsets.only(bottom: size.height * 0.05),
+                child: new GridView(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2, //two columns
+                    mainAxisSpacing: 0.1, //space the card
+                    childAspectRatio: 0.800,
+                  ),
+                  children: snapshot.data.docs.map((DocumentSnapshot doc) {
+                    Clothes clothes;
+                    clothes = new Clothes(
+                      doc.data()['clothesId'],
+                      doc.data()['clothesName'],
+                      doc.data()['clothesDesc'],
+                      doc.data()['clothesImage'],
+                      doc.data()['clothesCloset'],
+                      doc.data()['clothesAddBy'],
+                      doc.data()['clothesAge'],
+                      doc.data()['clothesTag'],
+                      doc.data()['clothesStatus'],
+                      doc.data()['clothesLaundry'],
+                      doc.data()['createdAt'],
+                      doc.data()['updatedAt'],
+                    );
+                    return CardClothesLemari(clothes: clothes);
+                  }).toList(),
+                ),
+              );
+          }
+        },
+      );
+    } else if (selectedindex == 2) {
+      return StreamBuilder<QuerySnapshot>(
+        stream: clothesCollection
+            .where('clothesTag', isEqualTo: 'Bottom')
+            .snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) {
+            print(snapshot.error);
+            return Text("Failed to load data!");
+          }
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return ActivityServices.loadings();
+            default:
+              return Container(
+                padding: EdgeInsets.only(bottom: size.height * 0.05),
+                child: new GridView(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2, //two columns
+                    mainAxisSpacing: 0.1, //space the card
+                    childAspectRatio: 0.800,
+                  ),
+                  children: snapshot.data.docs.map((DocumentSnapshot doc) {
+                    Clothes clothes;
+                    // if (doc.data()['clothesCloset'] ==
+                    //     closet.closetId) {
+                    clothes = new Clothes(
+                      doc.data()['clothesId'],
+                      doc.data()['clothesName'],
+                      doc.data()['clothesDesc'],
+                      doc.data()['clothesImage'],
+                      doc.data()['clothesCloset'],
+                      doc.data()['clothesAddBy'],
+                      doc.data()['clothesAge'],
+                      doc.data()['clothesTag'],
+                      doc.data()['clothesStatus'],
+                      doc.data()['clothesLaundry'],
+                      doc.data()['createdAt'],
+                      doc.data()['updatedAt'],
+                    );
+                    // } else {
+                    //   clothes = null;
+                    // }
+                    return CardClothesLemari(clothes: clothes);
+                  }).toList(),
+                ),
+              );
+          }
+        },
+      );
+    } else if (selectedindex == 3) {
+      return StreamBuilder<QuerySnapshot>(
+        stream: clothesCollection
+            .where('clothesTag', isEqualTo: 'Dress')
+            .snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) {
+            print(snapshot.error);
+            return Text("Failed to load data!");
+          }
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return ActivityServices.loadings();
+            default:
+              return Container(
+                padding: EdgeInsets.only(bottom: size.height * 0.05),
+                child: new GridView(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2, //two columns
+                    mainAxisSpacing: 0.1, //space the card
+                    childAspectRatio: 0.800,
+                  ),
+                  children: snapshot.data.docs.map((DocumentSnapshot doc) {
+                    Clothes clothes;
+                    clothes = new Clothes(
+                      doc.data()['clothesId'],
+                      doc.data()['clothesName'],
+                      doc.data()['clothesDesc'],
+                      doc.data()['clothesImage'],
+                      doc.data()['clothesCloset'],
+                      doc.data()['clothesAddBy'],
+                      doc.data()['clothesAge'],
+                      doc.data()['clothesTag'],
+                      doc.data()['clothesStatus'],
+                      doc.data()['clothesLaundry'],
+                      doc.data()['createdAt'],
+                      doc.data()['updatedAt'],
+                    );
+                    return CardClothesLemari(clothes: clothes);
+                  }).toList(),
+                ),
+              );
+          }
+        },
+      );
+    } else if (selectedindex == 4) {
+      return StreamBuilder<QuerySnapshot>(
+        stream: clothesCollection
+            .where('clothesTag', isEqualTo: 'Outer')
+            .snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) {
+            print(snapshot.error);
+            return Text("Failed to load data!");
+          }
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return ActivityServices.loadings();
+            default:
+              return Container(
+                padding: EdgeInsets.only(bottom: size.height * 0.05),
+                child: new GridView(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2, //two columns
+                    mainAxisSpacing: 0.1, //space the card
+                    childAspectRatio: 0.800,
+                  ),
+                  children: snapshot.data.docs.map((DocumentSnapshot doc) {
+                    Clothes clothes;
+                    clothes = new Clothes(
+                      doc.data()['clothesId'],
+                      doc.data()['clothesName'],
+                      doc.data()['clothesDesc'],
+                      doc.data()['clothesImage'],
+                      doc.data()['clothesCloset'],
+                      doc.data()['clothesAddBy'],
+                      doc.data()['clothesAge'],
+                      doc.data()['clothesTag'],
+                      doc.data()['clothesStatus'],
+                      doc.data()['clothesLaundry'],
+                      doc.data()['createdAt'],
+                      doc.data()['updatedAt'],
+                    );
+                    return CardClothesLemari(clothes: clothes);
+                  }).toList(),
+                ),
+              );
+          }
+        },
+      );
+    } else if (selectedindex == 5) {
+      return StreamBuilder<QuerySnapshot>(
+        stream: clothesCollection
+            .where('clothesTag', isEqualTo: 'Accessories')
+            .snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) {
+            print(snapshot.error);
+            return Text("Failed to load data!");
+          }
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return ActivityServices.loadings();
+            default:
+              return Container(
+                padding: EdgeInsets.only(bottom: size.height * 0.05),
+                child: new GridView(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2, //two columns
+                    mainAxisSpacing: 0.1, //space the card
+                    childAspectRatio: 0.800,
+                  ),
+                  children: snapshot.data.docs.map((DocumentSnapshot doc) {
+                    Clothes clothes;
+                    clothes = new Clothes(
+                      doc.data()['clothesId'],
+                      doc.data()['clothesName'],
+                      doc.data()['clothesDesc'],
+                      doc.data()['clothesImage'],
+                      doc.data()['clothesCloset'],
+                      doc.data()['clothesAddBy'],
+                      doc.data()['clothesAge'],
+                      doc.data()['clothesTag'],
+                      doc.data()['clothesStatus'],
+                      doc.data()['clothesLaundry'],
+                      doc.data()['createdAt'],
+                      doc.data()['updatedAt'],
+                    );
+                    return CardClothesLemari(clothes: clothes);
+                  }).toList(),
+                ),
+              );
+          }
+        },
+      );
+    } else {
+      return StreamBuilder<QuerySnapshot>(
+        stream: clothesCollection
+            .where('clothesCloset', isEqualTo: closet.closetId)
+            .snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) {
+            print(snapshot.error);
+            return Text("Failed to load data!");
+          }
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return ActivityServices.loadings();
+            default:
+              return Container(
+                padding: EdgeInsets.only(bottom: size.height * 0.05),
+                child: new GridView(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2, //two columns
+                    mainAxisSpacing: 0.1, //space the card
+                    childAspectRatio: 0.800,
+                  ),
+                  children: snapshot.data.docs.map((DocumentSnapshot doc) {
+                    Clothes clothes;
+                    clothes = new Clothes(
+                      doc.data()['clothesId'],
+                      doc.data()['clothesName'],
+                      doc.data()['clothesDesc'],
+                      doc.data()['clothesImage'],
+                      doc.data()['clothesCloset'],
+                      doc.data()['clothesAddBy'],
+                      doc.data()['clothesAge'],
+                      doc.data()['clothesTag'],
+                      doc.data()['clothesStatus'],
+                      doc.data()['clothesLaundry'],
+                      doc.data()['createdAt'],
+                      doc.data()['updatedAt'],
+                    );
+                    return CardClothesLemari(clothes: clothes);
+                  }).toList(),
+                ),
+              );
+          }
+        },
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Closets closet = ModalRoute.of(context).settings.arguments;
@@ -130,7 +411,9 @@ class _GridClothesState extends State<GridClothes> {
                           child: Container(
                               // width: double.infinity,
                               // height: double.infinity,
-                              child: StreamBuilder<QuerySnapshot>(
+                              child:
+                                  // filterClothes()
+                                  StreamBuilder<QuerySnapshot>(
                             // stream: clothesCollection.orderBy('createdAt', descending: true).snapshots(),
                             stream: clothesCollection
                                 .where('clothesCloset',
@@ -226,16 +509,20 @@ class _CategoriesState extends State<Categories> {
   int selectedindex = 0;
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20),
-      child: SizedBox(
-        height: 30,
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: categories.length,
-          itemBuilder: (context, index) => buildCategory(index),
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          child: SizedBox(
+            height: 30,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: categories.length,
+              itemBuilder: (context, index) => buildCategory(index),
+            ),
+          ),
         ),
-      ),
+      ],
     );
   }
 
@@ -244,6 +531,7 @@ class _CategoriesState extends State<Categories> {
       onTap: () {
         setState(() {
           selectedindex = index;
+          print(selectedindex);
         });
       },
       child: Padding(

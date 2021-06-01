@@ -19,7 +19,6 @@ class _EditClothesState extends State<EditClothes> {
   bool isLoading = false;
 
   String _chosenValue;
-  String _chosenStatus;
   String radioButtonItem;
   int id = 1;
 
@@ -89,6 +88,7 @@ class _EditClothesState extends State<EditClothes> {
   @override
   Widget build(BuildContext context) {
     Closets closet = ModalRoute.of(context).settings.arguments;
+    Clothes baju = ModalRoute.of(context).settings.arguments;
     final Size size = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -132,7 +132,7 @@ class _EditClothesState extends State<EditClothes> {
                                     width: 16,
                                   ),
                                   ElevatedButton(
-                                    child: Text("Add Photo"),
+                                    child: Text("Edit Photo"),
                                     onPressed: () {
                                       // chooseFile();
                                       showFileDialog(context);
@@ -171,7 +171,7 @@ class _EditClothesState extends State<EditClothes> {
                                     width: 16,
                                   ),
                                   ElevatedButton(
-                                    child: Text("Add Photo"),
+                                    child: Text("Edit Photo"),
                                     onPressed: () {
                                       // chooseFile();
                                       showFileDialog(context);
@@ -354,46 +354,11 @@ class _EditClothesState extends State<EditClothes> {
                                 //       context, IsiLemari.routeName);
                                 // },
                                 onPressed: () async {
-                                  if (_formKey.currentState.validate() &&
-                                      imageFile != null) {
-                                    setState(() {
-                                      isLoading = true;
-                                    });
-                                    Clothes clothes = Clothes(
-                                        "",
-                                        ctrlName.text,
-                                        ctrlDesc.text,
-                                        closet.closetId,
-                                        FirebaseAuth.instance.currentUser.uid,
-                                        "",
-                                        ctrlAge.text,
-                                        _chosenValue,
-                                        radioButtonItem,
-                                        ctrlLaundryDate.text,
-                                        "",
-                                        "");
-                                    await ClothesServices.addClothes(
-                                            clothes, closet, imageFile)
-                                        .then((value) {
-                                      if (value == true) {
-                                        ActivityServices.showToast("SUCCESS");
-                                        clearForm();
-                                        setState(() {
-                                          isLoading = false;
-                                          Navigator.pushReplacementNamed(
-                                              context, GridClothes.routeName);
-                                        });
-                                      } else {
-                                        ActivityServices.showToast("FAILED");
-                                      }
-                                    });
-                                  } else {
-                                    ActivityServices.showToast(
-                                        "Please check form fields!");
-                                  }
+                                  ActivityServices.showToast(
+                                      "Cie ga bisa edit");
                                 },
                                 child: Text(
-                                  "Add Clothes",
+                                  "Edit Clothes",
                                   style: TextStyle(
                                       color: Color(0xff5D4736),
                                       fontFamily:
@@ -417,23 +382,4 @@ class _EditClothesState extends State<EditClothes> {
       ),
     );
   }
-}
-
-Widget _textEditClothes({controller, hint}) {
-  return Container(
-    margin: EdgeInsets.only(top: 18),
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.all(Radius.circular(8)),
-      border: Border.all(width: 1.5, color: const Color(0xffDBA878)),
-    ),
-    child: TextFormField(
-      keyboardType: TextInputType.text,
-      controller: controller,
-      decoration: InputDecoration(
-        hintText: hint,
-        border: InputBorder.none,
-        contentPadding: EdgeInsets.all(16),
-      ),
-    ),
-  );
 }

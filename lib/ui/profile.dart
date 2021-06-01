@@ -2,6 +2,8 @@ part of 'pages.dart';
 
 class Profile extends StatefulWidget {
   static const String routeName = "/profile";
+  final Users users;
+  Profile({this.users});
 
   @override
   _ProfileState createState() => _ProfileState();
@@ -9,6 +11,9 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   String namaUser, emailUser;
+  CollectionReference userCollection =
+      FirebaseFirestore.instance.collection("users");
+  String uid = FirebaseAuth.instance.currentUser.uid;
   void showConfirmationDialog(BuildContext ctx) {
     showDialog(
         context: ctx,
@@ -18,7 +23,9 @@ class _ProfileState extends State<Profile> {
             content: Text("Are you sure you want to delete this picture?"),
             actions: [
               ElevatedButton(
-                  onPressed: () {Navigator.of(ctx).pop();},
+                  onPressed: () {
+                    Navigator.of(ctx).pop();
+                  },
                   child: Text(
                     "Cancel",
                     style: TextStyle(
@@ -58,6 +65,7 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    Users users;
 
     return Scaffold(
       appBar: AppBar(
@@ -100,7 +108,7 @@ class _ProfileState extends State<Profile> {
                                     children: [
                                       ElevatedButton(
                                         child: Text(
-                                          "Edit Photo",
+                                          "Edit Profile",
                                           style: TextStyle(
                                               color: Color(0xffFFFFFF),
                                               fontFamily: GoogleFonts.openSans()
@@ -116,8 +124,13 @@ class _ProfileState extends State<Profile> {
                                                 borderRadius:
                                                     BorderRadius.circular(8))),
                                         onPressed: () {
+                                          // Navigator.pushNamed(
+                                          //     context, EditProfile.routeName, arguments: user);
                                           Navigator.pushNamed(
-                                              context, EditProfile.routeName);
+                                            context,
+                                            EditProfile.routeName,
+                                          );
+                                          print(users.name);
                                         },
                                       ),
                                       ElevatedButton(
@@ -148,6 +161,7 @@ class _ProfileState extends State<Profile> {
                       child: Container(
                         alignment: Alignment.center,
                         child: Container(
+                          alignment: Alignment.center,
                           height: size.width * 0.5,
                           width: size.width * 0.5,
                           decoration: BoxDecoration(
@@ -365,6 +379,7 @@ class _ProfileState extends State<Profile> {
   }
 
   _userName() async {
+    // ignore: await_only_futures
     final userku = await FirebaseAuth.instance.currentUser.uid;
     if (userku != null) {
       await FirebaseFirestore.instance
@@ -373,12 +388,13 @@ class _ProfileState extends State<Profile> {
           .get()
           .then((ds) {
         namaUser = ds.data()['name'];
-        print(namaUser);
+        // print(namaUser);
       });
     }
   }
 
   _userEmail() async {
+    // ignore: await_only_futures
     final userku = await FirebaseAuth.instance.currentUser.uid;
     if (userku != null) {
       await FirebaseFirestore.instance
@@ -387,7 +403,7 @@ class _ProfileState extends State<Profile> {
           .get()
           .then((ds) {
         emailUser = ds.data()['email'];
-        print(emailUser);
+        // print(emailUser);
       });
     }
   }

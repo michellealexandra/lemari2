@@ -19,7 +19,6 @@ class _AddClothesState extends State<AddClothes> {
   bool isLoading = false;
 
   String _chosenValue;
-  String _chosenStatus;
   String radioButtonItem;
   int id = 1;
 
