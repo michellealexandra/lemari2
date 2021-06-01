@@ -16,7 +16,6 @@ class _CardLemariState extends State<CardLemari> {
     } else {
       return GestureDetector(
           onTap: () {
-            // Navigator.pushNamed(context, IsiLemari.routeName, arguments: closet);
             Navigator.pushNamed(context, GridClothes.routeName,
                 arguments: closet);
           },

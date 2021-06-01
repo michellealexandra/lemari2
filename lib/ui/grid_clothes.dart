@@ -26,6 +26,15 @@ class _GridClothesState extends State<GridClothes> {
   TextEditingController _searchController = TextEditingController();
   String clothesName;
   bool searchState = false;
+  List<String> categories = [
+    "All",
+    "Top",
+    "Bottom",
+    "Dress",
+    "Outer",
+    "Accessories"
+  ];
+  int selectedindex = 0;
 
   @override
   void initState() {
@@ -44,14 +53,55 @@ class _GridClothesState extends State<GridClothes> {
     print(_searchController.text);
   }
 
+  Widget buildCategory(int index) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          selectedindex = index;
+          print(selectedindex);
+        });
+      },
+      child: Padding(
+        //antar word top bottom etc
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              categories[index],
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontFamily: GoogleFonts.openSans().fontFamily,
+                fontSize: 14,
+                color: selectedindex == index
+                    ? Color(0xff5D4736)
+                    : Color(0xffE4E0DC),
+              ),
+            ),
+            Container(
+              //antar word dan garis
+              margin: EdgeInsets.only(top: 20 / 4), //top padding 5
+              height: 2,
+              width: 30,
+              color: selectedindex == index
+                  ? Color(0xff5D4736)
+                  : Colors.transparent,
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget filterClothes() {
-    int selectedindex;
     final Size size = MediaQuery.of(context).size;
     Closets closet = ModalRoute.of(context).settings.arguments;
     if (selectedindex == 1) {
       return StreamBuilder<QuerySnapshot>(
-        stream:
-            clothesCollection.where('clothesTag', isEqualTo: 'Top').snapshots(),
+        stream: clothesCollection
+            .where('clothesTag', isEqualTo: 'Top')
+            .where('clothesCloset', isEqualTo: closet.closetId)
+            .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             print(snapshot.error);
@@ -96,6 +146,7 @@ class _GridClothesState extends State<GridClothes> {
       return StreamBuilder<QuerySnapshot>(
         stream: clothesCollection
             .where('clothesTag', isEqualTo: 'Bottom')
+            .where('clothesCloset', isEqualTo: closet.closetId)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
@@ -116,8 +167,6 @@ class _GridClothesState extends State<GridClothes> {
                   ),
                   children: snapshot.data.docs.map((DocumentSnapshot doc) {
                     Clothes clothes;
-                    // if (doc.data()['clothesCloset'] ==
-                    //     closet.closetId) {
                     clothes = new Clothes(
                       doc.data()['clothesId'],
                       doc.data()['clothesName'],
@@ -132,9 +181,6 @@ class _GridClothesState extends State<GridClothes> {
                       doc.data()['createdAt'],
                       doc.data()['updatedAt'],
                     );
-                    // } else {
-                    //   clothes = null;
-                    // }
                     return CardClothesLemari(clothes: clothes);
                   }).toList(),
                 ),
@@ -146,6 +192,7 @@ class _GridClothesState extends State<GridClothes> {
       return StreamBuilder<QuerySnapshot>(
         stream: clothesCollection
             .where('clothesTag', isEqualTo: 'Dress')
+            .where('clothesCloset', isEqualTo: closet.closetId)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
@@ -191,6 +238,7 @@ class _GridClothesState extends State<GridClothes> {
       return StreamBuilder<QuerySnapshot>(
         stream: clothesCollection
             .where('clothesTag', isEqualTo: 'Outer')
+            .where('clothesCloset', isEqualTo: closet.closetId)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
@@ -236,6 +284,7 @@ class _GridClothesState extends State<GridClothes> {
       return StreamBuilder<QuerySnapshot>(
         stream: clothesCollection
             .where('clothesTag', isEqualTo: 'Accessories')
+            .where('clothesCloset', isEqualTo: closet.closetId)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
@@ -403,75 +452,23 @@ class _GridClothesState extends State<GridClothes> {
                         }
                       },
                     ),
-                    Categories(),
+                    // Text("HALO"),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      child: SizedBox(
+                        height: 30,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: categories.length,
+                          itemBuilder: (context, index) => buildCategory(index),
+                        ),
+                      ),
+                    ),
                     Center(
                       child: Container(
                           width: MediaQuery.of(context).size.width - 30.0,
                           height: MediaQuery.of(context).size.height - 100.0,
-                          child: Container(
-                              // width: double.infinity,
-                              // height: double.infinity,
-                              child:
-                                  // filterClothes()
-                                  StreamBuilder<QuerySnapshot>(
-                            // stream: clothesCollection.orderBy('createdAt', descending: true).snapshots(),
-                            stream: clothesCollection
-                                .where('clothesCloset',
-                                    isEqualTo: closet.closetId)
-                                .snapshots(),
-                            builder: (BuildContext context,
-                                AsyncSnapshot<QuerySnapshot> snapshot) {
-                              if (snapshot.hasError) {
-                                print(snapshot.error);
-                                return Text("Failed to load data!");
-                              }
-                              // if (snapshot.connectionState == ConnectionState.waiting) {
-                              //   return ActivityServices.loadings();
-                              // }
-                              switch (snapshot.connectionState) {
-                                case ConnectionState.waiting:
-                                  return ActivityServices.loadings();
-                                default:
-                                  return Container(
-                                    padding: EdgeInsets.only(
-                                        bottom: size.height * 0.05),
-                                    child: new GridView(
-                                      gridDelegate:
-                                          SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 2, //two columns
-                                        mainAxisSpacing: 0.1, //space the card
-                                        childAspectRatio: 0.800,
-                                      ),
-                                      children: snapshot.data.docs
-                                          .map((DocumentSnapshot doc) {
-                                        Clothes clothes;
-                                        // if (doc.data()['clothesCloset'] ==
-                                        //     closet.closetId) {
-                                        clothes = new Clothes(
-                                          doc.data()['clothesId'],
-                                          doc.data()['clothesName'],
-                                          doc.data()['clothesDesc'],
-                                          doc.data()['clothesImage'],
-                                          doc.data()['clothesCloset'],
-                                          doc.data()['clothesAddBy'],
-                                          doc.data()['clothesAge'],
-                                          doc.data()['clothesTag'],
-                                          doc.data()['clothesStatus'],
-                                          doc.data()['clothesLaundry'],
-                                          doc.data()['createdAt'],
-                                          doc.data()['updatedAt'],
-                                        );
-                                        // } else {
-                                        //   clothes = null;
-                                        // }
-                                        return CardClothesLemari(
-                                            clothes: clothes);
-                                      }).toList(),
-                                    ),
-                                  );
-                              }
-                            },
-                          ))),
+                          child: Container(child: filterClothes())),
                     )
                   ],
                 ),
@@ -489,80 +486,5 @@ class _GridClothesState extends State<GridClothes> {
           backgroundColor: Color(0xffFFEFDF),
           foregroundColor: Color(0xff5D4736),
         ));
-  }
-}
-
-class Categories extends StatefulWidget {
-  @override
-  _CategoriesState createState() => _CategoriesState();
-}
-
-class _CategoriesState extends State<Categories> {
-  List<String> categories = [
-    "All",
-    "Top",
-    "Bottom",
-    "Dress",
-    "Outer",
-    "Accessories"
-  ];
-  int selectedindex = 0;
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20),
-          child: SizedBox(
-            height: 30,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: categories.length,
-              itemBuilder: (context, index) => buildCategory(index),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget buildCategory(int index) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          selectedindex = index;
-          print(selectedindex);
-        });
-      },
-      child: Padding(
-        //antar word top bottom etc
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              categories[index],
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontFamily: GoogleFonts.openSans().fontFamily,
-                fontSize: 14,
-                color: selectedindex == index
-                    ? Color(0xff5D4736)
-                    : Color(0xffE4E0DC),
-              ),
-            ),
-            Container(
-              //antar word dan garis
-              margin: EdgeInsets.only(top: 20 / 4), //top padding 5
-              height: 2,
-              width: 30,
-              color: selectedindex == index
-                  ? Color(0xff5D4736)
-                  : Colors.transparent,
-            )
-          ],
-        ),
-      ),
-    );
   }
 }
