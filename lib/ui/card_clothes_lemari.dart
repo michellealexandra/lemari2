@@ -42,6 +42,7 @@ class _CardClothesLemariState extends State<CardClothesLemari> {
                     bool result =
                         await ClothesServices.deleteClothes(clothes.clothesId);
                     if (result) {
+                      Navigator.of(context).pop();
                       ActivityServices.showToast(
                         "Delete Data Success",
                       );
@@ -49,7 +50,7 @@ class _CardClothesLemariState extends State<CardClothesLemari> {
                       //       ctx, GridClothes.routeName);
                     } else {
                       ActivityServices.showToast(
-                        "Delete Data Success",
+                        "Delete Data gak Success",
                       );
                     }
                   },

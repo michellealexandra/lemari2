@@ -10,7 +10,9 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  String namaUser, emailUser;
+  CollectionReference clothesCollection =
+      FirebaseFirestore.instance.collection("clothes");
+  String namaUser, emailUser, countClosets, countClothes;
   CollectionReference userCollection =
       FirebaseFirestore.instance.collection("users");
   String uid = FirebaseAuth.instance.currentUser.uid;
@@ -95,6 +97,7 @@ class _ProfileState extends State<Profile> {
                   children: [
                     GestureDetector(
                       onTap: () {
+                        // countDocuments();
                         showModalBottomSheet(
                             context: context,
                             builder: (BuildContext ctx) {
@@ -265,15 +268,22 @@ class _ProfileState extends State<Profile> {
                           SizedBox(
                             height: size.height * 0.015,
                           ),
-                          Text(
-                            "32",
-                            style: TextStyle(
-                                fontSize: 65,
-                                fontFamily: GoogleFonts.openSans().fontFamily,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xff5D4736)),
-                            textAlign: TextAlign.center,
-                          )
+                          FutureBuilder(
+                            future: _countClothes(),
+                            builder:
+                                (BuildContext context, AsyncSnapshot snapshot) {
+                              return Text(
+                                "$countClothes",
+                                style: TextStyle(
+                                    fontSize: 65,
+                                    fontFamily:
+                                        GoogleFonts.openSans().fontFamily,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xff5D4736)),
+                                textAlign: TextAlign.center,
+                              );
+                            },
+                          ),
                         ],
                       ),
                     ),
@@ -308,15 +318,22 @@ class _ProfileState extends State<Profile> {
                           SizedBox(
                             height: size.height * 0.015,
                           ),
-                          Text(
-                            "12",
-                            style: TextStyle(
-                                fontSize: 65,
-                                fontFamily: GoogleFonts.openSans().fontFamily,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xff5D4736)),
-                            textAlign: TextAlign.center,
-                          )
+                          FutureBuilder(
+                            future: _countClosets(),
+                            builder:
+                                (BuildContext context, AsyncSnapshot snapshot) {
+                              return Text(
+                                "$countClosets",
+                                style: TextStyle(
+                                    fontSize: 65,
+                                    fontFamily:
+                                        GoogleFonts.openSans().fontFamily,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xff5D4736)),
+                                textAlign: TextAlign.center,
+                              );
+                            },
+                          ),
                         ],
                       ),
                     ),
@@ -406,5 +423,30 @@ class _ProfileState extends State<Profile> {
         // print(emailUser);
       });
     }
+  }
+
+  _countClothes() async {
+    Clothes clothes;
+    // if (clothes.clothesAddBy == FirebaseAuth.instance.currentUser.uid) {
+      // ignore: await_only_futures
+      QuerySnapshot _myDoc = await FirebaseFirestore.instance
+          .collection('clothes')
+          // .where('clothesAddby', isEqualTo: FirebaseAuth.instance.currentUser.uid)
+          .get();
+      List<DocumentSnapshot> _myDocCount = _myDoc.docs;
+      countClothes = _myDocCount.length.toString();
+      print(_myDocCount.length); // Count
+    // }
+  }
+
+  _countClosets() async {
+    // ignore: await_only_futures
+    QuerySnapshot _myDoc = await FirebaseFirestore.instance
+        .collection('closets')
+        // .where('closetsAddBy', isEqualTo: FirebaseAuth.instance.currentUser.uid)
+        .get();
+    List<DocumentSnapshot> _myDocCount = _myDoc.docs;
+    countClosets = _myDocCount.length.toString();
+    print(_myDocCount.length); // Count
   }
 }
