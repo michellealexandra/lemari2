@@ -6,6 +6,10 @@ class AuthServices {
       FirebaseFirestore.instance.collection("users");
   static DocumentReference userDoc;
 
+  static Reference ref;
+  static String imgUrl;
+  static UploadTask uploadTask;
+
   static Future<String> signUp(Users users) async {
     await Firebase.initializeApp();
     String dateNow = ActivityServices.dateNow();
@@ -79,6 +83,40 @@ class AuthServices {
       });
     });
 
+    return true;
+  }
+
+  static Future<bool> editProfilePic(PickedFile imgFile) async {
+    await Firebase.initializeApp();
+    String dateNow = ActivityServices.dateNow();
+
+    String uid = auth.currentUser.uid;
+
+    ref = FirebaseStorage.instance.ref().child("profileImage").child(uid+"jpg");
+    uploadTask = ref.putFile(File(imgFile.path));
+
+    await uploadTask.whenComplete(() =>
+      ref.getDownloadURL().then((value) => imgUrl = value)
+    );
+
+    await userCollection.doc(uid).update({
+      'pic' : imgUrl,
+      'updatedAt' : dateNow,
+    });
+
+    return true;
+  }
+
+  static Future<bool> editProfile(Users users) async {
+    await Firebase.initializeApp();
+    String dateNow = ActivityServices.dateNow();
+    // String uid = auth.currentUser.uid;
+
+    await userCollection.doc(auth.currentUser.uid).update({
+      'name': users.name,
+      'updatedAt': dateNow
+    });
+    
     return true;
   }
 }
