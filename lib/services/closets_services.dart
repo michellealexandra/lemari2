@@ -39,7 +39,6 @@ class ClosetsServices {
         'closetId': productDocument.id,
         'closetImage': imgUrl,
       });
-
       return true;
     } else {
       return false;
@@ -58,16 +57,46 @@ class ClosetsServices {
     return hsl;
   }
 
-// static Future<bool> deleteImages(String id) async {
-//     bool hsl = true;
-//     await Firebase.initializeApp();
-//     await FirebaseStorage.instance.ref(id).delete().then((value) {
-//       hsl = true;
-//     }).catchError((onError) {
-//       hsl = false;
-//     });
+  static Future<bool> editClosetPic(PickedFile imgFile, Closets closets) async {
+    await Firebase.initializeApp();
+    String dateNow = ActivityServices.dateNow();
 
-//     return hsl;
-//   }
+    String uid = auth.currentUser.uid;
 
+    ref = FirebaseStorage.instance
+        .ref()
+        .child("imagesCloset")
+        .child(productDocument.id + ".jpg");
+    uploadTask = ref.putFile(File(imgFile.path));
+
+    await uploadTask.whenComplete(
+        () => ref.getDownloadURL().then((value) => imgUrl = value));
+
+    await productCollection.doc(closets.closetId).update({
+      'closetId': productDocument.id,
+      'closetImage': imgUrl,
+      'updatedAt': dateNow,
+    });
+
+    return true;
+  }
+
+  static Future<String> editCloset(Closets closets, PickedFile imgFile) async {
+    await Firebase.initializeApp();
+    String msg = "";
+    String dateNow = ActivityServices.dateNow();
+    // String uid = auth.currentUser.uid;
+
+    await productCollection.doc(closets.closetId).update({
+      'closetname': closets.closetName,
+      'closetDesc': closets.closetDesc,
+      'updatedAt': dateNow,
+    }).then((value) {
+      msg = "Success";
+    }).catchError((onError) {
+      msg = onError;
+    });
+
+    return msg;
+  }
 }

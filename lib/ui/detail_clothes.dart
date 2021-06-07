@@ -12,6 +12,7 @@ class _DetailClothesState extends State<DetailClothes> {
   CollectionReference clothesCollection =
       FirebaseFirestore.instance.collection("clothes");
   void showDeleteDialog(BuildContext ctx) {
+    Clothes clothes = widget.clothes;
     showDialog(
         context: ctx,
         builder: (ctx) {
@@ -40,17 +41,18 @@ class _DetailClothesState extends State<DetailClothes> {
               ElevatedButton(
                   onPressed: () async {
                     Navigator.pushReplacementNamed(context, Lemari.routeName);
+                    ActivityServices.showToast(
+                      "Cannot Delete From Detail Clothes",
+                    );
                     // bool result =
                     //     await ClothesServices.deleteClothes(clothes.clothesId);
                     // if (result) {
                     //   ActivityServices.showToast(
                     //     "Delete Data Success",
                     //   );
-                    //   Navigator.pushReplacementNamed(
-                    //       ctx, GridClothes.routeName, arguments: closet);
                     // } else {
                     //   ActivityServices.showToast(
-                    //     "Delete Data Success",
+                    //     "Cannot Delete Data",
                     //   );
                     // }
                   },

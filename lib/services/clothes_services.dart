@@ -11,7 +11,8 @@ class ClothesServices {
   static UploadTask uploadTask;
   static String imgUrl;
 
-  static Future<bool> addClothes(Clothes clothes, Closets closets, PickedFile imgFile) async {
+  static Future<bool> addClothes(
+      Clothes clothes, Closets closets, PickedFile imgFile) async {
     await Firebase.initializeApp();
     String dateNow = ActivityServices.dateNow();
     productDocument = await productCollection.add({
@@ -61,5 +62,41 @@ class ClothesServices {
     });
 
     return hsl;
+  }
+
+  static Future<String> editClothes(
+      String id,
+      String clothesName,
+      String clothesDesc,
+      String clothesstatus,
+      String clothesAge,
+      String clothesTag,
+      String clothesLaundry) async {
+    await Firebase.initializeApp();
+    String dateNow = ActivityServices.dateNow();
+    String clothesName = "";
+    String clothesDesc = "";
+    String clothesAge = "";
+    String clothesTag = "";
+    String clothesstatus = "";
+    String clothesLaundry = "";
+    String msg = "";
+    Clothes clothes;
+
+    await productCollection.doc(clothes.clothesId).update({
+      'clothesName': clothesName,
+      'clothesDesc': clothesDesc,
+      'clothesAge': clothesAge,
+      'clothesTag': clothesTag,
+      'clothesstatus': clothesstatus,
+      'clothesLaundry': clothesLaundry,
+      'updatedAt': dateNow,
+    }).then((value) {
+      msg = "Success";
+    }).catchError((onError) {
+      msg = onError;
+    });
+
+    return msg;
   }
 }
